@@ -1,0 +1,21 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        // com.vanniktech.maven.publish is published to Maven Central only.
+        mavenCentral()
+    }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
+rootProject.name = 'ss13-framework-root'
+
+// Each project is named as its published artifactId. ModDevGradle writes a project's jar-in-jar
+// identity as group:<project name>, and a mismatch makes FML treat the copies that consumers nest
+// and ours as different libraries, so it would load both.
+//
+// ss13-framework-api: the contracts, a GAMELIBRARY that depends only on Minecraft and NeoForge.
+// ss13-framework: the ss13_framework mod, which nests the API.
+include 'ss13-framework-api', 'ss13-framework'
