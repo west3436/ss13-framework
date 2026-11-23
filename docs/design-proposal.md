@@ -61,34 +61,34 @@ The phases are ordered by who is waiting. Phase A moves code that exists. Phase 
 
 | Item | Comes from | Size | Used by |
 | --- | --- | --- | --- |
-| Crafting components and stock parts: the 19 items, their recipes, textures, CREDITS entries and new part tags | ZAS³ `AtmosItems` | items only | All three |
-| TGUI kit: `Ui`, `TguiScreen`, `TguiWindow`, `TitleLabel`, `Readout`, the DejaVu fonts and `generateTguiFonts`, `WalkingInput`, the generic parts of `DeviceParts` | ZAS³ `atmos/client/tgui/`, `atmos/client/` | ~1.6k LOC | All three |
-| Device base: `DeviceSchedule`, `DeviceTicker`, tick constants, `LoadedBlocks`, `RedstoneControl`, `Comparators`, `ItemData` and `DeviceData` save migration, `BlockTurns`, `WallPanelBlock`, activity levels and loop sounds | ZAS³ `atmos/device/`, `atmos/airlock/WallPanelBlock` | ~3k LOC | `AtmosDevice` extends it; every NT machine and Expedition console |
-| Labels, with multi-block lookups behind an interface instead of named airlock and firelock classes | ZAS³ `atmos/label/` | ~0.4k LOC | All three |
-| Adapter loader: one `Adapters` table and one `VersionGate` | ZAS³ `zas/compat/` | ~0.4k LOC | Every compat adapter in all three |
-| Gravity contract: `Gravity.at(level, pos)` composed from providers, and the code that applies it to entities | Expedition `PlanetGravity`, `PlanetGravityEvents`, `EntityGravityMixin` | ~0.3k LOC | Expedition planets and deck gravity (expedition#83); NT Engineering's gravity generator |
-| Small helpers: `DatapackErrors`, `ClaimCheck`, `TickBudget` | ZAS³ `zas/data/`; Expedition `mover/` | ~0.4k LOC | Datapack loading in all three; NT Engineering's RCD and RPD |
+| Crafting components and stock parts: the 19 items, their recipes, textures, CREDITS entries and new part tags ([#4](https://github.com/west3436/ss13-framework/issues/4)) | ZAS³ `AtmosItems` | items only | All three |
+| TGUI kit: `Ui`, `TguiScreen`, `TguiWindow`, `TitleLabel`, `Readout`, the DejaVu fonts and `generateTguiFonts`, `WalkingInput`, the generic parts of `DeviceParts` ([#5](https://github.com/west3436/ss13-framework/issues/5)) | ZAS³ `atmos/client/tgui/`, `atmos/client/` | ~1.6k LOC | All three |
+| Device base: `DeviceSchedule`, `DeviceTicker`, tick constants, `LoadedBlocks`, `RedstoneControl`, `Comparators`, `ItemData` and `DeviceData` save migration, `BlockTurns`, `WallPanelBlock`, activity levels and loop sounds ([#6](https://github.com/west3436/ss13-framework/issues/6)) | ZAS³ `atmos/device/`, `atmos/airlock/WallPanelBlock` | ~3k LOC | `AtmosDevice` extends it; every NT machine and Expedition console |
+| Labels, with multi-block lookups behind an interface instead of named airlock and firelock classes ([#6](https://github.com/west3436/ss13-framework/issues/6)) | ZAS³ `atmos/label/` | ~0.4k LOC | All three |
+| Adapter loader: one `Adapters` table and one `VersionGate` ([#7](https://github.com/west3436/ss13-framework/issues/7)) | ZAS³ `zas/compat/` | ~0.4k LOC | Every compat adapter in all three |
+| Gravity contract: `Gravity.at(level, pos)` composed from providers, and the code that applies it to entities ([#8](https://github.com/west3436/ss13-framework/issues/8)) | Expedition `PlanetGravity`, `PlanetGravityEvents`, `EntityGravityMixin` | ~0.3k LOC | Expedition planets and deck gravity (expedition#83); NT Engineering's gravity generator |
+| Small helpers: `DatapackErrors`, `ClaimCheck`, `TickBudget` ([#9](https://github.com/west3436/ss13-framework/issues/9)) | ZAS³ `zas/data/`; Expedition `mover/` | ~0.4k LOC | Datapack loading in all three; NT Engineering's RCD and RPD |
 
 ### Phase B: shared contracts, built with NT Engineering Phase 1
 
 | Item | What it is | Why it is shared |
 | --- | --- | --- |
-| Power provider contract | `PoweredDevice`, the `DevicePower` lease, `PowerFeed`, `EnergyStore`, `WorkToFe` and batteries move as they are. New: a `PowerProvider` that claims devices, and APC-style channels (equipment, lighting, environment). | ZAS³'s area air controller becomes one provider and NT Engineering's APC another, which takes over where both exist while the controller keeps monitoring and control. Expedition's electric and Bluespace drives (expedition#38, #40) draw from it. |
-| Areas | A named region, like SS13's `/area`: `Areas.at(level, pos)`, providers, change events, carried along when blocks move. | APCs, lighting and power channels; Expedition's ship boxes. ZAS³ zones stay about gas. |
-| Machine construction | Machine and computer frames, wiring, a board that names its machine and parts, part slots, and four part tiers that set a machine's stats. | Every NT machine; Expedition's Shuttle Computer and drives (expedition#50). A plain crafting recipe stays for every machine. |
-| Tools | Multitool with a `Linkable` buffer, wrench with `Wrenchable`, crowbar with `Pryable`, plus screwdriver, wirecutters and welder; `c:tools/*` tags. ZAS³'s tool items move with aliases. | The multitool and wrench today are hard-coded lists of ZAS³ classes. NT Engineering's plan already reuses them instead of making its own. |
-| Normal/Hardcore switch | The `PresetOption` mechanism, the per-world copy and the preset command. Each mod registers its own options. | ZAS³'s 15 options, Expedition's Hardcore fuel burn (expedition#53), NT Engineering's cable burnout and singularity damage. |
-| Station walls and reinforced glass (to decide) | ZAS³'s walls, glass and grilles with their connected textures. | RCD, welding and Expedition hulls all touch them. Pipes pass through them sealed, so the seal rule would need an interface. |
+| Power provider contract ([#10](https://github.com/west3436/ss13-framework/issues/10)) | `PoweredDevice`, the `DevicePower` lease, `PowerFeed`, `EnergyStore`, `WorkToFe` and batteries move as they are. New: a `PowerProvider` that claims devices, and APC-style channels (equipment, lighting, environment). | ZAS³'s area air controller becomes one provider and NT Engineering's APC another, which takes over where both exist while the controller keeps monitoring and control. Expedition's electric and Bluespace drives (expedition#38, #40) draw from it. |
+| Areas ([#11](https://github.com/west3436/ss13-framework/issues/11)) | A named region, like SS13's `/area`: `Areas.at(level, pos)`, providers, change events, carried along when blocks move. | APCs, lighting and power channels; Expedition's ship boxes. ZAS³ zones stay about gas. |
+| Machine construction ([#12](https://github.com/west3436/ss13-framework/issues/12)) | Machine and computer frames, wiring, a board that names its machine and parts, part slots, and four part tiers that set a machine's stats. | Every NT machine; Expedition's Shuttle Computer and drives (expedition#50). A plain crafting recipe stays for every machine. |
+| Tools ([#13](https://github.com/west3436/ss13-framework/issues/13)) | Multitool with a `Linkable` buffer, wrench with `Wrenchable`, crowbar with `Pryable`, plus screwdriver, wirecutters and welder; `c:tools/*` tags. ZAS³'s tool items move with aliases. | The multitool and wrench today are hard-coded lists of ZAS³ classes. NT Engineering's plan already reuses them instead of making its own. |
+| Normal/Hardcore switch ([#14](https://github.com/west3436/ss13-framework/issues/14)) | The `PresetOption` mechanism, the per-world copy and the preset command. Each mod registers its own options. | ZAS³'s 15 options, Expedition's Hardcore fuel burn (expedition#53), NT Engineering's cable burnout and singularity damage. |
+| Station walls and reinforced glass (to decide) ([#15](https://github.com/west3436/ss13-framework/issues/15)) | ZAS³'s walls, glass and grilles with their connected textures. | RCD, welding and Expedition hulls all touch them. Pipes pass through them sealed, so the seal rule would need an interface. |
 
 ### Phase C: with NT Engineering Phases 2 and 3
 
 | Item | What it is | Used by |
 | --- | --- | --- |
-| Radiation | A hazard that doesn't come from gas: sources, dose per entity, protection on armour from a data map, a Geiger counter, suit encumbrance. | NT Engineering's engines; ZAS³ suits get protection values and radioactive gases can add dose. |
-| Vision modes | Meson and T-ray views. Mods register what shows: ZAS³ its pipes, NT Engineering its cables. Builds on ZAS³'s `zas:shows_hud` tag pattern. | NT Engineering's goggles and scanner. |
-| Shared compat helpers | Ponder scene helpers (`Build`, `Hand`, `Say`, `Stage`) and the Ponder addon, Jade's readout model, the JEI/EMI layout shared by both viewers, CC:Tweaked's `Lua` helper. | Every Ponder scene, tooltip and peripheral in all three. |
+| Radiation ([#16](https://github.com/west3436/ss13-framework/issues/16)) | A hazard that doesn't come from gas: sources, dose per entity, protection on armour from a data map, a Geiger counter, suit encumbrance. | NT Engineering's engines; ZAS³ suits get protection values and radioactive gases can add dose. |
+| Vision modes ([#17](https://github.com/west3436/ss13-framework/issues/17)) | Meson and T-ray views. Mods register what shows: ZAS³ its pipes, NT Engineering its cables. Builds on ZAS³'s `zas:shows_hud` tag pattern. | NT Engineering's goggles and scanner. |
+| Shared compat helpers ([#18](https://github.com/west3436/ss13-framework/issues/18)) | Ponder scene helpers (`Build`, `Hand`, `Say`, `Stage`) and the Ponder addon, Jade's readout model, the JEI/EMI layout shared by both viewers, CC:Tweaked's `Lua` helper. | Every Ponder scene, tooltip and peripheral in all three. |
 
-### Tooling, at any time
+### Tooling, at any time ([#19](https://github.com/west3436/ss13-framework/issues/19))
 
 Not part of the mod jar. Expedition's build and CI are near-copies of ZAS³'s, and NT Engineering would copy them a third time.
 
@@ -153,6 +153,8 @@ flowchart TD
 ```
 
 Phase B runs in step with NT Engineering's Phase 1, since that is where its contracts are first used. Phase C runs with NT Engineering's Phases 2 and 3. Tooling can start at any point.
+
+Each phase is a [milestone](https://github.com/west3436/ss13-framework/milestones); Phase 0 is [#2](https://github.com/west3436/ss13-framework/issues/2) and [#3](https://github.com/west3436/ss13-framework/issues/3).
 
 ## Decisions (proposed)
 
