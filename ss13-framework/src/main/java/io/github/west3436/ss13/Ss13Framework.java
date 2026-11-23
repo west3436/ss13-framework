@@ -2,11 +2,13 @@ package io.github.west3436.ss13;
 
 import com.mojang.logging.LogUtils;
 import io.github.west3436.ss13.api.FrameworkApi;
+import io.github.west3436.ss13.gravity.GravityEntities;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 
-/** The {@code ss13_framework} mod. It holds nothing yet: Phase A moves the shared parts in. */
+/** The {@code ss13_framework} mod: it applies the shared contracts, such as gravity, to the game. */
 @Mod(FrameworkApi.MOD_ID)
 public final class Ss13Framework {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -17,5 +19,6 @@ public final class Ss13Framework {
                 "SS13 Framework {} loaded with API {}",
                 container.getModInfo().getVersion(),
                 FrameworkApi.version().orElse("from class directories"));
+        GravityEntities.register(NeoForge.EVENT_BUS);
     }
 }
