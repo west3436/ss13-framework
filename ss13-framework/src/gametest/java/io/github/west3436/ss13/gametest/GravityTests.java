@@ -20,6 +20,7 @@ import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.Vec3;
@@ -82,10 +83,14 @@ public final class GravityTests {
     @GameTest(template = "empty")
     public static void a_field_halves_gravity_inside_its_box(GameTestHelper h) {
         ServerLevel level = h.getLevel();
-        BlockPos inside = h.absolutePos(new BlockPos(1, 2, 1));
-        BlockPos outside = h.absolutePos(new BlockPos(1, 2, 8));
-        Pig pig = h.spawn(EntityType.PIG, new BlockPos(1, 2, 1));
-        pig.setNoAi(true);
+        // Both spots are in the test's own chunk, forced for the test, so the pig ticks wherever it
+        // is: the test's structure is one block, and the chunks around it needn't be loaded.
+        ChunkPos chunk = new ChunkPos(h.absolutePos(BlockPos.ZERO));
+        int y = h.absolutePos(BlockPos.ZERO).getY() + 2;
+        BlockPos inside = new BlockPos(chunk.getMinBlockX() + 3, y, chunk.getMinBlockZ() + 3);
+        BlockPos outside = new BlockPos(chunk.getMaxBlockX() - 3, y, chunk.getMaxBlockZ() - 3);
+        level.setChunkForced(chunk.x, chunk.z, true);
+        Pig pig = pigIn(h, level, inside);
         assertNoModifiers(h, pig, "the pig before the field is on");
 
         halfBox = BoundingBox.fromCorners(inside.offset(-1, -2, -1), inside.offset(1, 2, 1));
@@ -118,6 +123,7 @@ public final class GravityTests {
                 .thenExecute(() -> {
                     halfBox = null;
                     pig.discard();
+                    level.setChunkForced(chunk.x, chunk.z, false);
                 })
                 .thenSucceed();
     }
