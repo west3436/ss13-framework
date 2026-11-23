@@ -19,3 +19,7 @@ rootProject.name = 'ss13-framework-root'
 // ss13-framework-api: the contracts, a GAMELIBRARY that depends only on Minecraft and NeoForge.
 // ss13-framework: the ss13_framework mod, which nests the API.
 include 'ss13-framework-api', 'ss13-framework'
+
+// A consumer that nests both jars as the README says, never published. Its one-copy run checks that
+// two consumers nesting different framework versions load one copy, the newest.
+include 'example-consumer'

@@ -88,6 +88,7 @@ mod itself.
 |---|---|
 | `./gradlew build` | Compiles both jars, runs the unit tests, and checks formatting, the API's packages and dependencies, its javadoc and its compatibility |
 | `./gradlew :ss13-framework:runGameTestServer` | Boots a dedicated GameTest server with the mod and runs its GameTests |
+| `./gradlew :example-consumer:runOneCopyGameTestServer` | Loads two built consumers, each nesting the framework and one of them a newer copy, on a GameTest server with nothing else, and checks that one copy of each jar loads, the newest; not part of `build` or `runGameTestServer` |
 | `./gradlew :ss13-framework:runClient` | Starts a dev client with the mod |
 | `./gradlew :ss13-framework:runServer` | Starts a dev dedicated server with the mod |
 | `./gradlew spotlessApply` | Formats the Java sources (palantir-java-format) |

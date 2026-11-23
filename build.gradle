@@ -16,15 +16,17 @@ subprojects {
     version = snapshot ? "${mod_version}-SNAPSHOT" : mod_version
     ext.snapshot = snapshot
 
-    // The API versions that a nested copy accepts: from this one up to the next version that may
-    // break it. That is the next minor while the API is 0.x, and the next major from 1.0. A
-    // snapshot's floor is the snapshot itself, since 0.1.0-SNAPSHOT sorts below 0.1.0 and FML
-    // would otherwise refuse the copy the mod nests.
-    def (apiMajor, apiMinor) = api_version.tokenize('.').take(2).collect { it as int }
-    def apiFloor = snapshot ? "${api_version}-SNAPSHOT" : api_version
-    ext.api_range = apiMajor == 0
-            ? "[${apiFloor},0.${apiMinor + 1}.0)"
-            : "[${apiFloor},${apiMajor + 1}.0)"
+    // The versions that a nested copy accepts: from this one up to the next version that may break
+    // it. That is the next minor while a jar is 0.x, and the next major from 1.0. A snapshot's floor
+    // is the snapshot itself, since 0.1.0-SNAPSHOT sorts below 0.1.0 and FML would otherwise
+    // refuse the copy that is nested.
+    def range = { String v ->
+        def (major, minor) = v.tokenize('.').take(2).collect { it as int }
+        def floor = snapshot ? "${v}-SNAPSHOT" : v
+        major == 0 ? "[${floor},0.${minor + 1}.0)" : "[${floor},${major + 1}.0)"
+    }
+    ext.api_range = range(api_version)
+    ext.mod_range = range(mod_version)
 
     java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
