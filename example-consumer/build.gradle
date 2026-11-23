@@ -1,0 +1,170 @@
+apply plugin: 'net.neoforged.moddev'
+
+// A mod that uses the framework the way ZAS³, Expedition and NT Engineering do: it nests the mod
+// and the API, as the README tells consumers to. Never published. CI runs it on a GameTest server
+// beside a second consumer that nests a newer framework, with nothing else on the classpath, and
+// checks that one copy of the framework loads, the newest.
+base { archivesName = 'ss13_example' }
+
+sourceSets {
+    // The one-copy tests, which run inside a built copy of this mod.
+    oneCopy {
+        compileClasspath += main.output + main.compileClasspath
+    }
+    // The second consumer, ss13_example_newer: a mod with nothing in it but the nesting.
+    newer
+    // The run's classpath, empty on purpose: the only framework on it is what the two jars nest, so
+    // FML's jar-in-jar locator chooses between the copies, as in production.
+    oneCopyRun
+}
+
+neoForge {
+    addModdingDependenciesTo(sourceSets.newer)
+    addModdingDependenciesTo(sourceSets.oneCopyRun)
+    runs {
+        oneCopyGameTestServer {
+            type = 'gameTestServer'
+            sourceSet = sourceSets.oneCopyRun
+            loadedMods = []
+            gameDirectory = layout.buildDirectory.dir('oneCopyRun')
+            systemProperty 'neoforge.enabledGameTestNamespaces', 'ss13_example'
+        }
+    }
+    mods {
+        // As in the framework, the API is never listed: it loads as its own GAMELIBRARY module.
+        ss13_example {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+// The nesting snippet from the README, with the framework's projects standing in for its
+// published coordinates. The mod nests the API too, but a consumer names it as well, so the API's
+// range is the consumer's own and not only whatever the mod it nests allows.
+dependencies {
+    implementation project(':ss13-framework')
+
+    jarJar('io.github.west3436:ss13-framework') {
+        transitive = false
+        version {
+            strictly mod_range
+            prefer mod_version
+        }
+    }
+    jarJar('io.github.west3436:ss13-framework-api') {
+        version {
+            strictly api_range
+            prefer api_version
+        }
+    }
+}
+
+configurations.named('jarJar') {
+    resolutionStrategy.dependencySubstitution {
+        substitute module('io.github.west3436:ss13-framework') using project(':ss13-framework')
+        substitute module('io.github.west3436:ss13-framework-api') using project(':ss13-framework-api')
+    }
+}
+
+// This mod as it ships, nested framework included, plus the one-copy tests.
+def oneCopyJar = tasks.register('oneCopyJar', Jar) {
+    archiveClassifier = 'one-copy'
+    from sourceSets.main.output
+    from sourceSets.oneCopy.output
+    from tasks.named('jarJar')
+}
+
+// The newer framework: the built jars again, one patch version up, as if a later release.
+//
+// FML doesn't simply load the newest copy. It narrows the range to what every consumer's range
+// allows, then loads the first copy it found inside that. The newest wins only because each
+// consumer's range starts at the version it nests, as the README tells consumers to do: the newer
+// consumer's floor leaves out this mod's older copy. This run finds the older copy first, so a
+// floor below the nested version would load it, and the_newest_copy_wins would fail.
+def (major, minor, patch) = mod_version.tokenize('.').collect { it as int }
+def newerModVersion = "${major}.${minor}.${patch + 1}"
+def (apiMajor, apiMinor, apiPatch) = api_version.tokenize('.').collect { it as int }
+def newerApiVersion = "${apiMajor}.${apiMinor}.${apiPatch + 1}"
+
+def newerApiJar = tasks.register('newerApiJar', Jar) {
+    def built = project(':ss13-framework-api').tasks.named('jar', Jar)
+    dependsOn built
+    archiveFileName = "ss13-framework-api-${newerApiVersion}.jar"
+    destinationDirectory = layout.buildDirectory.dir('newer')
+    from({ zipTree(built.get().archiveFile) }) { exclude 'META-INF/MANIFEST.MF' }
+    manifest {
+        attributes(
+            'Automatic-Module-Name': 'io.github.west3436.ss13.api',
+            'FMLModType': 'GAMELIBRARY',
+            'Implementation-Title': 'ss13-framework-api',
+            'Implementation-Version': newerApiVersion,
+        )
+    }
+}
+
+// The mod without its own nested API: the newer consumer nests the newer API beside it.
+def newerModJar = tasks.register('newerModJar', Jar) {
+    def built = project(':ss13-framework').tasks.named('jar', Jar)
+    dependsOn built
+    archiveFileName = "ss13_framework-${newerModVersion}.jar"
+    destinationDirectory = layout.buildDirectory.dir('newer')
+    inputs.property('newerModVersion', newerModVersion)
+    from({ zipTree(built.get().archiveFile) }) {
+        exclude 'META-INF/MANIFEST.MF', 'META-INF/jarjar/**'
+        filesMatching('META-INF/neoforge.mods.toml') {
+            filter { line -> line.startsWith('version = ') ? "version = \"${newerModVersion}\"" : line }
+        }
+    }
+}
+
+// What ModDevGradle writes for a consumer that nests both, written here by hand because the
+// versions are made up. Each range starts at the version nested, like every real consumer's.
+def floorAt = { String range, String version -> range.replaceFirst(/^\[[^,]+,/, "[${version},") }
+def newerMetadata = tasks.register('newerMetadata') {
+    def out = layout.buildDirectory.file('newer/metadata.json')
+    def entries = [
+        ['ss13-framework', newerModVersion, floorAt(mod_range, newerModVersion), "ss13_framework-${newerModVersion}.jar"],
+        ['ss13-framework-api', newerApiVersion, floorAt(api_range, newerApiVersion),
+         "ss13-framework-api-${newerApiVersion}.jar"],
+    ]
+    inputs.property('entries', entries.toString())
+    outputs.file(out)
+    doLast {
+        def jars = entries.collect { artifact, version, range, file ->
+            [
+                identifier: [group: 'io.github.west3436', artifact: artifact],
+                version: [range: range, artifactVersion: version],
+                path: "META-INF/jarjar/${file}",
+                isObfuscated: false,
+            ]
+        }
+        out.get().asFile.text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson([jars: jars]))
+    }
+}
+
+def newerConsumerJar = tasks.register('newerConsumerJar', Jar) {
+    archiveFileName = 'ss13_example_newer.jar'
+    destinationDirectory = layout.buildDirectory.dir('newer')
+    from sourceSets.newer.output
+    into('META-INF/jarjar') {
+        from newerApiJar
+        from newerModJar
+        from newerMetadata
+    }
+}
+
+dependencies {
+    oneCopyRunRuntimeOnly files(oneCopyJar)
+    oneCopyRunRuntimeOnly files(newerConsumerJar)
+}
+
+tasks.matching { it.name == 'runOneCopyGameTestServer' }.configureEach {
+    // The run starts from a fresh world, and the tests know which copy should win.
+    doFirst {
+        delete layout.buildDirectory.dir('oneCopyRun/world')
+    }
+}
+neoForge.runs.named('oneCopyGameTestServer') {
+    systemProperty 'ss13.example.newestMod', newerModVersion
+    systemProperty 'ss13.example.newestApi', newerApiVersion
+}

@@ -41,6 +41,18 @@ jobs:
             echo "::error::Expected 1 GameTest server to report that its tests passed, but $passed did."
             exit 1
           fi
+      # Two built consumers, each nesting the framework, one of them a newer
+      # version, on one server with no other copy. One copy must load, the newest.
+      - name: One copy of the framework (built jars)
+        timeout-minutes: 10
+        shell: bash
+        run: |
+          ./gradlew :example-consumer:runOneCopyGameTestServer --stacktrace | tee one-copy-gametests.log
+          passed=$(grep -cE "All [0-9]+ required tests passed" one-copy-gametests.log || true)
+          if [ "$passed" -ne 1 ]; then
+            echo "::error::Expected the one-copy GameTest server to report that its tests passed, but $passed did."
+            exit 1
+          fi
       - uses: actions/upload-artifact@v7
         with:
           name: jars

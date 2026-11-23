@@ -1,0 +1,19 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "MIT"
+
+[[mods]]
+modId = "ss13_example"
+version = "${mod_version}"
+displayName = "SS13 Framework example consumer"
+description = '''
+A test mod that nests SS13 Framework the way ZAS³, Expedition and NT Engineering
+do. Never published.
+'''
+
+[[dependencies.ss13_example]]
+modId = "ss13_framework"
+type = "required"
+versionRange = "[0.1,)"
+ordering = "AFTER"
+side = "BOTH"

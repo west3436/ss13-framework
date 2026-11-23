@@ -46,7 +46,7 @@ flowchart LR
 
 Arrows point from a module to what it depends on; dashed means optional.
 
-- **Nested, not installed.** Each mod nests the framework jar with a version range, as ZAS³ nests `zas-api` today. NeoForge loads the newest nested copy. "ZAS³ is the only required mod" (expedition#50) still holds.
+- **Nested, not installed.** Each mod nests the framework jar with a version range, as ZAS³ nests `zas-api` today. NeoForge loads the first nested copy it finds inside every mod's range, not the newest as such. The newest wins because each range starts at the version that mod nests ([#3](https://github.com/west3436/ss13-framework/issues/3)). While the framework is 0.x, the mods released together must nest the same minor version, or no version fits every range. "ZAS³ is the only required mod" (expedition#50) still holds.
 - **The framework depends on none of the three.** It has no gas in it. A mod that wants gas reads `zas-api`.
 - **`zas-api` stays gas-only.** `ClientSounds`, `DisplayUnits` and `Relocations.shownAt` stay where they are: moving them is a major API break, and Expedition uses `Relocations`.
 - **CONT-095 widens** to "`zas_atmos` compiles against `zas-api` and the framework, never `zas` internals".

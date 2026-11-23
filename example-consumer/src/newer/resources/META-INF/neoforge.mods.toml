@@ -1,0 +1,12 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "MIT"
+
+[[mods]]
+modId = "ss13_example_newer"
+version = "1"
+displayName = "SS13 Framework example consumer (newer framework)"
+description = '''
+A second test mod that nests a newer SS13 Framework than ss13_example does.
+Never published.
+'''
