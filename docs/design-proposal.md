@@ -73,11 +73,11 @@ The phases are ordered by who is waiting. Phase A moves code that exists. Phase 
 
 | Item | What it is | Why it is shared |
 | --- | --- | --- |
-| Power provider contract ([#10](https://github.com/west3436/ss13-framework/issues/10)) | `PoweredDevice`, the `DevicePower` lease, `PowerFeed`, `EnergyStore`, `WorkToFe` and batteries move as they are. New: a `PowerProvider` that claims devices, and APC-style channels (equipment, lighting, environment). | ZAS³'s area air controller becomes one provider and NT Engineering's APC another, which takes over where both exist while the controller keeps monitoring and control. Expedition's electric and Bluespace drives (expedition#38, #40) draw from it. |
+| Power provider contract ([#10](https://github.com/west3436/ss13-framework/issues/10)) | `PoweredDevice` (less its zone lookup), the `DevicePower` lease, `PowerFeed`, `EnergyStore`, `WorkToFe` and batteries move. New: a `PowerProvider` that claims devices, and APC-style channels (equipment, lighting, environment). | ZAS³'s area air controller becomes one provider and NT Engineering's APC another, which takes over where both exist while the controller keeps monitoring and control. Expedition's electric and Bluespace drives (expedition#38, #40) draw from it. |
 | Areas ([#11](https://github.com/west3436/ss13-framework/issues/11)) | A named region, like SS13's `/area`: `Areas.at(level, pos)`, providers, change events, carried along when blocks move. | APCs, lighting and power channels; Expedition's ship boxes. ZAS³ zones stay about gas. |
 | Machine construction ([#12](https://github.com/west3436/ss13-framework/issues/12)) | Machine and computer frames, wiring, a board that names its machine and parts, part slots, and four part tiers that set a machine's stats. | Every NT machine; Expedition's Shuttle Computer and drives (expedition#50). A plain crafting recipe stays for every machine. |
 | Tools ([#13](https://github.com/west3436/ss13-framework/issues/13)) | Multitool with a `Linkable` buffer, wrench with `Wrenchable`, crowbar with `Pryable`, plus screwdriver, wirecutters and welder; `c:tools/*` tags. ZAS³'s tool items move with aliases. | The multitool and wrench today are hard-coded lists of ZAS³ classes. NT Engineering's plan already reuses them instead of making its own. |
-| Normal/Hardcore switch ([#14](https://github.com/west3436/ss13-framework/issues/14)) | The `PresetOption` mechanism, the per-world copy and the preset command. Each mod registers its own options. | ZAS³'s 15 options, Expedition's Hardcore fuel burn (expedition#53), NT Engineering's cable burnout and singularity damage. |
+| Normal/Hardcore switch ([#14](https://github.com/west3436/ss13-framework/issues/14)) | The `PresetOption` mechanism, the per-world copy and the preset command. Each mod registers its own options. | ZAS³'s 7 options, Expedition's Hardcore fuel burn (expedition#53), NT Engineering's cable burnout and singularity damage. |
 | Station walls and reinforced glass (to decide) ([#15](https://github.com/west3436/ss13-framework/issues/15)) | ZAS³'s walls, glass and grilles with their connected textures. | RCD, welding and Expedition hulls all touch them. Pipes pass through them sealed, so the seal rule would need an interface. |
 
 ### Phase C: with NT Engineering Phases 2 and 3
@@ -113,7 +113,7 @@ Not part of the mod jar. Expedition's build and CI are near-copies of ZAS³'s, a
 2. Move the components, TGUI, device base, labels, adapter loader and `DatapackErrors`, with aliases for moved ids.
 3. Make the area air controller a power provider.
 4. Make the multitool, wrench and crowbar framework tools with ZAS³ behaviour behind the interfaces.
-5. Register its 15 preset options with the framework switch.
+5. Register its 7 preset options with the framework switch.
 6. Later: radiation protection on suits, pipes in T-ray view, shared compat helpers.
 
 **Expedition**
