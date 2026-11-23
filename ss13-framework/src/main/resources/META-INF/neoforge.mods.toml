@@ -13,6 +13,9 @@ Shared SS13 parts for ZAS³, Expedition and NT Engineering. Each of them nests
 this mod, so it never needs to be installed on its own.
 '''
 
+[[mixins]]
+config = "ss13_framework.mixins.json"
+
 [[dependencies.ss13_framework]]
 modId = "neoforge"
 type = "required"

@@ -2,7 +2,7 @@
 
 Shared SS13 parts for Minecraft (NeoForge 1.21.1) mods: crafting components and stock parts, TGUI windows, a device base, tools, power, areas, gravity and the Normal/Hardcore switch. Used by [ZAS³](https://github.com/west3436/zas-cubed), [Expedition](https://github.com/west3436/expedition) and [NT Engineering](https://github.com/west3436/nt-engineering).
 
-> **Status: Phase 0.** The build makes both jars, but they hold nothing yet: Phase A moves the shared parts in. The plan lives in [docs/design-proposal.md](docs/design-proposal.md).
+> **Status: Phase A.** The first shared contract is in: gravity at a position ([`Gravity`](ss13-framework-api/src/main/java/io/github/west3436/ss13/api/gravity/Gravity.java)), composed from providers such as planets and gravity generators. The rest of Phase A moves the shared parts in. The plan lives in [docs/design-proposal.md](docs/design-proposal.md).
 
 ## Jars
 
