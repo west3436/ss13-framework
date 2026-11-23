@@ -1,0 +1,97 @@
+import com.vanniktech.maven.publish.JavaLibrary
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.SourcesJar
+
+apply plugin: 'net.neoforged.moddev'
+apply plugin: 'com.vanniktech.maven.publish'
+
+base { archivesName = 'ss13_framework' }
+
+// GameTests live in their own source set so they stay out of the mod jar.
+sourceSets {
+    gametest {
+        compileClasspath += main.output + main.compileClasspath
+        runtimeClasspath += main.output + main.runtimeClasspath
+    }
+}
+
+neoForge {
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+        }
+        gameTestServer {
+            type = 'gameTestServer'
+            sourceSet = sourceSets.gametest
+            systemProperty 'neoforge.enabledGameTestNamespaces', 'ss13_framework'
+            // An OOM ends the run at once rather than at CI's time limit.
+            jvmArgument '-XX:+ExitOnOutOfMemoryError'
+        }
+    }
+    mods {
+        // The API is never listed: it loads as its own GAMELIBRARY module, and listing it would
+        // split its package across two modules.
+        ss13_framework {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.gametest
+        }
+    }
+}
+
+// GameTests start from a fresh world, so nothing an earlier run left behind reaches them.
+tasks.matching { it.name == 'runGameTestServer' }.configureEach {
+    doFirst {
+        delete layout.projectDirectory.dir('run/world')
+    }
+}
+
+// Unit tests of the mod's pure logic. Minecraft's classes are on the test classpath, but the game
+// is never bootstrapped.
+neoForge {
+    addModdingDependenciesTo(sourceSets.test)
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.13.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    api project(':ss13-framework-api')
+
+    // The mod nests the API, so a mod that nests the mod gets both. ModDevGradle takes the
+    // jar-in-jar range only from a module selector, so the API is requested by coordinates and
+    // substituted with the project.
+    jarJar('io.github.west3436:ss13-framework-api') {
+        version {
+            strictly api_range
+            prefer api_version
+        }
+    }
+}
+
+configurations.named('jarJar') {
+    resolutionStrategy.dependencySubstitution {
+        substitute module('io.github.west3436:ss13-framework-api') using project(':ss13-framework-api')
+    }
+}
+
+// The mod jar on Central is the one players get: the mod with the API nested. Its classes are
+// internal, so it publishes an empty javadoc jar, which Central requires; the API's javadoc is
+// the documented surface.
+mavenPublishing {
+    configure(new JavaLibrary(new JavadocJar.Empty(), new SourcesJar.Sources()))
+    coordinates('io.github.west3436', 'ss13-framework', project.version.toString())
+    pom {
+        name = 'SS13 Framework'
+        description = 'Shared SS13 parts for NeoForge mods: crafting components and stock parts, ' +
+                'TGUI windows, a device base, tools, power, areas and gravity. Mods nest it (jar-in-jar); ' +
+                'players never install it on its own.'
+    }
+}

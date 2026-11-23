@@ -1,0 +1,13 @@
+* text=auto eol=lf
+
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+*.jar binary
+*.png binary
+*.ogg binary
+*.nbt binary
+*.ttf binary
+# Worlds saved by earlier releases, which the migration tests read byte for byte (DATA-012).
+*.mca binary
+*.dat binary

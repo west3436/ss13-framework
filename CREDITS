@@ -1,0 +1,66 @@
+# SS13 Framework asset credits
+#
+# Every file under a project's src/<set>/resources/assets/ directory, or under
+# the assets/ of a built-in resource pack in src/<set>/resources/resourcepacks/,
+# has one entry here. All assets are licensed CC BY-SA 4.0 International;
+# see LICENSE-ASSETS. scripts/check_credits.py checks this file in CI.
+#
+# Format
+#
+# An entry is a block of "key: value" lines. Blank lines separate entries.
+# Lines starting with "#" are comments. Each entry starts with "path", the
+# file's path from the repository root, with forward slashes, followed by
+# "origin": original, vgstation13 or other.
+#
+# An asset drawn from scratch for the framework:
+#
+#   path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/machine_frame.png
+#   origin: original
+#
+# An asset derived from a vgstation13 sprite:
+#
+#   path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/circuit_board.png
+#   origin: vgstation13
+#   source: icons/obj/module.dmi
+#   state: circuit_board
+#   commit: 0123456789ab
+#
+#   source       the .dmi file, as a path in the vgstation13 repository.
+#                List several separated by ", " when an asset draws on more
+#                than one. Never a file under goon/ (CC BY-NC-SA).
+#   state        the icon state used. List several separated by ", ".
+#   commit       the vgstation13 commit hash, 7 to 40 hex digits.
+#   attribution  optional; defaults to "vgstation13 contributors, CC BY-SA 3.0 US".
+#
+# A sound taken from vgstation13. Its source is the file under vg's sound/, and
+# it has no state. "adapted" says how the file was changed, if it was:
+#
+#   path: ss13-framework/src/main/resources/assets/ss13_framework/sounds/tool/hum.ogg
+#   origin: vgstation13
+#   source: sound/ambience/ambiatm1.ogg
+#   commit: 0123456789ab
+#   adapted: Mixed to mono, cut to a loop and levelled.
+#
+# An asset taken or adapted from any other source:
+#
+#   path: ss13-framework/src/main/resources/assets/ss13_framework/sounds/hiss.ogg
+#   origin: other
+#   source: https://example.org/sounds/hiss
+#   license: CC-BY-4.0
+#   attribution: Jane Doe
+#
+#   source       where it came from: a URL, or a description if there is none.
+#   license      its SPDX license id. Allowed, because they can be adapted
+#                under CC BY-SA 4.0: CC0-1.0, CC-BY-3.0, CC-BY-4.0,
+#                CC-BY-SA-3.0, CC-BY-SA-4.0. NonCommercial (NC) and
+#                NoDerivatives (ND) licenses are never allowed.
+#                A file under font/ may instead keep Bitstream-Vera.
+#   attribution  the author to credit, as the license asks. Required except
+#                for CC0-1.0.
+#
+# Any entry may add "author: <name>" (who made or adapted the file for the framework)
+# and "notes: <text>". If an asset's origin or license is unclear, leave it
+# out.
+#
+# Run the check locally with: python scripts/check_credits.py
+

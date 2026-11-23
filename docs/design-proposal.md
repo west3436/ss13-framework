@@ -169,7 +169,7 @@ Each phase is a [milestone](https://github.com/west3436/ss13-framework/milestone
 
 ## Open questions
 
-1. Mod id and package. Proposed: mod id `ss13_framework`, Maven `io.github.west3436:ss13-framework-api`, package `io.github.west3436.ss13`.
+1. ~~Mod id and package.~~ Decided in [#2](https://github.com/west3436/ss13-framework/issues/2): mod id `ss13_framework`, Maven `io.github.west3436:ss13-framework` (mod) and `io.github.west3436:ss13-framework-api`, packages `io.github.west3436.ss13` and `io.github.west3436.ss13.api`.
 2. Construction in the framework or in NT Engineering? This proposal says the framework.
 3. With construction in the framework, should Expedition's machines need frames even without NT Engineering, or keep a plain recipe as well?
 4. Do station walls and glass move?
