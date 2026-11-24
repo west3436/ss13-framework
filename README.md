@@ -47,6 +47,10 @@ When several mods nest the framework, NeoForge loads one copy of each jar. It ta
 
 The [example consumer](example-consumer/build.gradle) nests the framework this way. CI runs it on a server beside a second consumer that nests a newer copy, and checks that one copy loads and that it's the newest.
 
+## Building
+
+`./gradlew build` builds and checks both jars; `./gradlew :ss13-framework:runGameTestServer` runs the GameTests, and `./gradlew :example-consumer:runOneCopyGameTestServer` the one-copy check. [CONTRIBUTING.md](CONTRIBUTING.md) has the rest, including the clean-room rule every contribution follows.
+
 ## Building a mod with the framework's tooling
 
 The mods share their build and CI through the framework rather than copying them. Both are released with the framework, at its version, from the release after 0.1.0. Until then, use a `-SNAPSHOT` from the Central snapshots repository.
@@ -82,10 +86,6 @@ The API project applies `io.github.west3436.ss13.api` after `net.neoforged.modde
 | [`shared-publish.yml`](.github/workflows/shared-publish.yml) | A release to Maven Central, started by hand |
 
 Each file's header shows how a mod calls it. The framework's own [`ci.yml`](.github/workflows/ci.yml), [`release.yml`](.github/workflows/release.yml) and [`publish.yml`](.github/workflows/publish.yml) call them the same way.
-
-## Building
-
-`./gradlew build` builds and checks both jars; `./gradlew :ss13-framework:runGameTestServer` runs the GameTests, and `./gradlew :example-consumer:runOneCopyGameTestServer` the one-copy check. [CONTRIBUTING.md](CONTRIBUTING.md) has the rest, including the clean-room rule every contribution follows.
 
 ## Goals
 
