@@ -159,6 +159,12 @@ Phase B runs in step with NT Engineering's Phase 1, since that is where its cont
 
 Each phase is a [milestone](https://github.com/west3436/ss13-framework/milestones); Phase 0 is [#2](https://github.com/west3436/ss13-framework/issues/2) and [#3](https://github.com/west3436/ss13-framework/issues/3).
 
+**Status, 2026-11-24.** Phase 0, Phase A, Phase B and Tooling are done and released in framework 0.3.0. [ZAS³ 1.3.0](https://github.com/west3436/zas-cubed/releases/tag/v1.3.0) and [Expedition 0.1.0](https://github.com/west3436/expedition/releases/tag/v0.1.0) ship on it, each nesting it, and load one copy between them. The gates hold in GameTests:
+- **Phase A:** ZAS³ loads 1.2.0 worlds with their components, tools and batteries.
+- **Phase B:** a stand-in APC at MAINS powers a vent its area air controller still controls, until NT Engineering has a real one, and a Shuttle Computer is built from a frame and a board.
+
+The in-game checks for this work are listed in [#24](https://github.com/west3436/ss13-framework/issues/24). Phase C waits for NT Engineering's Phases 2 and 3.
+
 ## Decisions (proposed)
 
 | Topic | Proposal |
