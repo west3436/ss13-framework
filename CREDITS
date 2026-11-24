@@ -64,3 +64,6 @@
 #
 # Run the check locally with: python scripts/check_credits.py
 
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/lang/en_us.json
+origin: original
