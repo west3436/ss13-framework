@@ -12,6 +12,7 @@ import io.github.west3436.ss13.construction.FrameBlockEntity;
 import io.github.west3436.ss13.construction.FrameStage;
 import io.github.west3436.ss13.construction.MachineFrameBlock;
 import io.github.west3436.ss13.registry.FrameworkBlocks;
+import io.github.west3436.ss13.registry.FrameworkComponents;
 import io.github.west3436.ss13.registry.FrameworkItems;
 import java.util.List;
 import java.util.Optional;
@@ -60,7 +61,7 @@ public final class ConstructionTests {
 
         use(h, player, AT, FrameworkItems.CABLE_COIL.toStack());
         assertStage(h, MachineFrameBlock.STAGE, FrameStage.EMPTY, "an unanchored frame took cable");
-        use(h, player, AT, new ItemStack(TestMachines.wrench()));
+        use(h, player, AT, FrameworkItems.WRENCH.toStack());
         h.assertTrue(h.getBlockState(AT).getValue(FrameBlock.ANCHORED), "the wrench didn't anchor the frame");
         use(h, player, AT, FrameworkItems.CABLE_COIL.toStack());
         assertStage(h, MachineFrameBlock.STAGE, FrameStage.WIRED, "the cable didn't wire the frame");
@@ -74,14 +75,14 @@ public final class ConstructionTests {
         use(h, player, AT, FrameworkItems.MICRO_MANIPULATOR.toStack());
         use(h, player, AT, FrameworkItems.FEMTO_MANIPULATOR.toStack());
         h.assertTrue(frame(h).contents().parts().size() == 1, "the frame took a second manipulator");
-        use(h, player, AT, new ItemStack(TestMachines.screwdriver()));
+        use(h, player, AT, FrameworkItems.SCREWDRIVER.toStack());
         assertStage(h, MachineFrameBlock.STAGE, FrameStage.BOARD, "the frame closed without its capacitors");
         ItemStack capacitors = FrameworkItems.CAPACITOR.toStack().copyWithCount(TestMachines.CAPACITORS);
         for (int i = 0; i < TestMachines.CAPACITORS; i++) {
             use(h, player, AT, capacitors);
         }
         h.assertTrue(capacitors.isEmpty(), "the capacitors weren't used up");
-        use(h, player, AT, new ItemStack(TestMachines.screwdriver()));
+        use(h, player, AT, FrameworkItems.SCREWDRIVER.toStack());
 
         h.assertBlockState(
                 AT,
@@ -96,7 +97,7 @@ public final class ConstructionTests {
 
         use(h, player, AT, FrameworkItems.NANO_MANIPULATOR.toStack());
         h.assertTrue(machine.speed() == 1, "a part went in with the panel closed");
-        use(h, player, AT, new ItemStack(TestMachines.screwdriver()));
+        use(h, player, AT, FrameworkItems.SCREWDRIVER.toStack());
         h.assertTrue(machine.panelOpen(), "the screwdriver didn't open the panel");
         use(h, player, AT, FrameworkItems.NANO_MANIPULATOR.toStack());
         h.assertTrue(machine.speed() == 2, "swapping in a tier-2 manipulator gives speed " + machine.speed());
@@ -106,7 +107,7 @@ public final class ConstructionTests {
         use(h, player, AT, FrameworkItems.MICRO_MANIPULATOR.toStack());
         h.assertTrue(machine.speed() == 2, "a worse manipulator replaced a better one");
 
-        use(h, player, AT, new ItemStack(TestMachines.crowbar()));
+        use(h, player, AT, FrameworkItems.CROWBAR.toStack());
         h.assertBlockState(
                 AT,
                 s -> s.is(FrameworkBlocks.MACHINE_FRAME.get())
@@ -128,20 +129,20 @@ public final class ConstructionTests {
                 FrameworkBlocks.COMPUTER_FRAME.get().defaultBlockState().setValue(FrameBlock.FACING, Direction.SOUTH));
         FakePlayer player = builder(h);
 
-        use(h, player, AT, new ItemStack(TestMachines.wrench()));
+        use(h, player, AT, FrameworkItems.WRENCH.toStack());
         use(h, player, AT, new ItemStack(TestMachines.machineBoard()));
         assertStage(h, ComputerFrameBlock.STAGE, FrameStage.EMPTY, "a computer frame took a machine's board");
         use(h, player, AT, new ItemStack(TestMachines.consoleBoard()));
         assertStage(h, ComputerFrameBlock.STAGE, FrameStage.BOARD, "the frame didn't take its board");
         use(h, player, AT, FrameworkItems.CABLE_COIL.toStack());
         assertStage(h, ComputerFrameBlock.STAGE, FrameStage.BOARD, "the frame took cable with its board loose");
-        use(h, player, AT, new ItemStack(TestMachines.screwdriver()));
+        use(h, player, AT, FrameworkItems.SCREWDRIVER.toStack());
         assertStage(h, ComputerFrameBlock.STAGE, FrameStage.SECURED, "the screwdriver didn't secure the board");
         use(h, player, AT, FrameworkItems.CABLE_COIL.toStack());
         assertStage(h, ComputerFrameBlock.STAGE, FrameStage.WIRED, "the cable didn't wire the frame");
         use(h, player, AT, FrameworkItems.CONSOLE_SCREEN.toStack());
         assertStage(h, ComputerFrameBlock.STAGE, FrameStage.SCREEN, "the frame didn't take its screen");
-        use(h, player, AT, new ItemStack(TestMachines.screwdriver()));
+        use(h, player, AT, FrameworkItems.SCREWDRIVER.toStack());
 
         h.assertBlockState(
                 AT,
@@ -151,12 +152,12 @@ public final class ConstructionTests {
         PartHolder console = h.getBlockEntity(AT);
         h.assertTrue(console.installedParts().board().is(TestMachines.consoleBoard()), "the console lost its board");
 
-        use(h, player, AT, new ItemStack(TestMachines.crowbar()));
+        use(h, player, AT, FrameworkItems.CROWBAR.toStack());
         h.assertBlockState(AT, s -> s.is(TestMachines.console()), () -> "a crowbar opened a computer");
-        use(h, player, AT, new ItemStack(TestMachines.screwdriver()));
+        use(h, player, AT, FrameworkItems.SCREWDRIVER.toStack());
         assertStage(h, ComputerFrameBlock.STAGE, FrameStage.SCREEN, "the screwdriver didn't take the screen off");
         h.assertTrue(frame(h).contents().board().is(TestMachines.consoleBoard()), "the frame lost the board");
-        use(h, player, AT, new ItemStack(TestMachines.screwdriver()));
+        use(h, player, AT, FrameworkItems.SCREWDRIVER.toStack());
         h.assertBlockState(AT, s -> s.is(TestMachines.console()), () -> "the frame didn't close again");
         h.succeed();
     }
@@ -165,7 +166,7 @@ public final class ConstructionTests {
     public static void breaking_a_frame_drops_everything_in_it(GameTestHelper h) {
         h.setBlock(AT, FrameworkBlocks.MACHINE_FRAME.get());
         FakePlayer player = builder(h);
-        use(h, player, AT, new ItemStack(TestMachines.wrench()));
+        use(h, player, AT, FrameworkItems.WRENCH.toStack());
         use(h, player, AT, FrameworkItems.CABLE_COIL.toStack());
         use(h, player, AT, new ItemStack(TestMachines.machineBoard()));
         use(h, player, AT, FrameworkItems.PICO_MANIPULATOR.toStack());
@@ -181,21 +182,21 @@ public final class ConstructionTests {
     public static void wirecutters_and_crowbar_take_a_frame_back_apart(GameTestHelper h) {
         h.setBlock(AT, FrameworkBlocks.MACHINE_FRAME.get());
         FakePlayer player = builder(h);
-        use(h, player, AT, new ItemStack(TestMachines.wrench()));
+        use(h, player, AT, FrameworkItems.WRENCH.toStack());
         use(h, player, AT, FrameworkItems.CABLE_COIL.toStack());
         use(h, player, AT, new ItemStack(TestMachines.machineBoard()));
         use(h, player, AT, FrameworkItems.MICRO_MANIPULATOR.toStack());
-        use(h, player, AT, new ItemStack(TestMachines.crowbar()));
+        use(h, player, AT, FrameworkItems.CROWBAR.toStack());
         assertStage(h, MachineFrameBlock.STAGE, FrameStage.WIRED, "the crowbar didn't pry the board out");
         h.assertTrue(frame(h).contents().isEmpty(), "the frame kept its board or parts");
         assertDropped(h, TestMachines.machineBoard(), 1);
         assertDropped(h, FrameworkItems.MICRO_MANIPULATOR.get(), 1);
-        use(h, player, AT, new ItemStack(TestMachines.wrench()));
+        use(h, player, AT, FrameworkItems.WRENCH.toStack());
         h.assertTrue(h.getBlockState(AT).getValue(FrameBlock.ANCHORED), "a wired frame was unanchored");
-        use(h, player, AT, new ItemStack(TestMachines.wirecutter()));
+        use(h, player, AT, FrameworkItems.WIRECUTTERS.toStack());
         assertStage(h, MachineFrameBlock.STAGE, FrameStage.EMPTY, "the wirecutters didn't cut the wiring");
         assertDropped(h, FrameworkItems.CABLE_COIL.get(), 1);
-        use(h, player, AT, new ItemStack(TestMachines.wrench()));
+        use(h, player, AT, FrameworkItems.WRENCH.toStack());
         h.assertFalse(h.getBlockState(AT).getValue(FrameBlock.ANCHORED), "the wrench didn't unanchor the frame");
         h.succeed();
     }
@@ -218,13 +219,13 @@ public final class ConstructionTests {
                 "a placed machine doesn't hold its stock parts");
         h.assertTrue(placed.speed() == 1, "a placed machine's speed is " + placed.speed());
 
-        use(h, player, first, new ItemStack(TestMachines.screwdriver()));
+        use(h, player, first, FrameworkItems.SCREWDRIVER.toStack());
         use(h, player, first, FrameworkItems.FEMTO_MANIPULATOR.toStack());
         h.assertTrue(placed.speed() == 4, "a tier-4 manipulator gives speed " + placed.speed());
 
         h.getLevel().destroyBlock(h.absolutePos(first), true, player);
         ItemEntity mined = dropped(h, first, TestMachines.machine().asItem());
-        InstalledParts carried = mined.getItem().get(FrameworkBlocks.INSTALLED_PARTS.get());
+        InstalledParts carried = mined.getItem().get(FrameworkComponents.INSTALLED_PARTS.get());
         h.assertTrue(carried != null, "the mined machine's item doesn't carry its parts");
         place(h, player, second, mined.getItem().copy());
         TestMachines.TestMachine again = h.getBlockEntity(second);
@@ -235,7 +236,7 @@ public final class ConstructionTests {
         h.getLevel().destroyBlock(h.absolutePos(first), true, player);
         ItemEntity plain = dropped(h, first, TestMachines.machine().asItem());
         h.assertFalse(
-                plain.getItem().has(FrameworkBlocks.INSTALLED_PARTS.get()),
+                plain.getItem().has(FrameworkComponents.INSTALLED_PARTS.get()),
                 "a stock machine's item carries its parts, so it won't stack with crafted ones");
         h.succeed();
     }

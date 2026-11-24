@@ -9,7 +9,9 @@ import io.github.west3436.ss13.api.construction.MachineBoards;
 import io.github.west3436.ss13.api.construction.PartHolder;
 import io.github.west3436.ss13.api.construction.PartRequirement;
 import io.github.west3436.ss13.api.construction.PartTags;
+import io.github.west3436.ss13.api.tool.ToolTags;
 import io.github.west3436.ss13.registry.FrameworkBlocks;
+import io.github.west3436.ss13.registry.FrameworkComponents;
 import io.github.west3436.ss13.registry.FrameworkItems;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -43,7 +45,7 @@ import org.slf4j.Logger;
 
 /**
  * How frames are built and machines taken apart, SS13's way, with tools found by their {@link
- * ConstructionTags tags}. Every step happens on the server and tells the player what happened, or
+ * ToolTags tags}. Every step happens on the server and tells the player what happened, or
  * what comes next, above the hotbar.
  *
  * <p>A <b>machine frame</b> is anchored with a wrench, wired with a cable coil, takes a machine
@@ -82,7 +84,7 @@ public final class Construction {
         }
         boolean anchored = state.getValue(FrameBlock.ANCHORED);
         FrameStage stage = state.getValue(frame.stage());
-        if (stack.is(ConstructionTags.WRENCH)) {
+        if (stack.is(ToolTags.WRENCHES)) {
             if (!anchored) {
                 level.setBlockAndUpdate(pos, state.setValue(FrameBlock.ANCHORED, true));
                 done(level, pos, player, SoundEvents.IRON_TRAPDOOR_CLOSE, Component.translatable(MESSAGE + "anchored"));
@@ -128,7 +130,7 @@ public final class Construction {
                 }
             }
             case WIRED -> {
-                if (stack.is(ConstructionTags.WIRECUTTER)) {
+                if (stack.is(ToolTags.WIRE_CUTTERS)) {
                     Block.popResource(level, pos, FrameworkItems.CABLE_COIL.toStack());
                     setStage(level, pos, state, frame, FrameStage.EMPTY);
                     done(level, pos, player, SoundEvents.SHEEP_SHEAR, Component.translatable(MESSAGE + "unwired"));
@@ -144,7 +146,7 @@ public final class Construction {
             }
             case BOARD -> {
                 Optional<MachineBoard> board = MachineBoards.of(be.contents().board());
-                if (stack.is(ConstructionTags.CROWBAR)) {
+                if (stack.is(ToolTags.CROWBARS)) {
                     dropContents(level, pos, be);
                     setStage(level, pos, state, frame, FrameStage.WIRED);
                     done(
@@ -155,7 +157,7 @@ public final class Construction {
                             Component.translatable(MESSAGE + "pried"));
                     return true;
                 }
-                if (stack.is(ConstructionTags.SCREWDRIVER)) {
+                if (stack.is(ToolTags.SCREWDRIVERS)) {
                     if (board.isPresent()
                             && remaining(board.get(), be.contents().parts()).isEmpty()) {
                         build(level, pos, state, be, player);
@@ -193,7 +195,7 @@ public final class Construction {
                 }
             }
             case BOARD -> {
-                if (stack.is(ConstructionTags.SCREWDRIVER)) {
+                if (stack.is(ToolTags.SCREWDRIVERS)) {
                     setStage(level, pos, state, frame, FrameStage.SECURED);
                     done(
                             level,
@@ -203,7 +205,7 @@ public final class Construction {
                             Component.translatable(MESSAGE + "secured"));
                     return true;
                 }
-                if (stack.is(ConstructionTags.CROWBAR)) {
+                if (stack.is(ToolTags.CROWBARS)) {
                     dropContents(level, pos, be);
                     setStage(level, pos, state, frame, FrameStage.EMPTY);
                     done(
@@ -216,7 +218,7 @@ public final class Construction {
                 }
             }
             case SECURED -> {
-                if (stack.is(ConstructionTags.SCREWDRIVER)) {
+                if (stack.is(ToolTags.SCREWDRIVERS)) {
                     setStage(level, pos, state, frame, FrameStage.BOARD);
                     done(
                             level,
@@ -234,7 +236,7 @@ public final class Construction {
                 }
             }
             case WIRED -> {
-                if (stack.is(ConstructionTags.WIRECUTTER)) {
+                if (stack.is(ToolTags.WIRE_CUTTERS)) {
                     Block.popResource(level, pos, FrameworkItems.CABLE_COIL.toStack());
                     setStage(level, pos, state, frame, FrameStage.SECURED);
                     done(level, pos, player, SoundEvents.SHEEP_SHEAR, Component.translatable(MESSAGE + "unwired"));
@@ -248,7 +250,7 @@ public final class Construction {
                 }
             }
             case SCREEN -> {
-                if (stack.is(ConstructionTags.CROWBAR)) {
+                if (stack.is(ToolTags.CROWBARS)) {
                     Block.popResource(level, pos, FrameworkItems.CONSOLE_SCREEN.toStack());
                     setStage(level, pos, state, frame, FrameStage.WIRED);
                     done(
@@ -259,7 +261,7 @@ public final class Construction {
                             Component.translatable(MESSAGE + "screen_off"));
                     return true;
                 }
-                if (stack.is(ConstructionTags.SCREWDRIVER)) {
+                if (stack.is(ToolTags.SCREWDRIVERS)) {
                     build(level, pos, state, be, player);
                     return true;
                 }
@@ -494,7 +496,7 @@ public final class Construction {
      * @return true if the block is a built machine and the stack a screwdriver or crowbar
      */
     static boolean isMachineTool(Level level, BlockPos pos, ItemStack stack) {
-        return (stack.is(ConstructionTags.SCREWDRIVER) || stack.is(ConstructionTags.CROWBAR))
+        return (stack.is(ToolTags.SCREWDRIVERS) || stack.is(ToolTags.CROWBARS))
                 && machineAt(level, pos).isPresent();
     }
 
@@ -515,7 +517,7 @@ public final class Construction {
         }
         Machine machine = found.get();
         boolean computer = machine.board().frame() == FrameType.COMPUTER;
-        if (stack.is(ConstructionTags.SCREWDRIVER)) {
+        if (stack.is(ToolTags.SCREWDRIVERS)) {
             if (computer) {
                 InstalledParts parts = effective(machine);
                 machine.holder().installParts(InstalledParts.EMPTY);
@@ -542,7 +544,7 @@ public final class Construction {
             }
             return true;
         }
-        if (stack.is(ConstructionTags.CROWBAR)) {
+        if (stack.is(ToolTags.CROWBARS)) {
             if (computer) {
                 tell(player, Component.translatable(MESSAGE + "screen_first"));
             } else if (!machine.holder().panelOpen()) {
@@ -631,8 +633,8 @@ public final class Construction {
         if (placer != null) {
             for (InteractionHand hand : InteractionHand.values()) {
                 ItemStack held = placer.getItemInHand(hand);
-                if (held.is(item) && held.has(FrameworkBlocks.INSTALLED_PARTS.get())) {
-                    carried = held.get(FrameworkBlocks.INSTALLED_PARTS.get());
+                if (held.is(item) && held.has(FrameworkComponents.INSTALLED_PARTS.get())) {
+                    carried = held.get(FrameworkComponents.INSTALLED_PARTS.get());
                     break;
                 }
             }

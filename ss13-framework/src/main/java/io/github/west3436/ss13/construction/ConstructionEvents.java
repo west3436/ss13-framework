@@ -7,7 +7,7 @@ import io.github.west3436.ss13.api.construction.MachineBoards;
 import io.github.west3436.ss13.api.construction.PartHolder;
 import io.github.west3436.ss13.api.construction.PartRequirement;
 import io.github.west3436.ss13.api.construction.PartTags;
-import io.github.west3436.ss13.registry.FrameworkBlocks;
+import io.github.west3436.ss13.registry.FrameworkComponents;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -101,7 +101,7 @@ public final class ConstructionEvents {
                         Construction.stock(
                                 boardId.get(), MachineBoards.get(boardId.get()).orElseThrow()))) {
                     ItemStack stack = drop.getItem().copy();
-                    stack.set(FrameworkBlocks.INSTALLED_PARTS.get(), parts);
+                    stack.set(FrameworkComponents.INSTALLED_PARTS.get(), parts);
                     drop.setItem(stack);
                 }
                 return;
@@ -144,7 +144,7 @@ public final class ConstructionEvents {
         ItemStack stack = event.getItemStack();
         List<Component> lines = event.getToolTip();
         MachineBoards.of(stack).ifPresent(board -> describeBoard(board, lines));
-        InstalledParts carried = stack.get(FrameworkBlocks.INSTALLED_PARTS.get());
+        InstalledParts carried = stack.get(FrameworkComponents.INSTALLED_PARTS.get());
         if (carried != null && !carried.parts().isEmpty()) {
             List<Component> names = new ArrayList<>();
             carried.parts().forEach(p -> names.add(p.getHoverName()));

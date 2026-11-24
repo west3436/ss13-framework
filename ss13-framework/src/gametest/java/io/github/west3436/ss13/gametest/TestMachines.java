@@ -36,9 +36,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 /**
- * A machine and a computer built from frames, their boards, and stand-in tools, for the
- * construction GameTests and for trying construction in a dev run before the framework's own tools
- * exist. They are registered from the GameTest source set, so they exist in every dev run but never
+ * A machine and a computer built from frames, and their boards, for the construction GameTests and
+ * for trying construction in a dev run. They are registered from the GameTest source set, so they exist in every dev run but never
  * in the mod jar.
  *
  * <ul>
@@ -47,9 +46,6 @@ import net.neoforged.neoforge.registries.RegisterEvent;
  *       test_machine_board}.
  *   <li>{@code ss13_framework:test_console}: a computer frame's computer, standing in for
  *       Expedition's Shuttle Computer. Its board is {@code test_console_board}.
- *   <li>{@code test_wrench}, {@code test_screwdriver}, {@code test_crowbar}, {@code
- *       test_wirecutter}: in {@code c:tools/wrench}, {@code screwdriver}, {@code crowbar} and {@code
- *       wirecutter} by the GameTest source set's data.
  * </ul>
  */
 @EventBusSubscriber(modid = FrameworkApi.MOD_ID)
@@ -63,10 +59,6 @@ public final class TestMachines {
     private static BlockEntityType<TestMachine> consoleType;
     private static Item machineBoard;
     private static Item consoleBoard;
-    private static Item wrench;
-    private static Item screwdriver;
-    private static Item crowbar;
-    private static Item wirecutter;
 
     private TestMachines() {}
 
@@ -92,26 +84,6 @@ public final class TestMachines {
     /** The test console's board. */
     public static Item consoleBoard() {
         return consoleBoard;
-    }
-
-    /** A stand-in wrench. */
-    public static Item wrench() {
-        return wrench;
-    }
-
-    /** A stand-in screwdriver. */
-    public static Item screwdriver() {
-        return screwdriver;
-    }
-
-    /** A stand-in crowbar. */
-    public static Item crowbar() {
-        return crowbar;
-    }
-
-    /** A stand-in wirecutter. */
-    public static Item wirecutter() {
-        return wirecutter;
     }
 
     @SubscribeEvent
@@ -144,16 +116,8 @@ public final class TestMachines {
             helper.register(id("test_console"), new BlockItem(console, named("Test Console")));
             machineBoard = new Item(named("Test Machine Board"));
             consoleBoard = new Item(named("Test Console Board"));
-            wrench = new Item(named("Test Wrench").stacksTo(1));
-            screwdriver = new Item(named("Test Screwdriver").stacksTo(1));
-            crowbar = new Item(named("Test Crowbar").stacksTo(1));
-            wirecutter = new Item(named("Test Wirecutter").stacksTo(1));
             helper.register(id("test_machine_board"), machineBoard);
             helper.register(id("test_console_board"), consoleBoard);
-            helper.register(id("test_wrench"), wrench);
-            helper.register(id("test_screwdriver"), screwdriver);
-            helper.register(id("test_crowbar"), crowbar);
-            helper.register(id("test_wirecutter"), wirecutter);
         });
     }
 

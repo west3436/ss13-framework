@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "ss13_framework:ansible_crystal"
+    },
+    {
+      "item": "ss13_framework:circuit_board"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "ss13_framework:multitool"
+  }
+}
