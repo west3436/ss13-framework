@@ -308,6 +308,26 @@ public final class AreaTests {
         h.succeed();
     }
 
+    /**
+     * {@code /ss13 area} and {@code /ss13 preset} share one {@code /ss13} root, and each needs
+     * permission level 2: an operator can use both, a player with level 0 neither.
+     */
+    @GameTest(template = "empty")
+    public static void area_and_preset_share_the_ss13_root(GameTestHelper h) {
+        MinecraftServer server = h.getLevel().getServer();
+        var root = server.getCommands().getDispatcher().getRoot().getChild("ss13");
+        h.assertTrue(root != null, "there is no /ss13");
+        CommandSourceStack op = server.createCommandSourceStack().withPermission(2);
+        CommandSourceStack player = server.createCommandSourceStack().withPermission(0);
+        for (String sub : List.of("area", "preset")) {
+            var node = root.getChild(sub);
+            h.assertTrue(node != null, "there is no /ss13 " + sub);
+            h.assertTrue(root.canUse(op) && node.canUse(op), "an operator can't use /ss13 " + sub);
+            h.assertTrue(!(root.canUse(player) && node.canUse(player)), "a level 0 player can use /ss13 " + sub);
+        }
+        h.succeed();
+    }
+
     // ---- Helpers ------------------------------------------------------------------------
 
     private static ResourceLocation id(String path) {

@@ -40,7 +40,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
  * as this is an operators' debugging tool.
  *
  * <p>Registered under the shared {@code /ss13} root; Brigadier merges it with the other {@code
- * /ss13} subcommands, so the root's requirement must match theirs: permission level 2.
+ * /ss13} subcommands, such as {@code /ss13 preset}, and keeps the requirement of whichever root
+ * registered first. So {@code area} checks permission level 2 on its own node too.
  */
 public final class AreaCommand {
     /** The permission level {@code /ss13} needs. */
