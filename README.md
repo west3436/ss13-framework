@@ -2,7 +2,7 @@
 
 Shared SS13 parts for Minecraft (NeoForge 1.21.1) mods: crafting components and stock parts, TGUI windows, a device base, tools, power, areas, gravity and the Normal/Hardcore switch. Used by [ZAS³](https://github.com/west3436/zas-cubed), [Expedition](https://github.com/west3436/expedition) and [NT Engineering](https://github.com/west3436/nt-engineering).
 
-> **Status: Phase A.** The first shared contract is in: gravity at a position ([`Gravity`](ss13-framework-api/src/main/java/io/github/west3436/ss13/api/gravity/Gravity.java)), composed from providers such as planets and gravity generators. The rest of Phase A moves the shared parts in. The plan lives in [docs/design-proposal.md](docs/design-proposal.md).
+> **Status: Phase A.** In 0.2.0: everything Phase A moves into the framework: the SS13 crafting components and stock parts, the TGUI window kit, the device base and labels, one adapter loader, shared helpers (`DatapackErrors`, `ClaimCheck`, `TickBudget`), and the first shared contracts: gravity at a position ([`Gravity`](ss13-framework-api/src/main/java/io/github/west3436/ss13/api/gravity/Gravity.java)), areas ([`Areas`](ss13-framework-api/src/main/java/io/github/west3436/ss13/api/area/Areas.java)) and the Normal/Hardcore switch ([`Presets`](ss13-framework-api/src/main/java/io/github/west3436/ss13/api/preset/Presets.java)). Next, ZAS³ and Expedition switch over to it, and Phase B adds power, construction and tools. The plan lives in [docs/design-proposal.md](docs/design-proposal.md).
 
 ## Jars
 
@@ -20,21 +20,21 @@ A mod nests both jars by jar-in-jar, with [ModDevGradle](https://github.com/neof
 ```groovy
 dependencies {
     // Compile against the mod, which brings the API with it.
-    implementation 'io.github.west3436:ss13-framework:0.1.0'
+    implementation 'io.github.west3436:ss13-framework:0.2.0'
 
     // Nest both. Start each range at the version you build against, and end it before the next
     // version that may break it: the next minor while the framework is 0.x, the next major from 1.0.
     jarJar('io.github.west3436:ss13-framework') {
         transitive = false
         version {
-            strictly '[0.1.0,0.2.0)'
-            prefer '0.1.0'
+            strictly '[0.2.0,0.3.0)'
+            prefer '0.2.0'
         }
     }
     jarJar('io.github.west3436:ss13-framework-api') {
         version {
-            strictly '[0.1.0,0.2.0)'
-            prefer '0.1.0'
+            strictly '[0.2.0,0.3.0)'
+            prefer '0.2.0'
         }
     }
 }
