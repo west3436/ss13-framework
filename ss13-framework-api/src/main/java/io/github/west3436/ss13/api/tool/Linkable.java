@@ -1,6 +1,7 @@
 package io.github.west3436.ss13.api.tool;
 
 import io.github.west3436.ss13.api.FrameworkApi;
+import io.github.west3436.ss13.api.label.Labels;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -74,7 +75,8 @@ public interface Linkable {
 
     /**
      * As a source: what the multitool says once it has stored this source. By default {@code
-     * item.ss13_framework.multitool.selected} with the block's name and position.
+     * item.ss13_framework.multitool.selected} with the block's name and what {@link Labels#named}
+     * calls it: its label, or its position.
      *
      * <p>Thread: server thread.
      *
@@ -86,7 +88,7 @@ public interface Linkable {
         return Component.translatable(
                 "item.ss13_framework.multitool.selected",
                 level.getBlockState(source).getBlock().getName(),
-                source.toShortString());
+                Labels.named(level, source));
     }
 
     /**

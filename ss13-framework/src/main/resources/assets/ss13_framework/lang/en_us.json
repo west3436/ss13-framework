@@ -20,7 +20,7 @@
   "item.ss13_framework.plasteel_sheet": "Plasteel Sheet",
   "item.ss13_framework.reinforced_glass": "Reinforced Glass Sheet",
   "item.ss13_framework.multitool": "Multitool",
-  "item.ss13_framework.multitool.selected": "Selected the %s at %s",
+  "item.ss13_framework.multitool.selected": "Selected the %s %s",
   "item.ss13_framework.multitool.cleared": "Cleared the multitool's buffer",
   "item.ss13_framework.multitool.no_source": "Select something to link to first",
   "item.ss13_framework.multitool.source_gone": "What was selected at %s isn't there or isn't loaded",
