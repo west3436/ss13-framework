@@ -3,6 +3,8 @@ package io.github.west3436.ss13.device;
 import io.github.west3436.ss13.api.device.BlockMovers;
 import io.github.west3436.ss13.api.label.Labelled;
 import io.github.west3436.ss13.api.label.Labels;
+import io.github.west3436.ss13.api.power.DevicePower;
+import io.github.west3436.ss13.api.power.PoweredDevice;
 import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
@@ -47,6 +49,10 @@ import org.jetbrains.annotations.Nullable;
  * <p><b>How hard it works.</b> A device says what it did in each step ({@link #reportActivity},
  * {@link #reportRunning}, {@link #reportStopped}), and nearby players are told its {@link
  * DeviceActivity} level, so their clients play its loop ({@code DeviceLoops}).
+ *
+ * <p><b>Its power.</b> A device that draws power names {@link PoweredDevice}, gives its {@link
+ * DevicePower} {@link #now()} as its clock, and works only while it is powered. The base keeps its
+ * lease while it waits, and has it wait with the provider that powers it.
  */
 public abstract class DeviceBlockEntity extends BlockEntity implements DeviceSchedule.Member {
     /** The key the label is saved under. */
@@ -319,21 +325,33 @@ public abstract class DeviceBlockEntity extends BlockEntity implements DeviceSch
     }
 
     /**
-     * Whether this device waits because another it depends on waits, as a powered part waits with
-     * the device that powers it. The default is false. Asking must load nothing.
+     * Whether this device waits because another it depends on waits. The default: a {@link
+     * PoweredDevice} waits with the device that last powered it, while that one is loaded and its
+     * chunk doesn't tick, as the provider powers nothing while it waits. Asking must load nothing.
      *
      * @return true to be passed over while its own chunk ticks
      */
     protected boolean waitsForAnother() {
-        return false;
+        return this instanceof PoweredDevice part
+                && part.power().source() instanceof DeviceBlockEntity provider
+                && provider != this
+                && !provider.isRemoved()
+                && DeviceTicker.isScheduled(provider)
+                && provider.level instanceof ServerLevel there
+                && !LoadedBlocks.ticking(there, provider.worldPosition);
     }
 
     /**
      * Called each time the schedule passes the device over because it isn't {@link #stepping()}, so
-     * that it can hold what would otherwise lapse while it waits, such as a power lease. The default
-     * does nothing.
+     * that it can hold what would otherwise lapse while it waits. The default holds a {@link
+     * PoweredDevice}'s power lease and claim ({@link DevicePower#hold}), so the wait never reads as a
+     * power cut.
      */
-    protected void whilePassedOver() {}
+    protected void whilePassedOver() {
+        if (this instanceof PoweredDevice part) {
+            part.power().hold();
+        }
+    }
 
     /**
      * Called by the schedule, and by tests that step a device at once; runs {@link #deviceTick} if

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -155,16 +156,21 @@ public final class PartsTests {
     }
 
     @GameTest(template = "empty")
-    public static void creative_tab_lists_every_component(GameTestHelper helper) {
+    public static void creative_tab_lists_every_component_and_battery(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         CreativeModeTab tab = FrameworkCreativeTab.TAB.get();
         tab.buildContents(
                 new CreativeModeTab.ItemDisplayParameters(level.enabledFeatures(), false, level.registryAccess()));
         List<Item> shown =
                 tab.getDisplayItems().stream().map(ItemStack::getItem).toList();
-        List<Item> components =
-                FrameworkItems.components().stream().map(DeferredItem::get).toList();
-        helper.assertTrue(shown.equals(components), "the tab shows " + shown);
+        List<Item> expected = new ArrayList<>(
+                FrameworkItems.components().stream().map(DeferredItem::get).toList());
+        // Then each battery twice: empty, and full.
+        FrameworkItems.batteries().forEach(b -> {
+            expected.add(b.get());
+            expected.add(b.get());
+        });
+        helper.assertTrue(shown.equals(expected), "the tab shows " + shown);
         helper.succeed();
     }
 

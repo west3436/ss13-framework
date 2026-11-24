@@ -1,0 +1,20 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "ss13_framework:item/super_capacity_battery"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "ss13_framework:charge": 0.5
+      },
+      "model": "ss13_framework:item/super_capacity_battery_partial"
+    },
+    {
+      "predicate": {
+        "ss13_framework:charge": 1
+      },
+      "model": "ss13_framework:item/super_capacity_battery_full"
+    }
+  ]
+}

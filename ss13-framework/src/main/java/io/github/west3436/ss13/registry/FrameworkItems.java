@@ -1,6 +1,7 @@
 package io.github.west3436.ss13.registry;
 
 import io.github.west3436.ss13.api.FrameworkApi;
+import io.github.west3436.ss13.power.BatteryItem;
 import java.util.List;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
@@ -12,6 +13,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
  * from ZAS³, which registers its old {@code zas_atmos:} ids as aliases of these. Each is crafted
  * from vanilla materials. They are plain items for now; machine construction makes the stock parts
  * work, by their {@link PartTags tags}.
+ *
+ * <p>The batteries, which are also SS13's power cells, moved from ZAS³ too, ids and all.
  */
 public final class FrameworkItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(FrameworkApi.MOD_ID);
@@ -35,6 +38,15 @@ public final class FrameworkItems {
     public static final DeferredItem<Item> BLUESPACE_CRYSTAL = ITEMS.registerSimpleItem("bluespace_crystal");
     public static final DeferredItem<Item> PLASTEEL_SHEET = ITEMS.registerSimpleItem("plasteel_sheet");
     public static final DeferredItem<Item> REINFORCED_GLASS = ITEMS.registerSimpleItem("reinforced_glass");
+
+    // The batteries, which are also SS13's power cells: one item set for every mod.
+
+    public static final DeferredItem<BatteryItem> BATTERY =
+            ITEMS.registerItem("battery", p -> new BatteryItem(100_000, p));
+    public static final DeferredItem<BatteryItem> HIGH_CAPACITY_BATTERY =
+            ITEMS.registerItem("high_capacity_battery", p -> new BatteryItem(1_000_000, p));
+    public static final DeferredItem<BatteryItem> SUPER_CAPACITY_BATTERY =
+            ITEMS.registerItem("super_capacity_battery", p -> new BatteryItem(2_000_000, p));
 
     private FrameworkItems() {}
 
@@ -64,6 +76,15 @@ public final class FrameworkItems {
                 BLUESPACE_CRYSTAL,
                 PLASTEEL_SHEET,
                 REINFORCED_GLASS);
+    }
+
+    /**
+     * The batteries, smallest first: 100,000, 1,000,000 and 2,000,000 FE.
+     *
+     * @return every one of them
+     */
+    public static List<DeferredItem<BatteryItem>> batteries() {
+        return List.of(BATTERY, HIGH_CAPACITY_BATTERY, SUPER_CAPACITY_BATTERY);
     }
 
     /**
