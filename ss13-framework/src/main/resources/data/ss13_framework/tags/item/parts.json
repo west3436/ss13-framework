@@ -1,0 +1,8 @@
+{
+  "values": [
+    "#ss13_framework:parts/capacitors",
+    "#ss13_framework:parts/scanning_modules",
+    "#ss13_framework:parts/manipulators",
+    "#ss13_framework:parts/lasers"
+  ]
+}

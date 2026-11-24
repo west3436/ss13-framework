@@ -78,7 +78,7 @@ The phases are ordered by who is waiting. Phase A moves code that exists. Phase 
 | Machine construction ([#12](https://github.com/west3436/ss13-framework/issues/12)) | Machine and computer frames, wiring, a board that names its machine and parts, part slots, and four part tiers that set a machine's stats. | Every NT machine; Expedition's Shuttle Computer and drives (expedition#50). A plain crafting recipe stays for every machine. |
 | Tools ([#13](https://github.com/west3436/ss13-framework/issues/13)) | Multitool with a `Linkable` buffer, wrench with `Wrenchable`, crowbar with `Pryable`, plus screwdriver, wirecutters and welder; `c:tools/*` tags. ZAS³'s tool items move with aliases. | The multitool and wrench today are hard-coded lists of ZAS³ classes. NT Engineering's plan already reuses them instead of making its own. |
 | Normal/Hardcore switch ([#14](https://github.com/west3436/ss13-framework/issues/14)) | The `PresetOption` mechanism, the per-world copy and the preset command. Each mod registers its own options. | ZAS³'s 7 options, Expedition's Hardcore fuel burn (expedition#53), NT Engineering's cable burnout and singularity damage. |
-| Station walls and reinforced glass (to decide) ([#15](https://github.com/west3436/ss13-framework/issues/15)) | ZAS³'s walls, glass and grilles with their connected textures. | RCD, welding and Expedition hulls all touch them. Pipes pass through them sealed, so the seal rule would need an interface. |
+| Wall and window tags ([#25](https://github.com/west3436/ss13-framework/issues/25)) | `ss13_framework:walls`, `reinforced_walls` and `windows`, filled by each mod, and a hook a tool asks when it takes a block apart. ZAS³'s station walls, reinforced glass and floor grille stay in ZAS³ ([#15](https://github.com/west3436/ss13-framework/issues/15)). | NT Engineering's welder and RCD work on ZAS³'s walls and Expedition's hulls alike, without ZAS³ internals. A wall with a pipe in it leaves the pipe. |
 
 ### Phase C: with NT Engineering Phases 2 and 3
 
@@ -101,7 +101,7 @@ Not part of the mod jar. Expedition's build and CI are near-copies of ZAS³'s, a
 
 | Mod | Keeps |
 | --- | --- |
-| ZAS³ | The engine, zones, pipes, the breathing, hazard and HUD system, suits and tanks, how area air controllers find their devices, the TEG and turbine, airlock and firelock logic, CC:Tweaked peripherals, `/zas` |
+| ZAS³ | The engine, zones, pipes, the breathing, hazard and HUD system, suits and tanks, station walls, reinforced glass and the floor grille, how area air controllers find their devices, the TEG and turbine, airlock and firelock logic, CC:Tweaked peripherals, `/zas` |
 | Expedition | The ship mover (3.3k LOC, only Expedition needs it), planets, Space and transit, drives, flight |
 | NT Engineering | Cables and the grid, APCs, SMES, lighting, every engine, the autolathe and circuit printer, the boards for its own machines |
 
@@ -114,7 +114,8 @@ Not part of the mod jar. Expedition's build and CI are near-copies of ZAS³'s, a
 3. Make the area air controller a power provider.
 4. Make the multitool, wrench and crowbar framework tools with ZAS³ behaviour behind the interfaces.
 5. Register its 7 preset options with the framework switch.
-6. Later: radiation protection on suits, pipes in T-ray view, shared compat helpers.
+6. Put its walls and glass in the framework's wall and window tags, and register the take-apart hook on its pipe-in-wall blocks.
+7. Later: radiation protection on suits, pipes in T-ray view, shared compat helpers.
 
 **Expedition**
 
@@ -123,7 +124,8 @@ Not part of the mod jar. Expedition's build and CI are near-copies of ZAS³'s, a
 3. Rebuild the Shuttle Computer window on TGUI.
 4. Move `ClaimCheck` and `TickBudget`.
 5. Use the adapter loader for `compat-cc` (expedition#36), the power contract for the electric and Bluespace drives, and the preset switch for Hardcore fuel burn.
-6. With construction in the framework, the Shuttle Computer can be built from a frame and a board without NT Engineering. expedition#50 narrows to APC power, the gravity generator and autolathe prints.
+6. Put its two hulls in `ss13_framework:walls`.
+7. With construction in the framework, the Shuttle Computer can be built from a frame and a board without NT Engineering. expedition#50 narrows to APC power, the gravity generator and autolathe prints.
 
 **NT Engineering**
 
@@ -131,6 +133,7 @@ Not part of the mod jar. Expedition's build and CI are near-copies of ZAS³'s, a
 2. `nte-api`'s purpose (power, gravity and machine-part interfaces) moves into the framework API. It shrinks to grid-specific reads, or goes away.
 3. Its "what ZAS³ needs to provide" list becomes framework work: the APC hook is the power contract, radiation is Phase C, shared areas are Phase B.
 4. ZAS³ has shipped the TEG and the gas turbine with FE output (zas-cubed#530, #531). NT Engineering connects them to its grid instead of building its own.
+5. Its welder and RCD find walls and windows by the framework's tags and take them apart through its hook. The RCD places `zas_atmos:station_wall` by id.
 
 ## Plan conflicts found
 
@@ -145,7 +148,7 @@ Not part of the mod jar. Expedition's build and CI are near-copies of ZAS³'s, a
 flowchart TD
   P0["<b>Phase 0 · Repo</b><br/>Gradle, mod and API projects, CONTRIBUTING clean-room rule, CREDITS check, CI, Central publishing, nesting check"]
   PA["<b>Phase A · Move what exists</b><br/>Components, TGUI, device base, labels, adapter loader, gravity, helpers"]
-  PB["<b>Phase B · Shared contracts</b><br/>Power providers, areas, construction, tools, presets"]
+  PB["<b>Phase B · Shared contracts</b><br/>Power providers, areas, construction, tools, presets, wall tags"]
   PC["<b>Phase C · Later systems</b><br/>Radiation, vision modes, shared compat helpers"]
   P0 -->|"Gate: an empty framework nested in ZAS³ and Expedition loads, with one copy at runtime"| PA
   PA -->|"Gate: ZAS³ ships on the framework and a 1.2.0 world loads with every item; the Shuttle Computer window is TGUI"| PB
@@ -165,15 +168,17 @@ Each phase is a [milestone](https://github.com/west3436/ss13-framework/milestone
 | Moved ids | Registry aliases from `zas_atmos:` ids, proven by a GameTest on a 1.2.0 save. |
 | ZAS³ release | The next minor release, since the API doesn't change and aliases keep worlds intact. |
 | Construction | In the framework, so Expedition and ZAS³ machines can use frames without NT Engineering. |
+| Machine recipes | Every frame-built machine keeps a plain crafting recipe as well. |
+| Station walls and glass | Stay in ZAS³. The framework has wall and window tags and a take-apart hook. |
 | `nte-api` | Its interfaces move into the framework API. |
 
 ## Open questions
 
 1. ~~Mod id and package.~~ Decided in [#2](https://github.com/west3436/ss13-framework/issues/2): mod id `ss13_framework`, Maven `io.github.west3436:ss13-framework` (mod) and `io.github.west3436:ss13-framework-api`, packages `io.github.west3436.ss13` and `io.github.west3436.ss13.api`.
-2. Construction in the framework or in NT Engineering? This proposal says the framework.
-3. With construction in the framework, should Expedition's machines need frames even without NT Engineering, or keep a plain recipe as well?
-4. Do station walls and glass move?
-5. Does `nte-api` go away entirely, or keep grid-specific reads?
+2. ~~Construction in the framework or in NT Engineering?~~ Decided: the framework ([#12](https://github.com/west3436/ss13-framework/issues/12)), so Expedition and ZAS³ machines can use frames without NT Engineering.
+3. ~~With construction in the framework, should Expedition's machines need frames even without NT Engineering, or keep a plain recipe as well?~~ Decided: every frame-built machine keeps a plain crafting recipe as well, as the construction row in Phase B says.
+4. ~~Do station walls and glass move?~~ Decided in [#15](https://github.com/west3436/ss13-framework/issues/15): no. NT Engineering and Expedition both require ZAS³, so the blocks are always there. Walls seal from their full-block shape, so no seal interface was needed, but the pipe-in-wall blocks, their zero heat transfer and their pressure rules are ZAS³'s. What the welder, the RCD and Expedition's hulls share is the idea of a wall, which needs tags and a take-apart hook ([#25](https://github.com/west3436/ss13-framework/issues/25)) whether or not the blocks move.
+5. Does `nte-api` go away entirely, or keep grid-specific reads? Leaning: its power, gravity and machine-part interfaces move into the framework API, and it keeps only grid-specific reads, or goes away if NT Engineering needs none.
 
 ## Sources
 

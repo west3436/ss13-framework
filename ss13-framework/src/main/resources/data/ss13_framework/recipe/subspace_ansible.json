@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "ss13_framework:ansible_crystal"
+    },
+    {
+      "item": "ss13_framework:circuit_board"
+    },
+    {
+      "item": "ss13_framework:capacitor"
+    },
+    {
+      "item": "minecraft:copper_ingot"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "ss13_framework:subspace_ansible"
+  }
+}

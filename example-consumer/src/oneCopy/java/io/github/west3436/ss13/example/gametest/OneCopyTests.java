@@ -5,7 +5,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.west3436.ss13.Ss13Framework;
 import io.github.west3436.ss13.api.FrameworkApi;
+import io.github.west3436.ss13.compat.Adapters;
 import io.github.west3436.ss13.example.ExampleConsumer;
+import io.github.west3436.ss13.example.MinecraftAdapter;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
@@ -89,6 +91,22 @@ public final class OneCopyTests {
                 .orElse("none");
         h.assertValueEqual(loadedMod, newestMod, "the framework mod's loaded version");
         h.assertValueEqual(FrameworkApi.version(), Optional.of(newestApi), "the API's loaded version");
+        h.succeed();
+    }
+
+    /**
+     * The framework's adapter loader, in its own module, started an adapter class in this
+     * consumer's jar by name, for this consumer.
+     */
+    @GameTest(template = "empty")
+    public static void the_framework_loads_a_consumers_adapters(GameTestHelper h) {
+        h.assertTrue(
+                Adapters.class.getModule() != ExampleConsumer.class.getModule(),
+                "the loader is in the consumer's module, so this shows nothing");
+        h.assertTrue(
+                ExampleConsumer.ADAPTERS.isActive("minecraft"),
+                "the adapter isn't active: " + ExampleConsumer.ADAPTERS.statuses());
+        h.assertValueEqual(MinecraftAdapter.startedBy(), ExampleConsumer.MOD_ID, "the mod the adapter started for");
         h.succeed();
     }
 
