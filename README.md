@@ -2,7 +2,7 @@
 
 Shared SS13 parts for Minecraft (NeoForge 1.21.1) mods: crafting components and stock parts, TGUI windows, a device base, tools, power, areas, gravity and the Normal/Hardcore switch. Used by [ZAS³](https://github.com/west3436/zas-cubed), [Expedition](https://github.com/west3436/expedition) and [NT Engineering](https://github.com/west3436/nt-engineering).
 
-> **Status: Phase A.** In 0.2.0: everything Phase A moves into the framework: the SS13 crafting components and stock parts, the TGUI window kit, the device base and labels, one adapter loader, shared helpers (`DatapackErrors`, `ClaimCheck`, `TickBudget`), and the first shared contracts: gravity at a position ([`Gravity`](ss13-framework-api/src/main/java/io/github/west3436/ss13/api/gravity/Gravity.java)), areas ([`Areas`](ss13-framework-api/src/main/java/io/github/west3436/ss13/api/area/Areas.java)) and the Normal/Hardcore switch ([`Presets`](ss13-framework-api/src/main/java/io/github/west3436/ss13/api/preset/Presets.java)). Next, ZAS³ and Expedition switch over to it, and Phase B adds power, construction and tools. The plan lives in [docs/design-proposal.md](docs/design-proposal.md).
+> **Status: Phase B.** 0.3.0 holds Phase A and the Phase B contracts. Phase A: the SS13 crafting components and stock parts, the TGUI window kit, the device base and labels, one adapter loader, shared helpers (`DatapackErrors`, `ClaimCheck`, `TickBudget`) and gravity at a position ([`Gravity`](ss13-framework-api/src/main/java/io/github/west3436/ss13/api/gravity/Gravity.java)). Phase B: areas ([`Areas`](ss13-framework-api/src/main/java/io/github/west3436/ss13/api/area/Areas.java)), power providers and APC channels ([`api.power`](ss13-framework-api/src/main/java/io/github/west3436/ss13/api/power)), machine construction ([`api.construction`](ss13-framework-api/src/main/java/io/github/west3436/ss13/api/construction)), tools ([`api.tool`](ss13-framework-api/src/main/java/io/github/west3436/ss13/api/tool)), wall tags ([`api.structure`](ss13-framework-api/src/main/java/io/github/west3436/ss13/api/structure)) and the Normal/Hardcore switch ([`Presets`](ss13-framework-api/src/main/java/io/github/west3436/ss13/api/preset/Presets.java)). The shared build plugins, test kit and workflows ship with it too. Phase C (radiation, vision modes, compat helpers) comes with NT Engineering. The plan lives in [docs/design-proposal.md](docs/design-proposal.md).
 
 ## Jars
 
@@ -21,21 +21,21 @@ A mod nests both jars by jar-in-jar, with [ModDevGradle](https://github.com/neof
 ```groovy
 dependencies {
     // Compile against the mod, which brings the API with it.
-    implementation 'io.github.west3436:ss13-framework:0.2.0'
+    implementation 'io.github.west3436:ss13-framework:0.3.0'
 
     // Nest both. Start each range at the version you build against, and end it before the next
     // version that may break it: the next minor while the framework is 0.x, the next major from 1.0.
     jarJar('io.github.west3436:ss13-framework') {
         transitive = false
         version {
-            strictly '[0.2.0,0.3.0)'
-            prefer '0.2.0'
+            strictly '[0.3.0,0.4.0)'
+            prefer '0.3.0'
         }
     }
     jarJar('io.github.west3436:ss13-framework-api') {
         version {
-            strictly '[0.2.0,0.3.0)'
-            prefer '0.2.0'
+            strictly '[0.3.0,0.4.0)'
+            prefer '0.3.0'
         }
     }
 }
@@ -75,7 +75,7 @@ dependencies {
 
 ## Building a mod with the framework's tooling
 
-The mods share their build and CI through the framework rather than copying them. Both are released with the framework, at its version, from the release after 0.1.0. Until then, use a `-SNAPSHOT` from the Central snapshots repository.
+The mods share their build and CI through the framework rather than copying them. Both are released with the framework, at its version, from 0.3.0.
 
 **Gradle plugins**, from Maven Central (`io.github.west3436:ss13-gradle-plugin`). The root `build.gradle`:
 
@@ -83,9 +83,9 @@ The mods share their build and CI through the framework rather than copying them
 plugins {
     id 'net.neoforged.moddev' version '2.0.148' apply false
     // They bring Spotless and com.vanniktech.maven.publish with them: don't name those here.
-    id 'io.github.west3436.ss13.conventions' version '0.2.0' apply false
-    id 'io.github.west3436.ss13.api' version '0.2.0' apply false
-    id 'io.github.west3436.ss13.credits' version '0.2.0' // checkCredits, run by check
+    id 'io.github.west3436.ss13.conventions' version '0.3.0' apply false
+    id 'io.github.west3436.ss13.api' version '0.3.0' apply false
+    id 'io.github.west3436.ss13.credits' version '0.3.0' // checkCredits, run by check
 }
 
 subprojects {
