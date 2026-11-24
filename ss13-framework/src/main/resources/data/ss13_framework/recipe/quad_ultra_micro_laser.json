@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "ss13_framework:ultra_high_power_micro_laser"
+    },
+    {
+      "item": "ss13_framework:ultra_high_power_micro_laser"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "ss13_framework:bluespace_crystal"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "ss13_framework:quad_ultra_micro_laser"
+  }
+}

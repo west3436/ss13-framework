@@ -1,5 +1,8 @@
 {
   "values": [
-    "#ss13_framework:parts/manipulators/tier_1"
+    "#ss13_framework:parts/manipulators/tier_1",
+    "#ss13_framework:parts/manipulators/tier_2",
+    "#ss13_framework:parts/manipulators/tier_3",
+    "#ss13_framework:parts/manipulators/tier_4"
   ]
 }

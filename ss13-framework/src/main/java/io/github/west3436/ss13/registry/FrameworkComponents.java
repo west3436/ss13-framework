@@ -2,6 +2,7 @@ package io.github.west3436.ss13.registry;
 
 import com.mojang.serialization.Codec;
 import io.github.west3436.ss13.api.FrameworkApi;
+import io.github.west3436.ss13.api.construction.InstalledParts;
 import java.util.function.Supplier;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.component.DataComponentType;
@@ -27,6 +28,11 @@ public final class FrameworkComponents {
     /** {@code lit}: whether a welder is lit; a welder without it is out. */
     public static final Supplier<DataComponentType<Boolean>> LIT = COMPONENTS.registerComponentType(
             "lit", b -> b.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
+
+    /** {@code installed_parts}: the board and parts a mined machine's item carries back to its place. */
+    public static final Supplier<DataComponentType<InstalledParts>> INSTALLED_PARTS = COMPONENTS.registerComponentType(
+            "installed_parts",
+            b -> b.persistent(InstalledParts.CODEC).networkSynchronized(InstalledParts.STREAM_CODEC));
 
     private FrameworkComponents() {}
 
