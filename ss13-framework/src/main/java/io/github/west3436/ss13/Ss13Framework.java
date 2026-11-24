@@ -2,6 +2,7 @@ package io.github.west3436.ss13;
 
 import com.mojang.logging.LogUtils;
 import io.github.west3436.ss13.api.FrameworkApi;
+import io.github.west3436.ss13.area.FrameworkAreas;
 import io.github.west3436.ss13.gravity.GravityEntities;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -20,5 +21,6 @@ public final class Ss13Framework {
                 container.getModInfo().getVersion(),
                 FrameworkApi.version().orElse("from class directories"));
         GravityEntities.register(NeoForge.EVENT_BUS);
+        FrameworkAreas.register(NeoForge.EVENT_BUS);
     }
 }
