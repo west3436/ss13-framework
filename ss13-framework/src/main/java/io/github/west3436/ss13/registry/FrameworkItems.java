@@ -1,6 +1,10 @@
 package io.github.west3436.ss13.registry;
 
 import io.github.west3436.ss13.api.FrameworkApi;
+import io.github.west3436.ss13.tool.CrowbarItem;
+import io.github.west3436.ss13.tool.MultitoolItem;
+import io.github.west3436.ss13.tool.WelderItem;
+import io.github.west3436.ss13.tool.WrenchItem;
 import java.util.List;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
@@ -8,10 +12,12 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 /**
- * The framework's items: the SS13 crafting components and stock parts every mod builds from, moved
- * from ZAS³, which registers its old {@code zas_atmos:} ids as aliases of these. Each is crafted
- * from vanilla materials. They are plain items for now; machine construction makes the stock parts
- * work, by their {@link PartTags tags}.
+ * The framework's items: the SS13 crafting components and stock parts every mod builds from, and
+ * the SS13 tools. The components, the multitool, the wrench and the crowbar moved from ZAS³, which
+ * registers its old {@code zas_atmos:} ids as aliases of these. Each is crafted from vanilla
+ * materials and the components. The components are plain items for now; machine construction makes
+ * the stock parts work, by their {@link PartTags tags}. What a tool does to a block is that block's
+ * mod's, through the capabilities in {@code io.github.west3436.ss13.api.tool}.
  */
 public final class FrameworkItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(FrameworkApi.MOD_ID);
@@ -35,6 +41,26 @@ public final class FrameworkItems {
     public static final DeferredItem<Item> BLUESPACE_CRYSTAL = ITEMS.registerSimpleItem("bluespace_crystal");
     public static final DeferredItem<Item> PLASTEEL_SHEET = ITEMS.registerSimpleItem("plasteel_sheet");
     public static final DeferredItem<Item> REINFORCED_GLASS = ITEMS.registerSimpleItem("reinforced_glass");
+
+    /** Links devices through their {@code Linkable} capability. */
+    public static final DeferredItem<MultitoolItem> MULTITOOL = ITEMS.registerItem("multitool", MultitoolItem::new);
+
+    /** Turns and removes blocks through their {@code Wrenchable} capability. */
+    public static final DeferredItem<WrenchItem> WRENCH = ITEMS.registerItem("wrench", WrenchItem::new);
+
+    /** Pries blocks through their {@code Pryable} capability. */
+    public static final DeferredItem<CrowbarItem> CROWBAR = ITEMS.registerItem("crowbar", CrowbarItem::new);
+
+    /** Opens and closes panels, for the blocks that check {@code c:tools/screwdriver}. */
+    public static final DeferredItem<Item> SCREWDRIVER =
+            ITEMS.registerSimpleItem("screwdriver", new Item.Properties().stacksTo(1));
+
+    /** Cuts wires, for the blocks that check {@code c:tools/wire_cutter}. */
+    public static final DeferredItem<Item> WIRECUTTERS =
+            ITEMS.registerSimpleItem("wirecutters", new Item.Properties().stacksTo(1));
+
+    /** Welds while lit, burning fuel; a {@code WeldingTool}. */
+    public static final DeferredItem<WelderItem> WELDER = ITEMS.registerItem("welder", WelderItem::new);
 
     private FrameworkItems() {}
 
@@ -64,6 +90,15 @@ public final class FrameworkItems {
                 BLUESPACE_CRYSTAL,
                 PLASTEEL_SHEET,
                 REINFORCED_GLASS);
+    }
+
+    /**
+     * The tools, in the creative tab's order.
+     *
+     * @return every one of them
+     */
+    public static List<DeferredItem<? extends Item>> tools() {
+        return List.of(MULTITOOL, WRENCH, CROWBAR, SCREWDRIVER, WIRECUTTERS, WELDER);
     }
 
     /**

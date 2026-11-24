@@ -1,0 +1,10 @@
+{
+  "values": [
+    "#c:tools/multitool",
+    "#c:tools/wrench",
+    "#c:tools/crowbar",
+    "#c:tools/screwdriver",
+    "#c:tools/wire_cutter",
+    "#c:tools/welder"
+  ]
+}

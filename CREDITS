@@ -283,6 +283,73 @@ path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/reinfo
 origin: original
 notes: A flat item model for the reinforced glass sheet sprite.
 
+# The SS13 tools. The multitool, wrench and crowbar moved from ZAS³; the screwdriver, wirecutters
+# and welder were drawn for the framework.
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/multitool.png
+origin: vgstation13
+source: icons/obj/device.dmi
+state: multitool
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: vg's sprite as it is, 9 x 17, with one of its two matching rows dropped so it's 16 tall.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/multitool.json
+origin: original
+notes: A flat item model for the multitool sprite.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/wrench.png
+origin: vgstation13
+source: icons/obj/items.dmi
+state: wrench
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: vg's sprite as it is, at 32x32 (D-70).
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/wrench.json
+origin: original
+notes: A handheld item model for the wrench sprite. Its hand poses are item/handheld's turned a quarter clockwise, because the sprite's handle is at the bottom right, not the bottom left.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/crowbar.png
+origin: vgstation13
+source: icons/obj/items.dmi
+state: crowbar
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: Redrawn to fill the slot's width at 45 degrees, with vg's outline, faces, hook and chisel end.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/crowbar.json
+origin: original
+notes: A handheld item model, held like a vanilla tool.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/screwdriver.png
+origin: original
+notes: 16 x 16: a yellow handle and a steel shaft at 45 degrees.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/screwdriver.json
+origin: original
+notes: A handheld item model, held like a vanilla tool.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/wirecutters.png
+origin: original
+notes: 16 x 16: red handles and steel jaws, open.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/wirecutters.json
+origin: original
+notes: A handheld item model, held like a vanilla tool.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/welder.png
+origin: original
+notes: 16 x 16: a red fuel tank with a steel cap and nozzle.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/welder_lit.png
+origin: original
+notes: The welder's sprite with a flame at the nozzle.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/welder.json
+origin: original
+notes: A flat item model for the welder sprite, which shows welder_lit while the welder is lit.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/welder_lit.json
+origin: original
+notes: A flat item model for the lit welder sprite.
+
 # The TGUI window kit, moved from ZAS³. The build generates the fonts' definitions for each size
 # and GUI scale (generateTguiFonts), so only the faces themselves are kept here.
 path: ss13-framework/src/main/resources/assets/ss13_framework/font/dejavu_sans.ttf
