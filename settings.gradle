@@ -1,4 +1,6 @@
 pluginManagement {
+    // The framework's Gradle plugins, from source. They're published to Central for the mods.
+    includeBuild 'ss13-gradle-plugin'
     repositories {
         gradlePluginPortal()
         // com.vanniktech.maven.publish is published to Maven Central only.

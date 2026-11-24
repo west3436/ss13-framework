@@ -1,0 +1,106 @@
+// What every project of ZAS³, Expedition, NT Engineering and the framework shares. Apply it to each
+// subproject, and set ss13.githubRepo for publishing:
+//
+//   subprojects {
+//       apply plugin: 'io.github.west3436.ss13.conventions'
+//       ss13 { githubRepo = 'west3436/expedition' }
+//   }
+//
+// - java-library on Java 21, sources in UTF-8, Maven Central as a repository.
+// - Spotless with palantir-java-format, which check runs, so build fails on unformatted code. Run
+//   ./gradlew spotlessApply to fix it.
+// - With ModDevGradle: NeoForge from neo_version and Parchment from parchment_mappings_version and
+//   parchment_minecraft_version in gradle.properties. A project whose run needs a newer NeoForge sets
+//   ext.runNeoVersion before it applies ModDevGradle; nothing that ships should.
+// - With com.vanniktech.maven.publish: Maven Central through the Sonatype Central Portal, and the
+//   POM's license, developer and links from ss13.githubRepo. The project names its own POM name and
+//   description, and which jars it publishes, in its mavenPublishing block.
+import io.github.west3436.ss13.gradle.Ss13Extension
+
+pluginManager.apply('java-library')
+pluginManager.apply('com.diffplug.spotless')
+
+def ss13 = Ss13Extension.of(project)
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+repositories {
+    mavenCentral()
+}
+
+spotless {
+    java {
+        target 'src/*/java/**/*.java'
+        palantirJavaFormat('2.103.0')
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+plugins.withId('net.neoforged.moddev') {
+    neoForge {
+        version = project.findProperty('runNeoVersion') ?: project.property('neo_version')
+        parchment {
+            mappingsVersion = project.property('parchment_mappings_version')
+            minecraftVersion = project.property('parchment_minecraft_version')
+        }
+    }
+}
+
+// A -SNAPSHOT version goes to https://central.sonatype.com/repository/maven-snapshots/; a release
+// becomes a Portal deployment. Credentials come from the mavenCentralUsername and
+// mavenCentralPassword Gradle properties (a Portal user token). Central requires signatures on
+// releases, not on snapshots, so the build signs whenever an in-memory key is given
+// (signingInMemoryKey, and signingInMemoryKeyPassword if it has one), and publishToMavenLocal works
+// without one.
+plugins.withId('com.vanniktech.maven.publish') {
+    def repo = ss13.githubRepo
+    def owner = repo.map { it.tokenize('/')[0] }
+    mavenPublishing {
+        publishToMavenCentral()
+        if (!providers.gradleProperty('signingInMemoryKey').getOrElse('').isBlank()) {
+            signAllPublications()
+        }
+        pom {
+            url = repo.map { "https://github.com/${it}" }
+            inceptionYear = '2026'
+            licenses {
+                license {
+                    name = 'MIT License'
+                    url = 'https://opensource.org/licenses/MIT'
+                    distribution = 'repo'
+                }
+            }
+            developers {
+                developer {
+                    id = owner
+                    name = owner
+                    url = owner.map { "https://github.com/${it}" }
+                }
+            }
+            scm {
+                url = repo.map { "https://github.com/${it}" }
+                connection = repo.map { "scm:git:https://github.com/${it}.git" }
+                developerConnection = repo.map { "scm:git:ssh://git@github.com/${it}.git" }
+            }
+            issueManagement {
+                system = 'GitHub'
+                url = repo.map { "https://github.com/${it}/issues" }
+            }
+        }
+    }
+    // Central refuses a POM without its links, so say what's missing before anything is uploaded.
+    tasks.withType(PublishToMavenRepository).configureEach {
+        doFirst {
+            if (!repo.present) {
+                throw new GradleException("${project.path}: set ss13.githubRepo, such as " +
+                        "ss13 { githubRepo = 'west3436/expedition' }, before publishing.")
+            }
+        }
+    }
+}
