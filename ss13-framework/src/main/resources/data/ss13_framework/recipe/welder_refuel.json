@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "ss13_framework:welder"
+    },
+    {
+      "tag": "minecraft:coals"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "ss13_framework:welder"
+  }
+}

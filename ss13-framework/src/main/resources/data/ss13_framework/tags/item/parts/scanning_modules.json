@@ -1,5 +1,8 @@
 {
   "values": [
-    "#ss13_framework:parts/scanning_modules/tier_1"
+    "#ss13_framework:parts/scanning_modules/tier_1",
+    "#ss13_framework:parts/scanning_modules/tier_2",
+    "#ss13_framework:parts/scanning_modules/tier_3",
+    "#ss13_framework:parts/scanning_modules/tier_4"
   ]
 }

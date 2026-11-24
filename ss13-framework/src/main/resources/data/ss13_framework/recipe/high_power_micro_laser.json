@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "ss13_framework:micro_laser"
+    },
+    {
+      "item": "ss13_framework:micro_laser"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "minecraft:redstone"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "ss13_framework:high_power_micro_laser"
+  }
+}

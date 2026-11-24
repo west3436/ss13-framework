@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "ss13_framework:phasic_scanning_module"
+    },
+    {
+      "item": "ss13_framework:phasic_scanning_module"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "ss13_framework:bluespace_crystal"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "ss13_framework:triphasic_scanning_module"
+  }
+}

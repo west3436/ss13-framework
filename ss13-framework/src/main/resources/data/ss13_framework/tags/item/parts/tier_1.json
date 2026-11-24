@@ -3,6 +3,7 @@
     "#ss13_framework:parts/capacitors/tier_1",
     "#ss13_framework:parts/scanning_modules/tier_1",
     "#ss13_framework:parts/manipulators/tier_1",
-    "#ss13_framework:parts/lasers/tier_1"
+    "#ss13_framework:parts/lasers/tier_1",
+    "#ss13_framework:parts/matter_bins/tier_1"
   ]
 }

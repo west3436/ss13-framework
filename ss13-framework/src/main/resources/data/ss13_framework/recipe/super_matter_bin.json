@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "ss13_framework:advanced_matter_bin"
+    },
+    {
+      "item": "ss13_framework:advanced_matter_bin"
+    },
+    {
+      "item": "ss13_framework:bluespace_crystal"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "ss13_framework:super_matter_bin"
+  }
+}

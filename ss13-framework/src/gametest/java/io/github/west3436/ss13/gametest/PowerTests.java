@@ -15,6 +15,7 @@ import io.github.west3436.ss13.power.Batteries;
 import io.github.west3436.ss13.power.BatteryItem;
 import io.github.west3436.ss13.power.WorkToFe;
 import io.github.west3436.ss13.registry.FrameworkComponents;
+import io.github.west3436.ss13.registry.FrameworkCreativeTab;
 import io.github.west3436.ss13.registry.FrameworkItems;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +29,7 @@ import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -346,6 +348,21 @@ public final class PowerTests {
             }
         }
         h.assertTrue(lang.has("item.ss13_framework.battery.charge"), "no charge tooltip");
+
+        // The creative tab ends with each battery, empty and then full.
+        CreativeModeTab tab = FrameworkCreativeTab.TAB.get();
+        tab.buildContents(
+                new CreativeModeTab.ItemDisplayParameters(level.enabledFeatures(), false, level.registryAccess()));
+        List<ItemStack> shown = List.copyOf(tab.getDisplayItems());
+        List<DeferredItem<BatteryItem>> batteries = FrameworkItems.batteries();
+        List<ItemStack> last = shown.subList(shown.size() - 2 * batteries.size(), shown.size());
+        for (int i = 0; i < batteries.size(); i++) {
+            BatteryItem b = batteries.get(i).get();
+            h.assertTrue(last.get(2 * i).is(b) && BatteryItem.energy(last.get(2 * i)) == 0, b + " empty in the tab");
+            h.assertTrue(
+                    last.get(2 * i + 1).is(b) && BatteryItem.energy(last.get(2 * i + 1)) == b.capacity(),
+                    b + " full in the tab");
+        }
         h.succeed();
     }
 
