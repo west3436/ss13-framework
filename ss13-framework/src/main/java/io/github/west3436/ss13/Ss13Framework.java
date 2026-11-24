@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import io.github.west3436.ss13.api.FrameworkApi;
 import io.github.west3436.ss13.device.Devices;
 import io.github.west3436.ss13.gravity.GravityEntities;
+import io.github.west3436.ss13.preset.PresetService;
 import io.github.west3436.ss13.registry.FrameworkCreativeTab;
 import io.github.west3436.ss13.registry.FrameworkItems;
 import net.neoforged.bus.api.IEventBus;
@@ -27,5 +28,6 @@ public final class Ss13Framework {
         FrameworkItems.register(modBus);
         FrameworkCreativeTab.register(modBus);
         Devices.register(modBus, NeoForge.EVENT_BUS);
+        PresetService.register(NeoForge.EVENT_BUS);
     }
 }

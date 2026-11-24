@@ -7,6 +7,33 @@ apply plugin: 'com.vanniktech.maven.publish'
 
 base { archivesName = 'ss13_framework' }
 
+// The TGUI kit's fonts. Minecraft rasterises a TrueType font once for each definition, at its size
+// times its oversample, and text is sharp only where the oversample is the GUI scale, so each face
+// gets a definition per scale, ss13_framework:tgui/<weight>_<size>_x<scale>. Glyphs DejaVu lacks
+// fall back to Minecraft's own font.
+def tguiFonts = tasks.register('generateTguiFonts') {
+    def out = layout.buildDirectory.dir('generated/tguiFonts')
+    outputs.dir(out)
+    doLast {
+        // Size 8 is only for warning icons, whose shapes are lost at 6.
+        [[weight: 'regular', file: 'dejavu_sans', sizes: [6, 7, 8]],
+         [weight: 'bold', file: 'dejavu_sans_bold', sizes: [6, 7]]].each { face ->
+            def (weight, file) = [face.weight, face.file]
+            face.sizes.each { size ->
+                (1..9).each { oversample ->
+                    def json = out.get().file("assets/ss13_framework/font/tgui/${weight}_${size}_x${oversample}.json").asFile
+                    json.parentFile.mkdirs()
+                    json.text = groovy.json.JsonOutput.toJson([providers: [
+                        [type: 'ttf', file: "ss13_framework:${file}.ttf", size: size, oversample: oversample],
+                        [type: 'reference', id: 'minecraft:default'],
+                    ]])
+                }
+            }
+        }
+    }
+}
+sourceSets.main.resources.srcDir(tguiFonts)
+
 // GameTests live in their own source set so they stay out of the mod jar.
 sourceSets {
     gametest {
