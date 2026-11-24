@@ -8,6 +8,7 @@ import io.github.west3436.ss13.api.construction.MachineBoards;
 import io.github.west3436.ss13.api.construction.PartHolder;
 import io.github.west3436.ss13.api.construction.PartRequirement;
 import io.github.west3436.ss13.api.construction.PartTags;
+import io.github.west3436.ss13.device.DeviceBlockEntity;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,6 +18,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -191,10 +193,15 @@ public final class TestMachines {
         }
     }
 
-    /** A machine whose speed is the sum of its manipulators' tiers, as a stat set from parts. */
-    public static final class TestMachine extends BlockEntity implements PartHolder {
+    /**
+     * A device whose speed is the sum of its manipulators' tiers, as a stat set from parts: each
+     * device tick it does that much work while its panel is closed. It shows a machine on the
+     * device base taking the construction contract as well.
+     */
+    public static final class TestMachine extends DeviceBlockEntity implements PartHolder {
         private InstalledParts parts = InstalledParts.EMPTY;
         private boolean panelOpen;
+        private long work;
 
         TestMachine(BlockEntityType<TestMachine> type, BlockPos pos, BlockState state) {
             super(type, pos, state);
@@ -203,6 +210,18 @@ public final class TestMachines {
         /** The stat: the sum of its manipulators' tiers, 1 with none installed. */
         public int speed() {
             return Math.max(1, parts.totalTier(PartTags.MANIPULATORS));
+        }
+
+        /** The work done so far, {@link #speed()} per device tick with the panel closed. */
+        public long work() {
+            return work;
+        }
+
+        @Override
+        protected void deviceTick(ServerLevel level) {
+            if (!panelOpen) {
+                work += speed();
+            }
         }
 
         @Override
