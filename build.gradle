@@ -1,16 +1,23 @@
 plugins {
     id 'net.neoforged.moddev' version '2.0.148' apply false
-    id 'com.diffplug.spotless' version '8.10.4' apply false
-    id 'com.vanniktech.maven.publish' version '0.37.0' apply false
+    // The framework's own Gradle plugins, built from ss13-gradle-plugin (an included build). They
+    // bring Spotless and the Maven publish plugin with them. ZAS³, Expedition and NT Engineering
+    // apply the same plugins from Maven Central, at the framework's version.
+    id 'io.github.west3436.ss13.conventions' apply false
+    id 'io.github.west3436.ss13.api' apply false
+    id 'io.github.west3436.ss13.credits'
 }
 
-// -Psnapshot=true (or ORG_GRADLE_PROJECT_snapshot=true) builds <version>-SNAPSHOT of both jars for
-// the Central snapshots repository. CI does this after every green build on main.
+// -Psnapshot=true (or ORG_GRADLE_PROJECT_snapshot=true) builds <version>-SNAPSHOT of the jars and
+// the Gradle plugins for the Central snapshots repository. CI does this after every green build on
+// main.
 def snapshot = providers.gradleProperty('snapshot').getOrElse('false').toBoolean()
 
 subprojects {
-    apply plugin: 'java-library'
-    apply plugin: 'com.diffplug.spotless'
+    // Java 21, Spotless, NeoForge and Parchment from gradle.properties, and Central publishing for a
+    // project that applies com.vanniktech.maven.publish.
+    apply plugin: 'io.github.west3436.ss13.conventions'
+    ss13 { githubRepo = 'west3436/ss13-framework' }
 
     group = 'io.github.west3436'
     version = snapshot ? "${mod_version}-SNAPSHOT" : mod_version
@@ -20,45 +27,8 @@ subprojects {
     // it. That is the next minor while a jar is 0.x, and the next major from 1.0. A snapshot's floor
     // is the snapshot itself, since 0.1.0-SNAPSHOT sorts below 0.1.0 and FML would otherwise
     // refuse the copy that is nested.
-    def range = { String v ->
-        def (major, minor) = v.tokenize('.').take(2).collect { it as int }
-        def floor = snapshot ? "${v}-SNAPSHOT" : v
-        major == 0 ? "[${floor},0.${minor + 1}.0)" : "[${floor},${major + 1}.0)"
-    }
-    ext.api_range = range(api_version)
-    ext.mod_range = range(mod_version)
-
-    java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-
-    repositories {
-        mavenCentral()
-    }
-
-    // spotlessCheck runs as part of check, so build fails on unformatted code.
-    // Run ./gradlew spotlessApply to fix it.
-    spotless {
-        java {
-            target 'src/*/java/**/*.java'
-            palantirJavaFormat('2.103.0')
-            removeUnusedImports()
-            trimTrailingWhitespace()
-            endWithNewline()
-        }
-    }
-
-    tasks.withType(JavaCompile).configureEach {
-        options.encoding = 'UTF-8'
-    }
-
-    plugins.withId('net.neoforged.moddev') {
-        neoForge {
-            version = neo_version
-            parchment {
-                mappingsVersion = parchment_mappings_version
-                minecraftVersion = parchment_minecraft_version
-            }
-        }
-    }
+    ext.api_range = ss13.versionRange(api_version, snapshot)
+    ext.mod_range = ss13.versionRange(mod_version, snapshot)
 
     // Expanded into the mod's neoforge.mods.toml.
     tasks.named('processResources', ProcessResources) {
@@ -70,47 +40,5 @@ subprojects {
         ]
         inputs.properties(props)
         filesMatching('META-INF/neoforge.mods.toml') { expand(props) }
-    }
-
-    // Both jars go to Maven Central through the Sonatype Central Portal. A -SNAPSHOT version goes
-    // to https://central.sonatype.com/repository/maven-snapshots/; a release becomes a Portal
-    // deployment. Credentials come from the mavenCentralUsername and mavenCentralPassword Gradle
-    // properties (a Portal user token). Central requires signatures on releases, not on
-    // snapshots, so the build signs whenever an in-memory key is given (signingInMemoryKey, and
-    // signingInMemoryKeyPassword if it has one), and publishToMavenLocal works without one.
-    plugins.withId('com.vanniktech.maven.publish') {
-        mavenPublishing {
-            publishToMavenCentral()
-            if (!providers.gradleProperty('signingInMemoryKey').getOrElse('').isBlank()) {
-                signAllPublications()
-            }
-            pom {
-                url = 'https://github.com/west3436/ss13-framework'
-                inceptionYear = '2026'
-                licenses {
-                    license {
-                        name = 'MIT License'
-                        url = 'https://opensource.org/licenses/MIT'
-                        distribution = 'repo'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'west3436'
-                        name = 'west3436'
-                        url = 'https://github.com/west3436'
-                    }
-                }
-                scm {
-                    url = 'https://github.com/west3436/ss13-framework'
-                    connection = 'scm:git:https://github.com/west3436/ss13-framework.git'
-                    developerConnection = 'scm:git:ssh://git@github.com/west3436/ss13-framework.git'
-                }
-                issueManagement {
-                    system = 'GitHub'
-                    url = 'https://github.com/west3436/ss13-framework/issues'
-                }
-            }
-        }
     }
 }

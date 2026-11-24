@@ -1,0 +1,12 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        // com.vanniktech.maven.publish is published to Maven Central only.
+        mavenCentral()
+    }
+}
+
+// The Gradle plugins that ZAS³, Expedition, NT Engineering and the framework build with, as
+// io.github.west3436:ss13-gradle-plugin. An included build of the framework's, so the framework
+// builds with the plugins from this source, and published to Maven Central beside its jars.
+rootProject.name = 'ss13-gradle-plugin'

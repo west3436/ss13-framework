@@ -1,0 +1,64 @@
+// The asset check, on the root project: checkCredits, which check runs. Every file under a project's
+// src/*/resources/assets/, or under the assets/ of a built-in resource pack in
+// src/*/resources/resourcepacks/, needs a valid entry in CREDITS at the repository root. The format
+// is at the top of the framework's CREDITS.
+//
+// It runs the framework's scripts/check_credits.py, which comes in this plugin's jar, so it needs
+// Python 3 with nothing but its standard library: python3, else python, on the PATH, or the one that
+// -Pss13.python=<path> names.
+import io.github.west3436.ss13.gradle.Ss13Extension
+
+pluginManager.apply('base')
+
+def script = layout.buildDirectory.file('ss13/check_credits.py')
+def root = layout.projectDirectory
+def pythonOverride = providers.gradleProperty('ss13.python')
+// The script is in this plugin's jar, beside the extension's class.
+def source = Ss13Extension.getResource('check_credits.py')
+if (source == null) {
+    throw new GradleException('io.github.west3436.ss13.credits: check_credits.py is missing from the plugin jar')
+}
+def scriptText = source.getText('UTF-8')
+
+def checkCredits = tasks.register('checkCredits') {
+    group = 'verification'
+    description = 'Checks that every asset has a valid entry in CREDITS (needs Python 3).'
+    // Fast, and its inputs are every asset in every project, so it simply always runs.
+    outputs.upToDateWhen { false }
+    doLast {
+        def file = script.get().asFile
+        file.parentFile.mkdirs()
+        file.setText(scriptText, 'UTF-8')
+
+        // The first Python that answers. On Windows "python3" may be the Store's stand-in, which
+        // fails, so each is tried rather than trusted.
+        def candidates = pythonOverride.present ? [pythonOverride.get()] : ['python3', 'python']
+        def python = candidates.find { candidate ->
+            try {
+                def probe = providers.exec {
+                    commandLine candidate, '-c', 'import sys; sys.exit(0 if sys.version_info >= (3, 8) else 1)'
+                    ignoreExitValue = true
+                }
+                probe.result.get().exitValue == 0
+            } catch (Exception ignored) {
+                false
+            }
+        }
+        if (python == null) {
+            throw new GradleException("checkCredits needs Python 3.8 or newer, but none of ${candidates} " +
+                    'runs. Install it, or name one with -Pss13.python=<path>.')
+        }
+
+        def run = providers.exec {
+            commandLine python, file.absolutePath, root.asFile.absolutePath
+            ignoreExitValue = true
+        }
+        def output = run.standardOutput.asText.get() + run.standardError.asText.get()
+        if (run.result.get().exitValue != 0) {
+            throw new GradleException("checkCredits: CREDITS doesn't match the assets.\n" + output.trim())
+        }
+        logger.lifecycle(output.trim())
+    }
+}
+
+tasks.named('check') { dependsOn checkCredits }
