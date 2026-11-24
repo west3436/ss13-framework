@@ -1,0 +1,94 @@
+import com.vanniktech.maven.publish.GradlePlugin
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.SourcesJar
+
+plugins {
+    id 'groovy-gradle-plugin'
+    id 'com.vanniktech.maven.publish' version '0.37.0'
+}
+
+// Released with the framework, at the mod's version, from the framework's gradle.properties. Each
+// src/main/groovy/<id>.gradle is a plugin of that id:
+//
+//   io.github.west3436.ss13.conventions  any project: Java 21, Spotless, NeoForge and Parchment
+//                                        from gradle.properties, and Central publishing for a
+//                                        project that applies com.vanniktech.maven.publish
+//   io.github.west3436.ss13.api          an API jar: a GAMELIBRARY, its checks (packages,
+//                                        dependencies, strict javadoc, apiCompat) and publishing
+//   io.github.west3436.ss13.credits      the root project: checkCredits, run by check
+def framework = new Properties()
+file('../gradle.properties').withInputStream { framework.load(it) }
+def snapshot = providers.gradleProperty('snapshot').getOrElse('false').toBoolean()
+group = 'io.github.west3436'
+version = snapshot ? "${framework.mod_version}-SNAPSHOT" : framework.mod_version
+
+repositories {
+    gradlePluginPortal()
+    mavenCentral()
+}
+
+// The plugins these apply, at the versions every mod builds with. A mod that applies one of ours
+// gets them with it, so its own plugins block names them without a version, or not at all.
+dependencies {
+    implementation 'com.diffplug.spotless:spotless-plugin-gradle:8.10.4'
+    implementation 'com.vanniktech:gradle-maven-publish-plugin:0.37.0'
+}
+
+// Gradle itself may run on Java 17, whatever Java the mods compile for.
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+tasks.withType(GroovyCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+// The asset check, from the framework's own copy, so the plugin runs the same script as its CI.
+tasks.named('processResources', ProcessResources) {
+    from('../scripts') {
+        include 'check_credits.py'
+        into 'io/github/west3436/ss13/gradle'
+    }
+}
+
+// Central, as the framework's jars are published: a snapshot to the Central snapshots repository, a
+// release as a Portal deployment, signed whenever a key is given. The plugin markers, which let a
+// plugins block find each plugin by its id, are published with it.
+mavenPublishing {
+    configure(new GradlePlugin(new JavadocJar.Empty(), new SourcesJar.Sources()))
+    publishToMavenCentral()
+    if (!providers.gradleProperty('signingInMemoryKey').getOrElse('').isBlank()) {
+        signAllPublications()
+    }
+    pom {
+        name = 'SS13 Framework Gradle plugins'
+        description = 'The build conventions of ZAS³, Expedition, NT Engineering and SS13 Framework: ' +
+                'Spotless, NeoForge and Parchment versions, Maven Central publishing, the API jar checks ' +
+                'and binary-compatibility check, and the asset credits check.'
+        url = 'https://github.com/west3436/ss13-framework'
+        inceptionYear = '2026'
+        licenses {
+            license {
+                name = 'MIT License'
+                url = 'https://opensource.org/licenses/MIT'
+                distribution = 'repo'
+            }
+        }
+        developers {
+            developer {
+                id = 'west3436'
+                name = 'west3436'
+                url = 'https://github.com/west3436'
+            }
+        }
+        scm {
+            url = 'https://github.com/west3436/ss13-framework'
+            connection = 'scm:git:https://github.com/west3436/ss13-framework.git'
+            developerConnection = 'scm:git:ssh://git@github.com/west3436/ss13-framework.git'
+        }
+        issueManagement {
+            system = 'GitHub'
+            url = 'https://github.com/west3436/ss13-framework/issues'
+        }
+    }
+}

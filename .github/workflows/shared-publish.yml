@@ -1,0 +1,118 @@
+name: Publish to Maven Central (shared)
+
+# Releases the jars of a released version to Maven Central, signed, with their
+# sources and javadoc jars. A release on Central can never be changed or
+# removed, so a mod's publish workflow starts only from the Actions tab, by a
+# maintainer naming the release's tag. Snapshots are published by
+# shared-build.yml instead. A mod's publish-api.yml calls it:
+#
+#   on:
+#     workflow_dispatch:
+#       inputs:
+#         tag:
+#           description: The release tag whose API to publish, such as v1.0.0
+#           required: true
+#   permissions:
+#     contents: read
+#   jobs:
+#     publish:
+#       uses: west3436/ss13-framework/.github/workflows/shared-publish.yml@v0.2.0
+#       with:
+#         tag: ${{ inputs.tag }}
+#         publish: ":expedition-api:publishAndReleaseToMavenCentral"
+#         what: "expedition-api {api_version}"
+#       secrets: inherit
+#
+# It checks that the tag is v<mod_version> and on main, and that the secrets
+# are set, before Gradle runs. Central checks the upload before it publishes
+# anything: if a check fails, nothing is released and the job fails.
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: The release tag to publish, such as v0.1.0.
+        type: string
+        required: true
+      publish:
+        description: The Gradle arguments that publish and release, such as "publishAndReleaseToMavenCentral".
+        type: string
+        required: true
+      what:
+        description: >-
+          What is published, for the run's notice, such as "expedition-api
+          {api_version}". {name} is name's value in gradle.properties.
+        type: string
+        required: true
+      java-version:
+        description: The Java that runs Gradle.
+        type: string
+        default: "21"
+    secrets:
+      CENTRAL_USERNAME:
+        required: false
+      CENTRAL_PASSWORD:
+        required: false
+      SIGNING_KEY:
+        required: false
+      SIGNING_PASSWORD:
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    env:
+      ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.CENTRAL_USERNAME }}
+      ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.CENTRAL_PASSWORD }}
+      # Central requires signatures on releases.
+      ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+      ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag }}
+          # The whole history, to check that the tag is on main.
+          fetch-depth: 0
+      - name: Check the tag and the secrets
+        shell: bash
+        env:
+          TAG: ${{ inputs.tag }}
+          WHAT: ${{ inputs.what }}
+        run: |
+          mod=$(sed -n 's/^mod_version=//p' gradle.properties)
+          if [ "$TAG" != "v$mod" ]; then
+            echo "::error::$TAG isn't the tag of mod_version $mod, which would be v$mod."
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor HEAD origin/main; then
+            echo "::error::$TAG isn't on main."
+            exit 1
+          fi
+          if [ -z "$ORG_GRADLE_PROJECT_mavenCentralUsername" ] || [ -z "$ORG_GRADLE_PROJECT_mavenCentralPassword" ]; then
+            echo "::error::CENTRAL_USERNAME or CENTRAL_PASSWORD is not set."
+            exit 1
+          fi
+          if [ -z "$ORG_GRADLE_PROJECT_signingInMemoryKey" ]; then
+            echo "::error::SIGNING_KEY is not set, and Central takes no unsigned release."
+            exit 1
+          fi
+          what="$WHAT"
+          for key in $(grep -oE '\{[A-Za-z0-9_.]+\}' <<< "$what" | sort -u | tr -d '{}'); do
+            value=$(grep -E "^${key//./\\.}=" gradle.properties | head -1 | cut -d= -f2-)
+            what="${what//"{$key}"/"$value"}"
+          done
+          echo "::notice::Publishing $what from $TAG."
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: ${{ inputs.java-version }}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Publish and release
+        shell: bash
+        env:
+          ARGS: ${{ inputs.publish }}
+        run: ./gradlew $ARGS --stacktrace

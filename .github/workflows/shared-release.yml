@@ -1,0 +1,177 @@
+name: Release (shared)
+
+# A tag v<mod_version> on a commit on main builds the jars and attaches them,
+# with their SHA256SUMS.txt, to a draft GitHub release, which a maintainer reads
+# and then publishes. A 0.x version is marked as a pre-release. On any other
+# event, such as a PR that changes the release workflow, it builds the same jars
+# and writes the same notes without releasing anything, so the workflow is tried
+# before a tag needs it. A mod's release.yml calls it:
+#
+#   on:
+#     push:
+#       tags: ["v*"]
+#     pull_request:
+#       paths: [".github/workflows/release.yml"]
+#   permissions:
+#     contents: read
+#   jobs:
+#     release:
+#       permissions:
+#         contents: write
+#       uses: west3436/ss13-framework/.github/workflows/shared-release.yml@v0.2.0
+#       with:
+#         title: Expedition
+#         build: ":expedition:jar :expedition-api:jar :expedition-api:sourcesJar :expedition-api:plainJavadocJar"
+#         assets: |
+#           expedition/build/libs/expedition-{mod_version}.jar
+#           expedition-api/build/libs/expedition-api-{api_version}.jar
+#           expedition-api/build/libs/expedition-api-{api_version}-sources.jar
+#           expedition-api/build/libs/expedition-api-{api_version}-javadoc.jar
+#         notes: |
+#           For Minecraft 1.21.1 on NeoForge. Needs ZAS³ {zas_floor_version} or newer.
+#
+#           Guides are on the [wiki]({wiki}).
+#
+# In `assets` and `notes`, {name} is the value of name in gradle.properties,
+# such as {mod_version}; {repo} is the repository, owner/name, and {wiki} its
+# wiki's address. A name that is in neither fails the build.
+
+on:
+  workflow_call:
+    inputs:
+      title:
+        description: The release's title, before the version, such as "Expedition".
+        type: string
+        required: true
+      build:
+        description: The Gradle arguments that build the jars.
+        type: string
+        required: true
+      assets:
+        description: The files to attach, one per line, from the repository root.
+        type: string
+        required: true
+      notes:
+        description: The release notes, in Markdown.
+        type: string
+        required: true
+      java-version:
+        description: The Java that runs Gradle.
+        type: string
+        default: "21"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build the release jars
+    runs-on: ubuntu-latest
+    outputs:
+      mod: ${{ steps.version.outputs.mod }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # The whole history, to check that a tag is on main.
+          fetch-depth: 0
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: ${{ inputs.java-version }}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Read and check the version
+        id: version
+        shell: bash
+        run: |
+          mod=$(sed -n 's/^mod_version=//p' gradle.properties)
+          echo "mod=$mod" >> "$GITHUB_OUTPUT"
+          if [ "$GITHUB_EVENT_NAME" = push ] && [ "$GITHUB_REF_TYPE" = tag ]; then
+            if [ "$GITHUB_REF_NAME" != "v$mod" ]; then
+              echo "::error::The tag $GITHUB_REF_NAME doesn't match mod_version $mod: it should be v$mod."
+              exit 1
+            fi
+            # CI has already tested every commit on main; a tag elsewhere hasn't been.
+            if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+              echo "::error::$GITHUB_REF_NAME isn't on main."
+              exit 1
+            fi
+          fi
+      - name: Build
+        shell: bash
+        env:
+          ARGS: ${{ inputs.build }}
+        run: ./gradlew $ARGS --stacktrace
+      # cp fails the job if any file is missing.
+      - name: Collect the jars and write the notes
+        shell: bash
+        env:
+          ASSETS: ${{ inputs.assets }}
+          NOTES: ${{ inputs.notes }}
+        run: |
+          # {name} becomes name's value in gradle.properties; {repo} and {wiki}
+          # are the repository's.
+          expand() {
+            local text="$1" key value
+            for key in $(grep -oE '\{[A-Za-z0-9_.]+\}' <<< "$text" | sort -u | tr -d '{}'); do
+              case "$key" in
+                repo) value="$GITHUB_REPOSITORY" ;;
+                wiki) value="https://github.com/$GITHUB_REPOSITORY/wiki" ;;
+                *)
+                  value=$(grep -E "^${key//./\\.}=" gradle.properties | head -1 | cut -d= -f2-)
+                  if [ -z "$value" ]; then
+                    echo "::error::{$key} isn't set in gradle.properties." >&2
+                    return 1
+                  fi
+                  ;;
+              esac
+              text="${text//"{$key}"/"$value"}"
+            done
+            printf '%s\n' "$text"
+          }
+          mkdir release notes
+          files=$(expand "$ASSETS")
+          while IFS= read -r file; do
+            [ -n "$file" ] || continue
+            cp "$file" release/
+          done <<< "$files"
+          (cd release && sha256sum * > SHA256SUMS.txt)
+          ls -l release
+          expand "$NOTES" > notes/notes.md
+          cat notes/notes.md
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release
+          path: release
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release-notes
+          path: notes
+
+  release:
+    name: Draft the GitHub release
+    needs: build
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: release
+          path: release
+      - uses: actions/download-artifact@v8
+        with:
+          name: release-notes
+          path: notes
+      - name: Draft the release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          MOD: ${{ needs.build.outputs.mod }}
+          TITLE: ${{ inputs.title }}
+        run: |
+          pre=""
+          case "$MOD" in 0.*) pre="--prerelease" ;; esac
+          gh release create "$GITHUB_REF_NAME" release/* --draft $pre --verify-tag \
+            --title "$TITLE $MOD" --notes-file notes/notes.md
