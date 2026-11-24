@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "ss13_framework:item/high_capacity_battery",
+    "layer1": "ss13_framework:item/battery_charge_full"
+  }
+}

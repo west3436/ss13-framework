@@ -24,10 +24,14 @@ public final class FrameworkCreativeTab {
 
     private FrameworkCreativeTab() {}
 
-    /** The tab's contents, in order: the crafting components and stock parts, then the tools. */
+    /** The tab's contents, in order: the crafting components and stock parts, then the tools, then each battery empty and full. */
     private static void fill(CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output out) {
         FrameworkItems.components().forEach(c -> out.accept(c.get()));
         FrameworkItems.tools().forEach(t -> out.accept(t.get()));
+        FrameworkItems.batteries().forEach(b -> {
+            out.accept(b.get());
+            out.accept(b.get().full());
+        });
     }
 
     /**

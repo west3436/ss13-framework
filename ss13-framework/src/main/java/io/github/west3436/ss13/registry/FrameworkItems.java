@@ -1,6 +1,7 @@
 package io.github.west3436.ss13.registry;
 
 import io.github.west3436.ss13.api.FrameworkApi;
+import io.github.west3436.ss13.power.BatteryItem;
 import io.github.west3436.ss13.tool.CrowbarItem;
 import io.github.west3436.ss13.tool.MultitoolItem;
 import io.github.west3436.ss13.tool.WelderItem;
@@ -20,6 +21,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
  * io.github.west3436.ss13.api.construction.PartTags tags}; the frames are blocks. What a tool does
  * to a block is that block's mod's, through the capabilities in {@code
  * io.github.west3436.ss13.api.tool}.
+ *
+ * <p>The batteries, which are also SS13's power cells, moved from ZAS³ too, ids and all.
  */
 public final class FrameworkItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(FrameworkApi.MOD_ID);
@@ -88,6 +91,15 @@ public final class FrameworkItems {
     /** Welds while lit, burning fuel; a {@code WeldingTool}. */
     public static final DeferredItem<WelderItem> WELDER = ITEMS.registerItem("welder", WelderItem::new);
 
+    // The batteries, which are also SS13's power cells: one item set for every mod.
+
+    public static final DeferredItem<BatteryItem> BATTERY =
+            ITEMS.registerItem("battery", p -> new BatteryItem(100_000, p));
+    public static final DeferredItem<BatteryItem> HIGH_CAPACITY_BATTERY =
+            ITEMS.registerItem("high_capacity_battery", p -> new BatteryItem(1_000_000, p));
+    public static final DeferredItem<BatteryItem> SUPER_CAPACITY_BATTERY =
+            ITEMS.registerItem("super_capacity_battery", p -> new BatteryItem(2_000_000, p));
+
     private FrameworkItems() {}
 
     /**
@@ -141,6 +153,15 @@ public final class FrameworkItems {
      */
     public static List<DeferredItem<? extends Item>> tools() {
         return List.of(MULTITOOL, WRENCH, CROWBAR, SCREWDRIVER, WIRECUTTERS, WELDER);
+    }
+
+    /**
+     * The batteries, smallest first: 100,000, 1,000,000 and 2,000,000 FE.
+     *
+     * @return every one of them
+     */
+    public static List<DeferredItem<BatteryItem>> batteries() {
+        return List.of(BATTERY, HIGH_CAPACITY_BATTERY, SUPER_CAPACITY_BATTERY);
     }
 
     /**

@@ -283,6 +283,78 @@ path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/reinfo
 origin: original
 notes: A flat item model for the reinforced glass sheet sprite.
 
+# The batteries, also SS13's power cells, moved from ZAS³.
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/battery.png
+origin: vgstation13
+source: icons/obj/power.dmi
+state: cell
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: vg's power cell as it is, 11 x 8: grey.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/high_capacity_battery.png
+origin: vgstation13
+source: icons/obj/power.dmi
+state: hcell
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: vg's high-capacity cell as it is: red, one stripe.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/super_capacity_battery.png
+origin: vgstation13
+source: icons/obj/power.dmi
+state: scell, ucell
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: vg's super-capacity cell (two stripes) recoloured in the blues of vg's ultra cell, ucell.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/battery_charge_partial.png
+origin: vgstation13
+source: icons/obj/power.dmi
+state: cell-o1
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: vg's part-charged overlay (yellow), in the charge window every tier shares; layer1 of the _partial item models.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/battery_charge_full.png
+origin: vgstation13
+source: icons/obj/power.dmi
+state: cell-o2
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: vg's full overlay (green), in the charge window every tier shares; layer1 of the _full item models.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/battery.json
+origin: original
+notes: A flat item model for the battery, empty; its overrides pick battery_partial and battery_full by the ss13_framework:charge property.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/battery_partial.json
+origin: original
+notes: The battery part charged: its sprite with battery_charge_partial.png as layer1.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/battery_full.json
+origin: original
+notes: The battery full: its sprite with battery_charge_full.png as layer1.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/high_capacity_battery.json
+origin: original
+notes: A flat item model for the high-capacity battery, empty; its overrides pick the _partial and _full models by the ss13_framework:charge property.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/high_capacity_battery_partial.json
+origin: original
+notes: The high-capacity battery part charged: its sprite with battery_charge_partial.png as layer1.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/high_capacity_battery_full.json
+origin: original
+notes: The high-capacity battery full: its sprite with battery_charge_full.png as layer1.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/super_capacity_battery.json
+origin: original
+notes: A flat item model for the super-capacity battery, empty; its overrides pick the _partial and _full models by the ss13_framework:charge property.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/super_capacity_battery_partial.json
+origin: original
+notes: The super-capacity battery part charged: its sprite with battery_charge_partial.png as layer1.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/super_capacity_battery_full.json
+origin: original
+notes: The super-capacity battery full: its sprite with battery_charge_full.png as layer1.
+
 # The SS13 tools. The multitool, wrench and crowbar moved from ZAS³; the screwdriver, wirecutters
 # and welder were drawn for the framework.
 path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/multitool.png

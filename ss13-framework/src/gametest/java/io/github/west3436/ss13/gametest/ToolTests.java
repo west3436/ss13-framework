@@ -118,7 +118,7 @@ public final class ToolTests {
         List<Item> tools =
                 FrameworkItems.tools().stream().map(t -> (Item) t.get()).toList();
         int components = FrameworkItems.components().size();
-        h.assertValueEqual(shown.subList(components, shown.size()), tools, "the tab after the components");
+        h.assertValueEqual(shown.subList(components, components + tools.size()), tools, "the tab after the components");
         h.succeed();
     }
 
