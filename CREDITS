@@ -105,7 +105,7 @@ origin: vgstation13
 source: icons/obj/machines/constructable.dmi
 state: box_0
 commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
-notes: As is: vg's sprite (32 x 26) in its own 32 x 32 frame (D-72). vg's empty machine frame, used here as a crafting item, not a block.
+notes: As is: vg's sprite (32 x 26) in its own 32 x 32 frame (D-72). vg's empty machine frame, the machine frame block's item sprite.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/machine_frame.json
 origin: original
@@ -299,3 +299,277 @@ license: Bitstream-Vera
 attribution: Bitstream and the DejaVu fonts team; license text in META-INF/licenses/DejaVu-Fonts.txt
 adapted: Cut down to the Latin, Greek, punctuation, arrow, maths, shape and symbol ranges.
 
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/quadratic_capacitor.png
+origin: vgstation13
+source: icons/obj/stock_parts.dmi
+state: capacitor2_super
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: Recoloured from the framework's super_capacitor sprite: hues of its coloured pixels turned 280 degrees to mark the tier.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/advanced_scanning_module.png
+origin: vgstation13
+source: icons/obj/stock_parts.dmi
+state: scan_module
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: Recoloured from the framework's scanning_module sprite: hues of its coloured pixels turned 100 degrees to mark the tier.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/advanced_scanning_module.png.mcmeta
+origin: vgstation13
+source: icons/obj/stock_parts.dmi
+state: scan_module
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: The scanning_module sprite's frame delays, as they are.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/phasic_scanning_module.png
+origin: vgstation13
+source: icons/obj/stock_parts.dmi
+state: scan_module
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: Recoloured from the framework's scanning_module sprite: hues of its coloured pixels turned 200 degrees to mark the tier.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/phasic_scanning_module.png.mcmeta
+origin: vgstation13
+source: icons/obj/stock_parts.dmi
+state: scan_module
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: The scanning_module sprite's frame delays, as they are.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/triphasic_scanning_module.png
+origin: vgstation13
+source: icons/obj/stock_parts.dmi
+state: scan_module
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: Recoloured from the framework's scanning_module sprite: hues of its coloured pixels turned 280 degrees to mark the tier.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/triphasic_scanning_module.png.mcmeta
+origin: vgstation13
+source: icons/obj/stock_parts.dmi
+state: scan_module
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: The scanning_module sprite's frame delays, as they are.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/nano_manipulator.png
+origin: vgstation13
+source: icons/obj/stock_parts.dmi
+state: micro_mani
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: Recoloured from the framework's micro_manipulator sprite: hues of its coloured pixels turned 100 degrees to mark the tier.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/pico_manipulator.png
+origin: vgstation13
+source: icons/obj/stock_parts.dmi
+state: micro_mani
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: Recoloured from the framework's micro_manipulator sprite: hues of its coloured pixels turned 200 degrees to mark the tier.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/femto_manipulator.png
+origin: vgstation13
+source: icons/obj/stock_parts.dmi
+state: micro_mani
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: Recoloured from the framework's micro_manipulator sprite: hues of its coloured pixels turned 280 degrees to mark the tier.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/high_power_micro_laser.png
+origin: vgstation13
+source: icons/obj/stock_parts.dmi
+state: micro_laser
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: Recoloured from the framework's micro_laser sprite: hues of its coloured pixels turned 100 degrees to mark the tier.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/ultra_high_power_micro_laser.png
+origin: vgstation13
+source: icons/obj/stock_parts.dmi
+state: micro_laser
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: Recoloured from the framework's micro_laser sprite: hues of its coloured pixels turned 200 degrees to mark the tier.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/quad_ultra_micro_laser.png
+origin: vgstation13
+source: icons/obj/stock_parts.dmi
+state: micro_laser
+commit: 23f25f386f7a6c75b1a604029848d798e8b7ec06
+notes: Recoloured from the framework's micro_laser sprite: hues of its coloured pixels turned 280 degrees to mark the tier.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/matter_bin.png
+origin: original
+notes: A small open-topped bin, its band coloured by tier.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/advanced_matter_bin.png
+origin: original
+notes: A small open-topped bin, its band coloured by tier.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/super_matter_bin.png
+origin: original
+notes: A small open-topped bin, its band coloured by tier.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/bluespace_matter_bin.png
+origin: original
+notes: A small open-topped bin, its band coloured by tier.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/computer_frame.png
+origin: original
+notes: An empty console frame: a desk and an empty monitor.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/block/frame.png
+origin: original
+notes: Bolted grey metal for the frames' bars.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/block/frame_cable.png
+origin: original
+notes: Red cable for a wired frame.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/block/frame_board.png
+origin: original
+notes: A green circuit board inside a frame.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/block/frame_screen.png
+origin: original
+notes: A console screen on a computer frame.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/quadratic_capacitor.json
+origin: original
+notes: A flat item model for the quadratic capacitor sprite.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/advanced_scanning_module.json
+origin: original
+notes: A flat item model for the advanced scanning module sprite.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/phasic_scanning_module.json
+origin: original
+notes: A flat item model for the phasic scanning module sprite.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/triphasic_scanning_module.json
+origin: original
+notes: A flat item model for the triphasic scanning module sprite.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/nano_manipulator.json
+origin: original
+notes: A flat item model for the nano manipulator sprite.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/pico_manipulator.json
+origin: original
+notes: A flat item model for the pico manipulator sprite.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/femto_manipulator.json
+origin: original
+notes: A flat item model for the femto manipulator sprite.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/high_power_micro_laser.json
+origin: original
+notes: A flat item model for the high power micro laser sprite.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/ultra_high_power_micro_laser.json
+origin: original
+notes: A flat item model for the ultra high power micro laser sprite.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/quad_ultra_micro_laser.json
+origin: original
+notes: A flat item model for the quad ultra micro laser sprite.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/matter_bin.json
+origin: original
+notes: A flat item model for the matter bin sprite.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/advanced_matter_bin.json
+origin: original
+notes: A flat item model for the advanced matter bin sprite.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/super_matter_bin.json
+origin: original
+notes: A flat item model for the super matter bin sprite.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/bluespace_matter_bin.json
+origin: original
+notes: A flat item model for the bluespace matter bin sprite.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/computer_frame.json
+origin: original
+notes: A flat item model for the computer frame sprite.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/machine_frame_empty.json
+origin: original
+notes: The machine frame at its empty stage.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/machine_frame_wired.json
+origin: original
+notes: The machine frame at its wired stage.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/machine_frame_board.json
+origin: original
+notes: The machine frame at its board stage.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/blockstates/machine_frame.json
+origin: original
+notes: The machine frame's model for each stage and facing.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_empty.json
+origin: original
+notes: The computer frame at its empty stage.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_board.json
+origin: original
+notes: The computer frame at its board stage.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_secured.json
+origin: original
+notes: The computer frame at its secured stage.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_wired.json
+origin: original
+notes: The computer frame at its wired stage.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_screen.json
+origin: original
+notes: The computer frame at its screen stage.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/blockstates/computer_frame.json
+origin: original
+notes: The computer frame's model for each stage and facing.
+
+path: ss13-framework/src/gametest/resources/assets/ss13_framework/models/block/test_machine.json
+origin: original
+notes: A dev-only model for a GameTest block, from vanilla textures.
+
+path: ss13-framework/src/gametest/resources/assets/ss13_framework/blockstates/test_machine.json
+origin: original
+notes: A dev-only blockstate for a GameTest block.
+
+path: ss13-framework/src/gametest/resources/assets/ss13_framework/models/item/test_machine.json
+origin: original
+notes: A dev-only item model for a GameTest block.
+
+path: ss13-framework/src/gametest/resources/assets/ss13_framework/models/block/test_console.json
+origin: original
+notes: A dev-only model for a GameTest block, from vanilla textures.
+
+path: ss13-framework/src/gametest/resources/assets/ss13_framework/blockstates/test_console.json
+origin: original
+notes: A dev-only blockstate for a GameTest block.
+
+path: ss13-framework/src/gametest/resources/assets/ss13_framework/models/item/test_console.json
+origin: original
+notes: A dev-only item model for a GameTest block.
+
+path: ss13-framework/src/gametest/resources/assets/ss13_framework/models/item/test_machine_board.json
+origin: original
+notes: A dev-only item model for a GameTest item, from an existing texture.
+
+path: ss13-framework/src/gametest/resources/assets/ss13_framework/models/item/test_console_board.json
+origin: original
+notes: A dev-only item model for a GameTest item, from an existing texture.
+
+path: ss13-framework/src/gametest/resources/assets/ss13_framework/models/item/test_wrench.json
+origin: original
+notes: A dev-only item model for a GameTest item, from an existing texture.
+
+path: ss13-framework/src/gametest/resources/assets/ss13_framework/models/item/test_screwdriver.json
+origin: original
+notes: A dev-only item model for a GameTest item, from an existing texture.
+
+path: ss13-framework/src/gametest/resources/assets/ss13_framework/models/item/test_crowbar.json
+origin: original
+notes: A dev-only item model for a GameTest item, from an existing texture.
+
+path: ss13-framework/src/gametest/resources/assets/ss13_framework/models/item/test_wirecutter.json
+origin: original
+notes: A dev-only item model for a GameTest item, from an existing texture.

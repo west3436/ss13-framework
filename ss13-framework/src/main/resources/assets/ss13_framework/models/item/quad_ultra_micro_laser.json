@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "ss13_framework:item/quad_ultra_micro_laser"
+  }
+}

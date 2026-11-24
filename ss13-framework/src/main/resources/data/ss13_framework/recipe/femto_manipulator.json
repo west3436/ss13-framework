@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "ss13_framework:pico_manipulator"
+    },
+    {
+      "item": "ss13_framework:pico_manipulator"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "ss13_framework:bluespace_crystal"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "ss13_framework:femto_manipulator"
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "variants": {
+    "anchored=false,facing=north,stage=empty": {
+      "model": "ss13_framework:block/machine_frame_empty"
+    },
+    "anchored=false,facing=east,stage=empty": {
+      "model": "ss13_framework:block/machine_frame_empty",
+      "y": 90
+    },
+    "anchored=false,facing=south,stage=empty": {
+      "model": "ss13_framework:block/machine_frame_empty",
+      "y": 180
+    },
+    "anchored=false,facing=west,stage=empty": {
+      "model": "ss13_framework:block/machine_frame_empty",
+      "y": 270
+    },
+    "anchored=true,facing=north,stage=empty": {
+      "model": "ss13_framework:block/machine_frame_empty"
+    },
+    "anchored=true,facing=east,stage=empty": {
+      "model": "ss13_framework:block/machine_frame_empty",
+      "y": 90
+    },
+    "anchored=true,facing=south,stage=empty": {
+      "model": "ss13_framework:block/machine_frame_empty",
+      "y": 180
+    },
+    "anchored=true,facing=west,stage=empty": {
+      "model": "ss13_framework:block/machine_frame_empty",
+      "y": 270
+    },
+    "anchored=false,facing=north,stage=wired": {
+      "model": "ss13_framework:block/machine_frame_wired"
+    },
+    "anchored=false,facing=east,stage=wired": {
+      "model": "ss13_framework:block/machine_frame_wired",
+      "y": 90
+    },
+    "anchored=false,facing=south,stage=wired": {
+      "model": "ss13_framework:block/machine_frame_wired",
+      "y": 180
+    },
+    "anchored=false,facing=west,stage=wired": {
+      "model": "ss13_framework:block/machine_frame_wired",
+      "y": 270
+    },
+    "anchored=true,facing=north,stage=wired": {
+      "model": "ss13_framework:block/machine_frame_wired"
+    },
+    "anchored=true,facing=east,stage=wired": {
+      "model": "ss13_framework:block/machine_frame_wired",
+      "y": 90
+    },
+    "anchored=true,facing=south,stage=wired": {
+      "model": "ss13_framework:block/machine_frame_wired",
+      "y": 180
+    },
+    "anchored=true,facing=west,stage=wired": {
+      "model": "ss13_framework:block/machine_frame_wired",
+      "y": 270
+    },
+    "anchored=false,facing=north,stage=board": {
+      "model": "ss13_framework:block/machine_frame_board"
+    },
+    "anchored=false,facing=east,stage=board": {
+      "model": "ss13_framework:block/machine_frame_board",
+      "y": 90
+    },
+    "anchored=false,facing=south,stage=board": {
+      "model": "ss13_framework:block/machine_frame_board",
+      "y": 180
+    },
+    "anchored=false,facing=west,stage=board": {
+      "model": "ss13_framework:block/machine_frame_board",
+      "y": 270
+    },
+    "anchored=true,facing=north,stage=board": {
+      "model": "ss13_framework:block/machine_frame_board"
+    },
+    "anchored=true,facing=east,stage=board": {
+      "model": "ss13_framework:block/machine_frame_board",
+      "y": 90
+    },
+    "anchored=true,facing=south,stage=board": {
+      "model": "ss13_framework:block/machine_frame_board",
+      "y": 180
+    },
+    "anchored=true,facing=west,stage=board": {
+      "model": "ss13_framework:block/machine_frame_board",
+      "y": 270
+    }
+  }
+}
