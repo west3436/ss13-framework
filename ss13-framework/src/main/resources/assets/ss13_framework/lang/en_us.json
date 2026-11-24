@@ -1,0 +1,10 @@
+{
+  "gui.ss13_framework.label": "Label",
+  "gui.ss13_framework.device.off": "Off",
+  "gui.ss13_framework.device.on": "On",
+  "gui.ss13_framework.device.redstone": "Redstone",
+  "gui.ss13_framework.device.redstone.held": "Held by redstone",
+  "gui.ss13_framework.device.redstone.high": "High",
+  "gui.ss13_framework.device.redstone.ignored": "Ignored",
+  "gui.ss13_framework.device.redstone.low": "Low"
+}

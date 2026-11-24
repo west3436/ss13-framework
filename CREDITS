@@ -64,3 +64,22 @@
 #
 # Run the check locally with: python scripts/check_credits.py
 
+# The TGUI window kit, moved from ZAS³. The build generates the fonts' definitions for each size
+# and GUI scale (generateTguiFonts), so only the faces themselves are kept here.
+path: ss13-framework/src/main/resources/assets/ss13_framework/lang/en_us.json
+origin: original
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/font/dejavu_sans.ttf
+origin: other
+source: https://dejavu-fonts.github.io/ (DejaVu Sans 2.37)
+license: Bitstream-Vera
+attribution: Bitstream and the DejaVu fonts team; license text in META-INF/licenses/DejaVu-Fonts.txt
+adapted: Cut down to the Latin, Greek, punctuation, arrow, maths, shape and symbol ranges.
+
+path: ss13-framework/src/main/resources/assets/ss13_framework/font/dejavu_sans_bold.ttf
+origin: other
+source: https://dejavu-fonts.github.io/ (DejaVu Sans Bold 2.37)
+license: Bitstream-Vera
+attribution: Bitstream and the DejaVu fonts team; license text in META-INF/licenses/DejaVu-Fonts.txt
+adapted: Cut down to the Latin, Greek, punctuation, arrow, maths, shape and symbol ranges.
+
