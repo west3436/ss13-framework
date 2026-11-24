@@ -72,21 +72,25 @@ An asset that moves in from ZAS³ or Expedition brings its `CREDITS` entry
 with it, with the path changed.
 
 Leave out any asset whose origin or license is unclear. The full format is
-at the top of `CREDITS`. Check it with `python scripts/check_credits.py`
-(Python 3, no dependencies). It lists asset files with no entry, entries for
-files that don't exist, malformed entries, `goon/` sources and licenses that
-aren't allowed. CI runs it in "Build and test".
+at the top of `CREDITS`. Check it with `./gradlew checkCredits`, which
+`build` runs too, or `python scripts/check_credits.py` (Python 3, no
+dependencies). It lists asset files with no entry, entries for files that
+don't exist, malformed entries, `goon/` sources and licenses that aren't
+allowed. ZAS³, Expedition and NT Engineering run the same script through the
+framework's Gradle plugin, so a change to it reaches all of them.
 
 No NonCommercial or NoDerivatives asset ships in any jar.
 
 ## Building and testing
 
 You need a JDK to run Gradle (17 or newer); the build fetches Java 21 for the
-mod itself.
+mod itself. `build` also needs Python 3 for the asset check: `python3` or
+`python` on the PATH, or `-Pss13.python=<path>`.
 
 | Command | What it does |
 |---|---|
-| `./gradlew build` | Compiles both jars, runs the unit tests, and checks formatting, the API's packages and dependencies, its javadoc and its compatibility |
+| `./gradlew build` | Compiles the jars, runs the unit tests, and checks the asset credits, formatting, the API's packages and dependencies, its javadoc and its compatibility |
+| `./gradlew checkCredits` | Checks that every asset has a valid `CREDITS` entry |
 | `./gradlew :ss13-framework:runGameTestServer` | Boots a dedicated GameTest server with the mod and runs its GameTests |
 | `./gradlew :example-consumer:runOneCopyGameTestServer` | Loads two built consumers, each nesting the framework and one of them a newer copy, on a GameTest server with nothing else, and checks that one copy of each jar loads, the newest; not part of `build` or `runGameTestServer` |
 | `./gradlew :ss13-framework:runClient` | Starts a dev client with the mod |
@@ -94,7 +98,7 @@ mod itself.
 | `./gradlew spotlessApply` | Formats the Java sources (palantir-java-format) |
 | `./gradlew :ss13-framework-api:apiCompat` | Checks the API for binary-incompatible changes against the last release |
 | `./gradlew :ss13-framework-api:javadoc` | Builds the API's javadoc and fails on a broken or missing comment: every public or protected member needs one, with its `@param`, `@return` and `@throws`. `build` runs it |
-| `./gradlew publishToMavenLocal` | Puts both jars in your local Maven repository, to try them in ZAS³ or Expedition before a release |
+| `./gradlew publishToMavenLocal :ss13-gradle-plugin:publishToMavenLocal` | Puts the jars and the Gradle plugins in your local Maven repository, to try them in ZAS³ or Expedition before a release |
 
 ### Projects
 
@@ -107,9 +111,39 @@ mod itself.
 - **`ss13-framework`** is the `ss13_framework` mod,
   `io.github.west3436:ss13-framework`, in `io.github.west3436.ss13`. It nests
   the API, so a mod that nests the mod gets both.
+- **`ss13-framework-testkit`** is `io.github.west3436:ss13-framework-testkit`,
+  in `io.github.west3436.ss13.testkit`: helpers for the tests of the mods
+  that use the framework. It loads as a `GAMELIBRARY`, depends on nothing
+  but Minecraft and NeoForge, and is never nested. Its GameTests are the
+  mod's `TestKitTests`; `PlayerTextScan` has unit tests of its own.
 
 Neither depends on ZAS³, Expedition or NT Engineering. A feature that needs
 gas reads `zas-api` from the mod that uses it, never from here.
+
+### Build tooling
+
+The build, the checks and CI that the framework shares with ZAS³, Expedition
+and NT Engineering live here, so a fix reaches all four:
+
+- **`ss13-gradle-plugin`**, an included build, is
+  `io.github.west3436:ss13-gradle-plugin`: the Gradle plugins
+  `io.github.west3436.ss13.conventions` (Java 21, Spotless, NeoForge and
+  Parchment versions, Central publishing), `io.github.west3436.ss13.api` (an
+  API jar's checks, `apiCompat` and publishing) and
+  `io.github.west3436.ss13.credits` (`checkCredits`). The framework builds
+  with them from source; the mods get them from Maven Central at the
+  framework's version. Each plugin's file in
+  `ss13-gradle-plugin/src/main/groovy` says what it does and how to apply it.
+- **`.github/workflows/shared-*.yml`** are reusable workflows: `shared-build`
+  (build, GameTests, snapshots, docs links), `shared-gametests` (one GameTest
+  run, such as a row of an adapter matrix), `shared-release` (a draft GitHub
+  release from a tag) and `shared-publish` (a release to Maven Central). The
+  framework's own `ci.yml`, `release.yml` and `publish.yml` call them, so
+  every change is tried here first. Each file's header shows how a mod calls
+  it.
+
+A change to either can break the mods' builds once they take the new version,
+so say in the PR what a mod has to change.
 
 ### Versions
 
@@ -133,9 +167,9 @@ version, set the three `api_baseline_` lines to it.
 2. Fill in the PR template: link the issue (`Closes #nn`) and tick the
    checklist. For a player-facing change made with AI, include the human
    testing evidence described in [Using AI](#using-ai).
-3. CI must pass: "Build and test" (asset credits, build, unit tests,
+3. CI must pass: "ci / Build and test" (asset credits, build, unit tests,
    formatting, the API's javadoc with no comment missing, and GameTests) and
-   "Docs links".
+   "ci / Docs links".
 4. PRs are squash-merged, so the PR title becomes the commit subject. Write it
    in the imperative: "Add the TGUI window kit".
 
@@ -149,12 +183,12 @@ Maintainers only.
    drafts a GitHub release with them and their `SHA256SUMS.txt`. Read it, then
    publish it.
 3. Run [Publish to Maven Central](.github/workflows/publish.yml) from the
-   Actions tab with the tag. It publishes both jars, signed. A release on
-   Central can never be changed or removed.
+   Actions tab with the tag. It publishes the jars and the Gradle plugins,
+   signed. A release on Central can never be changed or removed.
 4. Set the `api_baseline_` lines in `gradle.properties` to the new release.
 
-CI publishes `-SNAPSHOT` versions of both jars after every green build on
-`main`. Publishing needs the repository secrets `CENTRAL_USERNAME` and
-`CENTRAL_PASSWORD` (a Central Portal user token), and for releases
-`SIGNING_KEY` and `SIGNING_PASSWORD` (an ASCII-armoured GPG key). Without
-the first two, CI skips the snapshot.
+CI publishes `-SNAPSHOT` versions of the jars and the Gradle plugins after
+every green build on `main`. Publishing needs the repository secrets
+`CENTRAL_USERNAME` and `CENTRAL_PASSWORD` (a Central Portal user token), and
+for releases `SIGNING_KEY` and `SIGNING_PASSWORD` (an ASCII-armoured GPG
+key). Without the first two, CI skips the snapshot.
