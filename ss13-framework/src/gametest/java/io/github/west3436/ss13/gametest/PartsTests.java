@@ -164,7 +164,11 @@ public final class PartsTests {
                 tab.getDisplayItems().stream().map(ItemStack::getItem).toList();
         List<Item> components =
                 FrameworkItems.components().stream().map(DeferredItem::get).toList();
-        helper.assertTrue(shown.equals(components), "the tab shows " + shown);
+        // The components come first; the tools follow them (ToolTests).
+        helper.assertTrue(
+                shown.size() >= components.size()
+                        && shown.subList(0, components.size()).equals(components),
+                "the tab shows " + shown);
         helper.succeed();
     }
 
@@ -187,7 +191,7 @@ public final class PartsTests {
         helper.succeed();
     }
 
-    private static JsonObject json(GameTestHelper helper, String path) {
+    static JsonObject json(GameTestHelper helper, String path) {
         try (InputStream in = PartsTests.class.getResourceAsStream(path)) {
             helper.assertTrue(in != null, "no " + path);
             return JsonParser.parseReader(new InputStreamReader(in, StandardCharsets.UTF_8))

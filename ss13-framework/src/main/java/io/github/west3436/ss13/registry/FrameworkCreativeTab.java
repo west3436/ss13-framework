@@ -24,9 +24,10 @@ public final class FrameworkCreativeTab {
 
     private FrameworkCreativeTab() {}
 
-    /** The tab's contents, in order: the crafting components and stock parts. */
+    /** The tab's contents, in order: the crafting components and stock parts, then the tools. */
     private static void fill(CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output out) {
         FrameworkItems.components().forEach(c -> out.accept(c.get()));
+        FrameworkItems.tools().forEach(t -> out.accept(t.get()));
     }
 
     /**
