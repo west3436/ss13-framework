@@ -1,0 +1,64 @@
+import com.vanniktech.maven.publish.JavaLibrary
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.SourcesJar
+
+apply plugin: 'net.neoforged.moddev'
+apply plugin: 'com.vanniktech.maven.publish'
+
+// Helpers for the GameTests and unit tests of the mods that use the framework: test players, a
+// player that keeps what the server sends it, logs of sounds and errors, and the scan for text a
+// player can read. Released with the mod, at its version. A mod adds it to its gametest and test
+// source sets and never nests it, so it never ships in a mod jar.
+//
+// It loads as its own GAMELIBRARY module, as the API does, so its classes see Minecraft's in a
+// GameTest server's game layer without being part of any mod. It depends on nothing but Minecraft
+// and NeoForge, which the mod that uses it brings.
+jar {
+    manifest {
+        attributes(
+            'Automatic-Module-Name': 'io.github.west3436.ss13.testkit',
+            'FMLModType': 'GAMELIBRARY',
+            'Implementation-Title': 'ss13-framework-testkit',
+            'Implementation-Version': project.version,
+        )
+    }
+}
+
+// Unit tests of PlayerTextScan. Minecraft's classes are on the test classpath, but the game is never
+// bootstrapped. The GameTests of the rest are the framework's own, in :ss13-framework.
+neoForge {
+    addModdingDependenciesTo(sourceSets.test)
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.13.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
+    // PlayerTextScanTest scans a directory of compiled classes: its own.
+    def classes = sourceSets.test.java.destinationDirectory
+    inputs.dir(classes).withPropertyName('testClasses')
+    systemProperty 'ss13.testkit.testClasses', classes.get().asFile.absolutePath
+}
+
+// Its javadoc is what mods read to use it, so a broken or missing comment fails check, as the
+// API's does.
+tasks.named('javadoc', Javadoc) {
+    options.addBooleanOption('Xdoclint:all', true)
+    options.addBooleanOption('Werror', true)
+}
+tasks.named('check') { dependsOn tasks.named('javadoc') }
+
+mavenPublishing {
+    configure(new JavaLibrary(new JavadocJar.Javadoc(), new SourcesJar.Sources()))
+    coordinates('io.github.west3436', 'ss13-framework-testkit', project.version.toString())
+    pom {
+        name = 'SS13 Framework test kit'
+        description = 'GameTest and unit-test helpers for NeoForge mods: hurtable test players, a player ' +
+                'that records what the server sends it, logs of sounds and errors, and a scan for ' +
+                'player-facing text written in the code. For test source sets only; never nested.'
+    }
+}

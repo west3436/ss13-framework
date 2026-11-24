@@ -20,6 +20,10 @@ rootProject.name = 'ss13-framework-root'
 // ss13-framework: the ss13_framework mod, which nests the API.
 include 'ss13-framework-api', 'ss13-framework'
 
+// ss13-framework-testkit: helpers for the tests of mods that use the framework, published beside
+// the two jars at the mod's version. Mods add it to their test source sets and never nest it.
+include 'ss13-framework-testkit'
+
 // A consumer that nests both jars as the README says, never published. Its one-copy run checks that
 // two consumers nesting different framework versions load one copy, the newest.
 include 'example-consumer'

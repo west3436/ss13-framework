@@ -10,8 +10,9 @@ Shared SS13 parts for Minecraft (NeoForge 1.21.1) mods: crafting components and 
 | --- | --- | --- |
 | `ss13_framework` mod | `io.github.west3436:ss13-framework` | The shared items, windows and devices. Nests the API. |
 | API | `io.github.west3436:ss13-framework-api` | The contracts, in `io.github.west3436.ss13.api`. A `GAMELIBRARY` that depends only on Minecraft and NeoForge. |
+| Test kit | `io.github.west3436:ss13-framework-testkit` | Helpers for a mod's tests, in `io.github.west3436.ss13.testkit`. Released with the mod, at its version. Never nested. |
 
-Both are on Maven Central, with `-SNAPSHOT` builds from `main` in the [Central snapshots repository](https://central.sonatype.com/repository/maven-snapshots/).
+All three are on Maven Central, with `-SNAPSHOT` builds from `main` in the [Central snapshots repository](https://central.sonatype.com/repository/maven-snapshots/).
 
 ## Nesting the framework
 
@@ -46,6 +47,27 @@ When several mods nest the framework, NeoForge loads one copy of each jar. It ta
 - **While the framework is 0.x, mods released together must nest the same minor version.** One mod on `[0.1.0,0.2.0)` and another on `[0.2.0,0.3.0)` have no version in common, and the game doesn't start.
 
 The [example consumer](example-consumer/build.gradle) nests the framework this way. CI runs it on a server beside a second consumer that nests a newer copy, and checks that one copy loads and that it's the newest.
+
+## Testing with the test kit
+
+The test kit holds what the mods' tests share:
+
+- `TestPlayers`: a fake player that damage reaches, and a payload context from a player.
+- `ListeningPlayer`: a player that keeps every packet the server sends it.
+- `SoundLog`: the sounds the server played, by position.
+- `FaultLog`: the errors logged while it's open.
+- `PlayerTextScan`: the strings in compiled classes that can reach a player as text, and the translation keys the code spells out, for a unit test that no player text is written in the code.
+
+Add it to the GameTest and unit-test source sets only. It loads as a `GAMELIBRARY`, so a GameTest server finds it on the classpath, and it never goes in a mod jar:
+
+```groovy
+dependencies {
+    gametestImplementation 'io.github.west3436:ss13-framework-testkit:0.1.0'
+    // For PlayerTextScan, which needs Minecraft on the test classpath:
+    // neoForge { addModdingDependenciesTo(sourceSets.test) }
+    testImplementation 'io.github.west3436:ss13-framework-testkit:0.1.0'
+}
+```
 
 ## Building
 
