@@ -65,6 +65,9 @@ dependencies {
 
     api project(':ss13-framework-api')
 
+    // The test kit, as the mods that use the framework add it: its own GameTests are here.
+    gametestImplementation project(':ss13-framework-testkit')
+
     // The mod nests the API, so a mod that nests the mod gets both. ModDevGradle takes the
     // jar-in-jar range only from a module selector, so the API is requested by coordinates and
     // substituted with the project.

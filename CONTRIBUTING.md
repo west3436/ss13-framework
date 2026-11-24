@@ -107,6 +107,11 @@ mod itself.
 - **`ss13-framework`** is the `ss13_framework` mod,
   `io.github.west3436:ss13-framework`, in `io.github.west3436.ss13`. It nests
   the API, so a mod that nests the mod gets both.
+- **`ss13-framework-testkit`** is `io.github.west3436:ss13-framework-testkit`,
+  in `io.github.west3436.ss13.testkit`: helpers for the tests of the mods
+  that use the framework. It loads as a `GAMELIBRARY`, depends on nothing
+  but Minecraft and NeoForge, and is never nested. Its GameTests are the
+  mod's `TestKitTests`; `PlayerTextScan` has unit tests of its own.
 
 Neither depends on ZAS³, Expedition or NT Engineering. A feature that needs
 gas reads `zas-api` from the mod that uses it, never from here.
