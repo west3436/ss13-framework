@@ -2,179 +2,261 @@
   "parent": "block/block",
   "render_type": "minecraft:cutout",
   "textures": {
-    "front": "ss13_framework:block/computer_frame_board",
-    "casing": "ss13_framework:block/computer_frame_casing",
-    "particle": "ss13_framework:block/computer_frame_casing"
+    "strut": "ss13_framework:block/computer_frame_strut",
+    "panel": "ss13_framework:block/computer_frame_panel",
+    "circuit": "ss13_framework:block/computer_frame_circuit",
+    "particle": "ss13_framework:block/computer_frame_panel"
   },
   "elements": [
     {
-      "name": "monitor",
-      "from": [
-        0,
-        14,
-        6
-      ],
-      "to": [
-        14,
-        16,
-        16
-      ],
+      "from": [0, 0, 2],
+      "to": [15, 1, 16],
       "faces": {
         "north": {
-          "uv": [
-            1.0,
-            7.5,
-            8.0,
-            8.5
-          ],
-          "texture": "#front"
+          "uv": [1, 15, 16, 16],
+          "texture": "#panel"
         },
         "south": {
-          "uv": [
-            1.0,
-            7.0,
-            8.0,
-            8.0
-          ],
-          "texture": "#casing"
+          "uv": [0, 15, 15, 16],
+          "texture": "#panel",
+          "cullface": "south"
         },
         "east": {
-          "uv": [
-            6,
-            0,
-            16,
-            2
-          ],
-          "texture": "#casing"
+          "uv": [0, 15, 14, 16],
+          "texture": "#panel"
+        },
+        "up": {
+          "uv": [0, 2, 15, 16],
+          "texture": "#panel"
         },
         "down": {
-          "uv": [
-            0,
-            6,
-            14,
-            16
-          ],
-          "texture": "#casing"
+          "uv": [0, 0, 15, 14],
+          "texture": "#panel",
+          "cullface": "down"
         }
       }
     },
     {
-      "name": "shelf",
-      "from": [
-        0,
-        9,
-        0
-      ],
-      "to": [
-        16,
-        14,
-        16
-      ],
+      "from": [13, 1, 2],
+      "to": [15, 10, 4],
       "faces": {
         "north": {
-          "uv": [
-            0.0,
-            8.5,
-            8.0,
-            11.0
-          ],
-          "texture": "#front"
+          "uv": [0, 0, 2, 9],
+          "texture": "#strut"
         },
         "south": {
-          "uv": [
-            0.0,
-            4.5,
-            8.0,
-            7.0
-          ],
-          "texture": "#casing"
+          "uv": [0, 0, 2, 9],
+          "texture": "#strut"
         },
         "east": {
-          "uv": [
-            0,
-            2,
-            16,
-            7
-          ],
-          "texture": "#casing"
+          "uv": [0, 0, 2, 9],
+          "texture": "#strut"
+        },
+        "west": {
+          "uv": [0, 0, 2, 9],
+          "texture": "#strut"
         },
         "up": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#casing"
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#casing"
+          "uv": [0, 0, 2, 2],
+          "texture": "#strut"
         }
       }
     },
     {
-      "name": "pedestal",
-      "from": [
-        0,
-        0,
-        2
-      ],
-      "to": [
-        14,
-        9,
-        16
-      ],
+      "from": [13, 1, 14],
+      "to": [15, 10, 16],
       "faces": {
         "north": {
-          "uv": [
-            1.0,
-            11.0,
-            8.0,
-            15.5
-          ],
-          "texture": "#front"
+          "uv": [0, 0, 2, 9],
+          "texture": "#strut"
         },
         "south": {
-          "uv": [
-            1.0,
-            0.0,
-            8.0,
-            4.5
-          ],
-          "texture": "#casing"
+          "uv": [0, 0, 2, 9],
+          "texture": "#strut",
+          "cullface": "south"
         },
         "east": {
-          "uv": [
-            2,
-            7,
-            16,
-            16
-          ],
-          "texture": "#casing"
+          "uv": [0, 0, 2, 9],
+          "texture": "#strut"
+        },
+        "west": {
+          "uv": [0, 0, 2, 9],
+          "texture": "#strut"
         },
         "up": {
-          "uv": [
-            0,
-            2,
-            14,
-            16
-          ],
-          "texture": "#casing"
+          "uv": [0, 0, 2, 2],
+          "texture": "#strut"
+        }
+      }
+    },
+    {
+      "from": [0, 10, 0],
+      "to": [16, 12, 2],
+      "faces": {
+        "north": {
+          "uv": [0, 0, 2, 16],
+          "texture": "#strut",
+          "rotation": 90,
+          "cullface": "north"
+        },
+        "south": {
+          "uv": [0, 0, 2, 16],
+          "texture": "#strut",
+          "rotation": 90
+        },
+        "east": {
+          "uv": [0, 0, 2, 2],
+          "texture": "#strut",
+          "cullface": "east"
+        },
+        "up": {
+          "uv": [0, 0, 2, 16],
+          "texture": "#strut",
+          "rotation": 90
         },
         "down": {
-          "uv": [
-            0,
-            2,
-            14,
-            16
-          ],
-          "texture": "#casing"
+          "uv": [0, 0, 2, 16],
+          "texture": "#strut",
+          "rotation": 90
+        }
+      }
+    },
+    {
+      "from": [0, 10, 14],
+      "to": [16, 12, 16],
+      "faces": {
+        "north": {
+          "uv": [0, 0, 2, 16],
+          "texture": "#strut",
+          "rotation": 90
+        },
+        "south": {
+          "uv": [0, 0, 2, 16],
+          "texture": "#strut",
+          "rotation": 90,
+          "cullface": "south"
+        },
+        "east": {
+          "uv": [0, 0, 2, 2],
+          "texture": "#strut",
+          "cullface": "east"
+        },
+        "up": {
+          "uv": [0, 0, 2, 16],
+          "texture": "#strut",
+          "rotation": 90
+        },
+        "down": {
+          "uv": [0, 0, 2, 16],
+          "texture": "#strut",
+          "rotation": 90
+        }
+      }
+    },
+    {
+      "from": [14, 10, 2],
+      "to": [16, 12, 14],
+      "faces": {
+        "east": {
+          "uv": [0, 0, 2, 12],
+          "texture": "#strut",
+          "rotation": 90,
+          "cullface": "east"
+        },
+        "west": {
+          "uv": [0, 0, 2, 12],
+          "texture": "#strut",
+          "rotation": 90
+        },
+        "up": {
+          "uv": [0, 0, 2, 12],
+          "texture": "#strut"
+        },
+        "down": {
+          "uv": [0, 0, 2, 12],
+          "texture": "#strut"
+        }
+      }
+    },
+    {
+      "from": [14, 12, 6],
+      "to": [16, 16, 8],
+      "faces": {
+        "north": {
+          "uv": [0, 0, 2, 4],
+          "texture": "#strut"
+        },
+        "south": {
+          "uv": [0, 0, 2, 4],
+          "texture": "#strut"
+        },
+        "east": {
+          "uv": [0, 0, 2, 4],
+          "texture": "#strut",
+          "cullface": "east"
+        },
+        "west": {
+          "uv": [0, 0, 2, 4],
+          "texture": "#strut"
+        }
+      }
+    },
+    {
+      "from": [14, 12, 14],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": {
+          "uv": [0, 0, 2, 4],
+          "texture": "#strut"
+        },
+        "south": {
+          "uv": [0, 0, 2, 4],
+          "texture": "#strut",
+          "cullface": "south"
+        },
+        "east": {
+          "uv": [0, 0, 2, 4],
+          "texture": "#strut",
+          "cullface": "east"
+        },
+        "west": {
+          "uv": [0, 0, 2, 4],
+          "texture": "#strut"
+        }
+      }
+    },
+    {
+      "from": [-7, 14.75, 14],
+      "to": [9, 24.75, 15],
+      "rotation": {
+        "angle": -22.5,
+        "axis": "z",
+        "origin": [1.0, 19.75, 14]
+      },
+      "faces": {
+        "north": {
+          "uv": [0, 0, 16, 10],
+          "texture": "#circuit"
+        },
+        "south": {
+          "uv": [0, 11, 16, 16],
+          "texture": "#circuit"
+        },
+        "east": {
+          "uv": [0, 11, 1, 16],
+          "texture": "#circuit"
+        },
+        "west": {
+          "uv": [0, 11, 1, 16],
+          "texture": "#circuit"
+        },
+        "up": {
+          "uv": [0, 11, 16, 12],
+          "texture": "#circuit"
+        },
+        "down": {
+          "uv": [0, 11, 16, 12],
+          "texture": "#circuit"
         }
       }
     }

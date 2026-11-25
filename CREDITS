@@ -435,11 +435,11 @@ notes: vg's frame delays (0.2 s, then 0.1 s), at 2 ticks per tenth of a second.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/welder.json
 origin: original
-notes: A flat item model for the welder sprite, which shows welder_lit while the welder is lit.
+notes: A handheld item model, held as a tool, for the welder sprite, which shows welder_lit while the welder is lit.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/item/welder_lit.json
 origin: original
-notes: A flat item model for the lit welder sprite.
+notes: A handheld item model, held as a tool, for the lit welder sprite.
 
 # The TGUI window kit, moved from ZAS³. The build generates the fonts' definitions for each size
 # and GUI scale (generateTguiFonts), so only the faces themselves are kept here.
@@ -497,7 +497,8 @@ origin: vgstation13
 source: icons/obj/stock_parts.dmi
 state: ultra_scan_module
 commit: e8a375269b9c16d7c62ed2c357c23e7bd2437ed3
-notes: As is: vg's sprite (22 x 21) in its own 32 x 32 frame (D-72). vg's tier-4 bluespace scanning module, its 5 frames stacked.
+adapted: Each frame cropped to 16 x 16 (columns 8-23, rows 9-24 of vg's 32 x 32), which puts the module's body where the phasic module's is; the outermost sparks of frames 4 and 5 (8 and 24 pixels) fall outside and are cut.
+notes: vg's tier-4 bluespace scanning module, its 5 frames stacked. Cropped so it shows at the size of the other scanning modules: vg draws them all on one grid, and its 32 x 32 frame made this one half their size.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/textures/item/triphasic_scanning_module.png.mcmeta
 origin: vgstation13
@@ -682,132 +683,109 @@ path: ss13-framework/src/main/resources/assets/ss13_framework/blockstates/comput
 origin: original
 notes: The 2 x 2 computer frame's four blocks in each facing and stage, each its own model.
 
-path: ss13-framework/src/main/resources/assets/ss13_framework/textures/block/computer_frame_empty.png
-origin: vgstation13
-source: icons/obj/machines/constructable.dmi
-state: 0
-commit: e8a375269b9c16d7c62ed2c357c23e7bd2437ed3
-adapted: Transparent pixels inside the three faces filled with #1C1C1C.
-notes: The computer frame's front, empty: vg's sprite as it is (32 x 32), across the 2 x 2 console's front faces, 1 texel a pixel. Gaps inside the monitor, shelf and pedestal faces are filled with vg's outline black (#1C1C1C), so the faces have no holes.
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/block/computer_frame_strut.png
+origin: original
+notes: Square grey tube for the computer frame's open chassis, in vg's frame greys (#6A6A6A lit edge, #464646 shaded edge), with screw silver in its corner.
 
-path: ss13-framework/src/main/resources/assets/ss13_framework/textures/block/computer_frame_board.png
-origin: vgstation13
-source: icons/obj/machines/constructable.dmi
-state: 1
-commit: e8a375269b9c16d7c62ed2c357c23e7bd2437ed3
-adapted: Transparent pixels inside the three faces filled with #1C1C1C.
-notes: The computer frame's front, with its board in: vg's sprite as it is (32 x 32), across the 2 x 2 console's front faces, 1 texel a pixel. Gaps inside the monitor, shelf and pedestal faces are filled with vg's outline black (#1C1C1C), so the faces have no holes.
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/block/computer_frame_panel.png
+origin: original
+notes: A grey casing panel with a lit and a shaded edge and four rivets, in vg's frame greys, tiled over the computer frame's floor plate and, once its screen is in, its sides, top and back.
 
-path: ss13-framework/src/main/resources/assets/ss13_framework/textures/block/computer_frame_secured.png
-origin: vgstation13
-source: icons/obj/machines/constructable.dmi
-state: 2
-commit: e8a375269b9c16d7c62ed2c357c23e7bd2437ed3
-adapted: Transparent pixels inside the three faces filled with #1C1C1C.
-notes: The computer frame's front, with its board secured: vg's sprite as it is (32 x 32), across the 2 x 2 console's front faces, 1 texel a pixel. Gaps inside the monitor, shelf and pedestal faces are filled with vg's outline black (#1C1C1C), so the faces have no holes.
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/block/computer_frame_circuit.png
+origin: original
+notes: The computer frame's circuit board, 16 x 10: green board, chips, traces, mounting holes and gold edge fingers, with its edge colour below.
 
-path: ss13-framework/src/main/resources/assets/ss13_framework/textures/block/computer_frame_wired.png
-origin: vgstation13
-source: icons/obj/machines/constructable.dmi
-state: 3
-commit: e8a375269b9c16d7c62ed2c357c23e7bd2437ed3
-adapted: Transparent pixels inside the three faces filled with #1C1C1C.
-notes: The computer frame's front, wired: vg's sprite as it is (32 x 32), across the 2 x 2 console's front faces, 1 texel a pixel. Gaps inside the monitor, shelf and pedestal faces are filled with vg's outline black (#1C1C1C), so the faces have no holes.
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/block/computer_frame_cable.png
+origin: original
+notes: Red cable for the computer frame's wiring, in three reds on a diagonal so a 1-wide run shows a twist.
 
-path: ss13-framework/src/main/resources/assets/ss13_framework/textures/block/computer_frame_screen.png
-origin: vgstation13
-source: icons/obj/machines/constructable.dmi
-state: 4
-commit: e8a375269b9c16d7c62ed2c357c23e7bd2437ed3
-adapted: Transparent pixels inside the three faces filled with #1C1C1C.
-notes: The computer frame's front, with its screen on: vg's sprite as it is (32 x 32), across the 2 x 2 console's front faces, 1 texel a pixel. Gaps inside the monitor, shelf and pedestal faces are filled with vg's outline black (#1C1C1C), so the faces have no holes.
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/block/computer_frame_glass.png
+origin: original
+notes: The computer frame's monitor front once the screen is in (32 x 19 at the top): a grey bezel round dark, unpowered glass with a faint glare.
 
-path: ss13-framework/src/main/resources/assets/ss13_framework/textures/block/computer_frame_casing.png
-origin: vgstation13
-source: icons/obj/machines/constructable.dmi
-state: 0
-commit: e8a375269b9c16d7c62ed2c357c23e7bd2437ed3
-notes: The computer frame's sides, top and back: vg's frame grey (#545454), one colour.
+path: ss13-framework/src/main/resources/assets/ss13_framework/textures/block/computer_frame_front.png
+origin: original
+notes: The computer frame's desk and pedestal fronts once the screen is in: a keyboard with its keys dark (rows 0-5), the desk's lip (rows 6-8) and the pedestal's vent panel (rows 9-18).
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_empty_lower_left.json
 origin: original
-notes: The 2 x 2 computer frame's lower left block, empty, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts.
+notes: The 2 x 2 computer frame's lower left block, empty: an open chassis of grey struts (a floor plate, four pedestal posts, a desk ring, four monitor posts, a top ring and two mounting rails across the back) that you can see through, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_empty_lower_right.json
 origin: original
-notes: The 2 x 2 computer frame's lower right block, empty, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts.
+notes: The 2 x 2 computer frame's lower right block, empty: an open chassis of grey struts (a floor plate, four pedestal posts, a desk ring, four monitor posts, a top ring and two mounting rails across the back) that you can see through, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_empty_upper_left.json
 origin: original
-notes: The 2 x 2 computer frame's upper left block, empty, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts.
+notes: The 2 x 2 computer frame's upper left block, empty: an open chassis of grey struts (a floor plate, four pedestal posts, a desk ring, four monitor posts, a top ring and two mounting rails across the back) that you can see through, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_empty_upper_right.json
 origin: original
-notes: The 2 x 2 computer frame's upper right block, empty, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts.
+notes: The 2 x 2 computer frame's upper right block, empty: an open chassis of grey struts (a floor plate, four pedestal posts, a desk ring, four monitor posts, a top ring and two mounting rails across the back) that you can see through, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_board_lower_left.json
 origin: original
-notes: The 2 x 2 computer frame's lower left block, with its board in, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts.
+notes: The 2 x 2 computer frame's lower left block, with its board in: the open chassis with the circuit board loose, leaning crooked on the mounting rails (one element turned 22.5 degrees, in the lower left block's model), facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_board_lower_right.json
 origin: original
-notes: The 2 x 2 computer frame's lower right block, with its board in, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts.
+notes: The 2 x 2 computer frame's lower right block, with its board in: the open chassis with the circuit board loose, leaning crooked on the mounting rails (one element turned 22.5 degrees, in the lower left block's model), facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_board_upper_left.json
 origin: original
-notes: The 2 x 2 computer frame's upper left block, with its board in, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts.
+notes: The 2 x 2 computer frame's upper left block, with its board in: the open chassis with the circuit board loose, leaning crooked on the mounting rails (one element turned 22.5 degrees, in the lower left block's model), facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_board_upper_right.json
 origin: original
-notes: The 2 x 2 computer frame's upper right block, with its board in, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts.
+notes: The 2 x 2 computer frame's upper right block, with its board in: the open chassis with the circuit board loose, leaning crooked on the mounting rails (one element turned 22.5 degrees, in the lower left block's model), facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_secured_lower_left.json
 origin: original
-notes: The 2 x 2 computer frame's lower left block, with its board secured, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts.
+notes: The 2 x 2 computer frame's lower left block, with its board secured: the open chassis with the circuit board flat on the mounting rails and screwed down at its four corners, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_secured_lower_right.json
 origin: original
-notes: The 2 x 2 computer frame's lower right block, with its board secured, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts.
+notes: The 2 x 2 computer frame's lower right block, with its board secured: the open chassis with the circuit board flat on the mounting rails and screwed down at its four corners, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_secured_upper_left.json
 origin: original
-notes: The 2 x 2 computer frame's upper left block, with its board secured, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts.
+notes: The 2 x 2 computer frame's upper left block, with its board secured: the open chassis with the circuit board flat on the mounting rails and screwed down at its four corners, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_secured_upper_right.json
 origin: original
-notes: The 2 x 2 computer frame's upper right block, with its board secured, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts.
+notes: The 2 x 2 computer frame's upper right block, with its board secured: the open chassis with the circuit board flat on the mounting rails and screwed down at its four corners, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_wired_lower_left.json
 origin: original
-notes: The 2 x 2 computer frame's lower left block, wired, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts. A cable 2 wide runs down its right side, from vg's sprite.
+notes: The 2 x 2 computer frame's lower left block, wired: the secured board with red cable runs, one down to the floor and two along the back and forward to the monitor's front posts, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_wired_lower_right.json
 origin: original
-notes: The 2 x 2 computer frame's lower right block, wired, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts. A cable 2 wide runs down its right side, from vg's sprite.
+notes: The 2 x 2 computer frame's lower right block, wired: the secured board with red cable runs, one down to the floor and two along the back and forward to the monitor's front posts, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_wired_upper_left.json
 origin: original
-notes: The 2 x 2 computer frame's upper left block, wired, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts. A cable 2 wide runs down its right side, from vg's sprite.
+notes: The 2 x 2 computer frame's upper left block, wired: the secured board with red cable runs, one down to the floor and two along the back and forward to the monitor's front posts, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_wired_upper_right.json
 origin: original
-notes: The 2 x 2 computer frame's upper right block, wired, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts. A cable 2 wide runs down its right side, from vg's sprite.
+notes: The 2 x 2 computer frame's upper right block, wired: the secured board with red cable runs, one down to the floor and two along the back and forward to the monitor's front posts, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_screen_lower_left.json
 origin: original
-notes: The 2 x 2 computer frame's lower left block, with its screen on, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts. A cable 2 wide runs down its right side, from vg's sprite.
+notes: The 2 x 2 computer frame's lower left block, with its screen in: the casing closed as the finished console's shape (a monitor 10 deep at the back, a desk the full depth, a pedestal set 2 back) and the glass dark, unpowered, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_screen_lower_right.json
 origin: original
-notes: The 2 x 2 computer frame's lower right block, with its screen on, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts. A cable 2 wide runs down its right side, from vg's sprite.
+notes: The 2 x 2 computer frame's lower right block, with its screen in: the casing closed as the finished console's shape (a monitor 10 deep at the back, a desk the full depth, a pedestal set 2 back) and the glass dark, unpowered, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_screen_upper_left.json
 origin: original
-notes: The 2 x 2 computer frame's upper left block, with its screen on, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts. A cable 2 wide runs down its right side, from vg's sprite.
+notes: The 2 x 2 computer frame's upper left block, with its screen in: the casing closed as the finished console's shape (a monitor 10 deep at the back, a desk the full depth, a pedestal set 2 back) and the glass dark, unpowered, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/main/resources/assets/ss13_framework/models/block/computer_frame_screen_upper_right.json
 origin: original
-notes: The 2 x 2 computer frame's upper right block, with its screen on, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks: a monitor 10 deep at the back, a shelf the full depth and a pedestal set 2 back, matching vg's sprite, whose pixels map 1 to 1 onto their fronts. A cable 2 wide runs down its right side, from vg's sprite.
+notes: The 2 x 2 computer frame's upper right block, with its screen in: the casing closed as the finished console's shape (a monitor 10 deep at the back, a desk the full depth, a pedestal set 2 back) and the glass dark, unpowered, facing north. The console is built from boxes in one 32 x 32 x 16 space and cut into its four blocks; its textures keep 1 texel to a pixel.
 
 path: ss13-framework/src/gametest/resources/assets/ss13_framework/models/block/test_machine.json
 origin: original
