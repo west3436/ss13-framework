@@ -2,59 +2,34 @@
   "parent": "block/block",
   "render_type": "minecraft:cutout",
   "textures": {
-    "front": "ss13_framework:block/computer_frame_screen",
-    "casing": "ss13_framework:block/computer_frame_casing",
-    "particle": "ss13_framework:block/computer_frame_casing"
+    "panel": "ss13_framework:block/computer_frame_panel",
+    "glass": "ss13_framework:block/computer_frame_glass",
+    "front": "ss13_framework:block/computer_frame_front",
+    "particle": "ss13_framework:block/computer_frame_panel"
   },
   "elements": [
     {
-      "name": "monitor",
-      "from": [
-        0,
-        0,
-        6
-      ],
-      "to": [
-        14,
-        13,
-        16
-      ],
+      "from": [0, 0, 6],
+      "to": [16, 16, 16],
       "faces": {
         "north": {
-          "uv": [
-            1.0,
-            1.0,
-            8.0,
-            7.5
-          ],
-          "texture": "#front"
+          "uv": [0.0, 0.0, 8.0, 8.0],
+          "texture": "#glass"
         },
         "south": {
-          "uv": [
-            1.0,
-            8.0,
-            8.0,
-            14.5
-          ],
-          "texture": "#casing"
+          "uv": [0, 0, 16, 16],
+          "texture": "#panel",
+          "cullface": "south"
         },
         "east": {
-          "uv": [
-            6,
-            3,
-            16,
-            16
-          ],
-          "texture": "#casing"
+          "uv": [0, 0, 10, 16],
+          "texture": "#panel",
+          "cullface": "east"
         },
         "up": {
-          "uv": [
-            0,
-            6,
-            14,
-            16
-          ],
-          "texture": "#casing"
+          "uv": [0, 6, 16, 16],
+          "texture": "#panel",
+          "cullface": "up"
         }
       }
     }
