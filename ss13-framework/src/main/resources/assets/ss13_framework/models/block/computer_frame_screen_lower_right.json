@@ -1,0 +1,242 @@
+{
+  "parent": "block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "front": "ss13_framework:block/computer_frame_screen",
+    "casing": "ss13_framework:block/computer_frame_casing",
+    "particle": "ss13_framework:block/computer_frame_casing"
+  },
+  "elements": [
+    {
+      "name": "monitor",
+      "from": [
+        2,
+        14,
+        6
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            8.0,
+            7.5,
+            15.0,
+            8.5
+          ],
+          "texture": "#front"
+        },
+        "south": {
+          "uv": [
+            8.0,
+            7.0,
+            15.0,
+            8.0
+          ],
+          "texture": "#casing"
+        },
+        "west": {
+          "uv": [
+            6,
+            0,
+            16,
+            2
+          ],
+          "texture": "#casing"
+        },
+        "down": {
+          "uv": [
+            2,
+            6,
+            16,
+            16
+          ],
+          "texture": "#casing"
+        }
+      }
+    },
+    {
+      "name": "shelf",
+      "from": [
+        4,
+        9,
+        0
+      ],
+      "to": [
+        16,
+        14,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            8.0,
+            8.5,
+            14.0,
+            11.0
+          ],
+          "texture": "#front"
+        },
+        "south": {
+          "uv": [
+            8.0,
+            4.5,
+            14.0,
+            7.0
+          ],
+          "texture": "#casing"
+        },
+        "west": {
+          "uv": [
+            0,
+            2,
+            16,
+            7
+          ],
+          "texture": "#casing"
+        },
+        "up": {
+          "uv": [
+            4,
+            0,
+            16,
+            16
+          ],
+          "texture": "#casing"
+        },
+        "down": {
+          "uv": [
+            4,
+            0,
+            16,
+            16
+          ],
+          "texture": "#casing"
+        }
+      }
+    },
+    {
+      "name": "pedestal",
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        16,
+        9,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            8.0,
+            11.0,
+            15.0,
+            15.5
+          ],
+          "texture": "#front"
+        },
+        "south": {
+          "uv": [
+            8.0,
+            0.0,
+            15.0,
+            4.5
+          ],
+          "texture": "#casing"
+        },
+        "west": {
+          "uv": [
+            2,
+            7,
+            16,
+            16
+          ],
+          "texture": "#casing"
+        },
+        "up": {
+          "uv": [
+            2,
+            2,
+            16,
+            16
+          ],
+          "texture": "#casing"
+        },
+        "down": {
+          "uv": [
+            2,
+            2,
+            16,
+            16
+          ],
+          "texture": "#casing"
+        }
+      }
+    },
+    {
+      "name": "cable",
+      "from": [
+        0,
+        11,
+        10
+      ],
+      "to": [
+        2,
+        16,
+        12
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            15.0,
+            7.5,
+            16.0,
+            10.0
+          ],
+          "texture": "#front"
+        },
+        "south": {
+          "uv": [
+            15.0,
+            7.5,
+            16.0,
+            10.0
+          ],
+          "texture": "#front"
+        },
+        "east": {
+          "uv": [
+            15.0,
+            7.5,
+            16.0,
+            10.0
+          ],
+          "texture": "#front"
+        },
+        "west": {
+          "uv": [
+            15.0,
+            7.5,
+            16.0,
+            10.0
+          ],
+          "texture": "#front"
+        },
+        "down": {
+          "uv": [
+            15.0,
+            9.5,
+            16.0,
+            10.0
+          ],
+          "texture": "#front"
+        }
+      }
+    }
+  ]
+}

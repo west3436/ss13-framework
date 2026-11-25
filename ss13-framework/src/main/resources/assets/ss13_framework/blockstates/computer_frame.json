@@ -1,153 +1,303 @@
 {
   "variants": {
-    "anchored=false,facing=north,stage=empty": {
-      "model": "ss13_framework:block/computer_frame_empty"
+    "facing=north,half=lower,side=left,stage=empty": {
+      "model": "ss13_framework:block/computer_frame_empty_lower_left"
     },
-    "anchored=false,facing=east,stage=empty": {
-      "model": "ss13_framework:block/computer_frame_empty",
+    "facing=east,half=lower,side=left,stage=empty": {
+      "model": "ss13_framework:block/computer_frame_empty_lower_left",
       "y": 90
     },
-    "anchored=false,facing=south,stage=empty": {
-      "model": "ss13_framework:block/computer_frame_empty",
+    "facing=south,half=lower,side=left,stage=empty": {
+      "model": "ss13_framework:block/computer_frame_empty_lower_left",
       "y": 180
     },
-    "anchored=false,facing=west,stage=empty": {
-      "model": "ss13_framework:block/computer_frame_empty",
+    "facing=west,half=lower,side=left,stage=empty": {
+      "model": "ss13_framework:block/computer_frame_empty_lower_left",
       "y": 270
     },
-    "anchored=true,facing=north,stage=empty": {
-      "model": "ss13_framework:block/computer_frame_empty"
+    "facing=north,half=lower,side=right,stage=empty": {
+      "model": "ss13_framework:block/computer_frame_empty_lower_right"
     },
-    "anchored=true,facing=east,stage=empty": {
-      "model": "ss13_framework:block/computer_frame_empty",
+    "facing=east,half=lower,side=right,stage=empty": {
+      "model": "ss13_framework:block/computer_frame_empty_lower_right",
       "y": 90
     },
-    "anchored=true,facing=south,stage=empty": {
-      "model": "ss13_framework:block/computer_frame_empty",
+    "facing=south,half=lower,side=right,stage=empty": {
+      "model": "ss13_framework:block/computer_frame_empty_lower_right",
       "y": 180
     },
-    "anchored=true,facing=west,stage=empty": {
-      "model": "ss13_framework:block/computer_frame_empty",
+    "facing=west,half=lower,side=right,stage=empty": {
+      "model": "ss13_framework:block/computer_frame_empty_lower_right",
       "y": 270
     },
-    "anchored=false,facing=north,stage=board": {
-      "model": "ss13_framework:block/computer_frame_board"
+    "facing=north,half=upper,side=left,stage=empty": {
+      "model": "ss13_framework:block/computer_frame_empty_upper_left"
     },
-    "anchored=false,facing=east,stage=board": {
-      "model": "ss13_framework:block/computer_frame_board",
+    "facing=east,half=upper,side=left,stage=empty": {
+      "model": "ss13_framework:block/computer_frame_empty_upper_left",
       "y": 90
     },
-    "anchored=false,facing=south,stage=board": {
-      "model": "ss13_framework:block/computer_frame_board",
+    "facing=south,half=upper,side=left,stage=empty": {
+      "model": "ss13_framework:block/computer_frame_empty_upper_left",
       "y": 180
     },
-    "anchored=false,facing=west,stage=board": {
-      "model": "ss13_framework:block/computer_frame_board",
+    "facing=west,half=upper,side=left,stage=empty": {
+      "model": "ss13_framework:block/computer_frame_empty_upper_left",
       "y": 270
     },
-    "anchored=true,facing=north,stage=board": {
-      "model": "ss13_framework:block/computer_frame_board"
+    "facing=north,half=upper,side=right,stage=empty": {
+      "model": "ss13_framework:block/computer_frame_empty_upper_right"
     },
-    "anchored=true,facing=east,stage=board": {
-      "model": "ss13_framework:block/computer_frame_board",
+    "facing=east,half=upper,side=right,stage=empty": {
+      "model": "ss13_framework:block/computer_frame_empty_upper_right",
       "y": 90
     },
-    "anchored=true,facing=south,stage=board": {
-      "model": "ss13_framework:block/computer_frame_board",
+    "facing=south,half=upper,side=right,stage=empty": {
+      "model": "ss13_framework:block/computer_frame_empty_upper_right",
       "y": 180
     },
-    "anchored=true,facing=west,stage=board": {
-      "model": "ss13_framework:block/computer_frame_board",
+    "facing=west,half=upper,side=right,stage=empty": {
+      "model": "ss13_framework:block/computer_frame_empty_upper_right",
       "y": 270
     },
-    "anchored=false,facing=north,stage=secured": {
-      "model": "ss13_framework:block/computer_frame_secured"
+    "facing=north,half=lower,side=left,stage=board": {
+      "model": "ss13_framework:block/computer_frame_board_lower_left"
     },
-    "anchored=false,facing=east,stage=secured": {
-      "model": "ss13_framework:block/computer_frame_secured",
+    "facing=east,half=lower,side=left,stage=board": {
+      "model": "ss13_framework:block/computer_frame_board_lower_left",
       "y": 90
     },
-    "anchored=false,facing=south,stage=secured": {
-      "model": "ss13_framework:block/computer_frame_secured",
+    "facing=south,half=lower,side=left,stage=board": {
+      "model": "ss13_framework:block/computer_frame_board_lower_left",
       "y": 180
     },
-    "anchored=false,facing=west,stage=secured": {
-      "model": "ss13_framework:block/computer_frame_secured",
+    "facing=west,half=lower,side=left,stage=board": {
+      "model": "ss13_framework:block/computer_frame_board_lower_left",
       "y": 270
     },
-    "anchored=true,facing=north,stage=secured": {
-      "model": "ss13_framework:block/computer_frame_secured"
+    "facing=north,half=lower,side=right,stage=board": {
+      "model": "ss13_framework:block/computer_frame_board_lower_right"
     },
-    "anchored=true,facing=east,stage=secured": {
-      "model": "ss13_framework:block/computer_frame_secured",
+    "facing=east,half=lower,side=right,stage=board": {
+      "model": "ss13_framework:block/computer_frame_board_lower_right",
       "y": 90
     },
-    "anchored=true,facing=south,stage=secured": {
-      "model": "ss13_framework:block/computer_frame_secured",
+    "facing=south,half=lower,side=right,stage=board": {
+      "model": "ss13_framework:block/computer_frame_board_lower_right",
       "y": 180
     },
-    "anchored=true,facing=west,stage=secured": {
-      "model": "ss13_framework:block/computer_frame_secured",
+    "facing=west,half=lower,side=right,stage=board": {
+      "model": "ss13_framework:block/computer_frame_board_lower_right",
       "y": 270
     },
-    "anchored=false,facing=north,stage=wired": {
-      "model": "ss13_framework:block/computer_frame_wired"
+    "facing=north,half=upper,side=left,stage=board": {
+      "model": "ss13_framework:block/computer_frame_board_upper_left"
     },
-    "anchored=false,facing=east,stage=wired": {
-      "model": "ss13_framework:block/computer_frame_wired",
+    "facing=east,half=upper,side=left,stage=board": {
+      "model": "ss13_framework:block/computer_frame_board_upper_left",
       "y": 90
     },
-    "anchored=false,facing=south,stage=wired": {
-      "model": "ss13_framework:block/computer_frame_wired",
+    "facing=south,half=upper,side=left,stage=board": {
+      "model": "ss13_framework:block/computer_frame_board_upper_left",
       "y": 180
     },
-    "anchored=false,facing=west,stage=wired": {
-      "model": "ss13_framework:block/computer_frame_wired",
+    "facing=west,half=upper,side=left,stage=board": {
+      "model": "ss13_framework:block/computer_frame_board_upper_left",
       "y": 270
     },
-    "anchored=true,facing=north,stage=wired": {
-      "model": "ss13_framework:block/computer_frame_wired"
+    "facing=north,half=upper,side=right,stage=board": {
+      "model": "ss13_framework:block/computer_frame_board_upper_right"
     },
-    "anchored=true,facing=east,stage=wired": {
-      "model": "ss13_framework:block/computer_frame_wired",
+    "facing=east,half=upper,side=right,stage=board": {
+      "model": "ss13_framework:block/computer_frame_board_upper_right",
       "y": 90
     },
-    "anchored=true,facing=south,stage=wired": {
-      "model": "ss13_framework:block/computer_frame_wired",
+    "facing=south,half=upper,side=right,stage=board": {
+      "model": "ss13_framework:block/computer_frame_board_upper_right",
       "y": 180
     },
-    "anchored=true,facing=west,stage=wired": {
-      "model": "ss13_framework:block/computer_frame_wired",
+    "facing=west,half=upper,side=right,stage=board": {
+      "model": "ss13_framework:block/computer_frame_board_upper_right",
       "y": 270
     },
-    "anchored=false,facing=north,stage=screen": {
-      "model": "ss13_framework:block/computer_frame_screen"
+    "facing=north,half=lower,side=left,stage=secured": {
+      "model": "ss13_framework:block/computer_frame_secured_lower_left"
     },
-    "anchored=false,facing=east,stage=screen": {
-      "model": "ss13_framework:block/computer_frame_screen",
+    "facing=east,half=lower,side=left,stage=secured": {
+      "model": "ss13_framework:block/computer_frame_secured_lower_left",
       "y": 90
     },
-    "anchored=false,facing=south,stage=screen": {
-      "model": "ss13_framework:block/computer_frame_screen",
+    "facing=south,half=lower,side=left,stage=secured": {
+      "model": "ss13_framework:block/computer_frame_secured_lower_left",
       "y": 180
     },
-    "anchored=false,facing=west,stage=screen": {
-      "model": "ss13_framework:block/computer_frame_screen",
+    "facing=west,half=lower,side=left,stage=secured": {
+      "model": "ss13_framework:block/computer_frame_secured_lower_left",
       "y": 270
     },
-    "anchored=true,facing=north,stage=screen": {
-      "model": "ss13_framework:block/computer_frame_screen"
+    "facing=north,half=lower,side=right,stage=secured": {
+      "model": "ss13_framework:block/computer_frame_secured_lower_right"
     },
-    "anchored=true,facing=east,stage=screen": {
-      "model": "ss13_framework:block/computer_frame_screen",
+    "facing=east,half=lower,side=right,stage=secured": {
+      "model": "ss13_framework:block/computer_frame_secured_lower_right",
       "y": 90
     },
-    "anchored=true,facing=south,stage=screen": {
-      "model": "ss13_framework:block/computer_frame_screen",
+    "facing=south,half=lower,side=right,stage=secured": {
+      "model": "ss13_framework:block/computer_frame_secured_lower_right",
       "y": 180
     },
-    "anchored=true,facing=west,stage=screen": {
-      "model": "ss13_framework:block/computer_frame_screen",
+    "facing=west,half=lower,side=right,stage=secured": {
+      "model": "ss13_framework:block/computer_frame_secured_lower_right",
+      "y": 270
+    },
+    "facing=north,half=upper,side=left,stage=secured": {
+      "model": "ss13_framework:block/computer_frame_secured_upper_left"
+    },
+    "facing=east,half=upper,side=left,stage=secured": {
+      "model": "ss13_framework:block/computer_frame_secured_upper_left",
+      "y": 90
+    },
+    "facing=south,half=upper,side=left,stage=secured": {
+      "model": "ss13_framework:block/computer_frame_secured_upper_left",
+      "y": 180
+    },
+    "facing=west,half=upper,side=left,stage=secured": {
+      "model": "ss13_framework:block/computer_frame_secured_upper_left",
+      "y": 270
+    },
+    "facing=north,half=upper,side=right,stage=secured": {
+      "model": "ss13_framework:block/computer_frame_secured_upper_right"
+    },
+    "facing=east,half=upper,side=right,stage=secured": {
+      "model": "ss13_framework:block/computer_frame_secured_upper_right",
+      "y": 90
+    },
+    "facing=south,half=upper,side=right,stage=secured": {
+      "model": "ss13_framework:block/computer_frame_secured_upper_right",
+      "y": 180
+    },
+    "facing=west,half=upper,side=right,stage=secured": {
+      "model": "ss13_framework:block/computer_frame_secured_upper_right",
+      "y": 270
+    },
+    "facing=north,half=lower,side=left,stage=wired": {
+      "model": "ss13_framework:block/computer_frame_wired_lower_left"
+    },
+    "facing=east,half=lower,side=left,stage=wired": {
+      "model": "ss13_framework:block/computer_frame_wired_lower_left",
+      "y": 90
+    },
+    "facing=south,half=lower,side=left,stage=wired": {
+      "model": "ss13_framework:block/computer_frame_wired_lower_left",
+      "y": 180
+    },
+    "facing=west,half=lower,side=left,stage=wired": {
+      "model": "ss13_framework:block/computer_frame_wired_lower_left",
+      "y": 270
+    },
+    "facing=north,half=lower,side=right,stage=wired": {
+      "model": "ss13_framework:block/computer_frame_wired_lower_right"
+    },
+    "facing=east,half=lower,side=right,stage=wired": {
+      "model": "ss13_framework:block/computer_frame_wired_lower_right",
+      "y": 90
+    },
+    "facing=south,half=lower,side=right,stage=wired": {
+      "model": "ss13_framework:block/computer_frame_wired_lower_right",
+      "y": 180
+    },
+    "facing=west,half=lower,side=right,stage=wired": {
+      "model": "ss13_framework:block/computer_frame_wired_lower_right",
+      "y": 270
+    },
+    "facing=north,half=upper,side=left,stage=wired": {
+      "model": "ss13_framework:block/computer_frame_wired_upper_left"
+    },
+    "facing=east,half=upper,side=left,stage=wired": {
+      "model": "ss13_framework:block/computer_frame_wired_upper_left",
+      "y": 90
+    },
+    "facing=south,half=upper,side=left,stage=wired": {
+      "model": "ss13_framework:block/computer_frame_wired_upper_left",
+      "y": 180
+    },
+    "facing=west,half=upper,side=left,stage=wired": {
+      "model": "ss13_framework:block/computer_frame_wired_upper_left",
+      "y": 270
+    },
+    "facing=north,half=upper,side=right,stage=wired": {
+      "model": "ss13_framework:block/computer_frame_wired_upper_right"
+    },
+    "facing=east,half=upper,side=right,stage=wired": {
+      "model": "ss13_framework:block/computer_frame_wired_upper_right",
+      "y": 90
+    },
+    "facing=south,half=upper,side=right,stage=wired": {
+      "model": "ss13_framework:block/computer_frame_wired_upper_right",
+      "y": 180
+    },
+    "facing=west,half=upper,side=right,stage=wired": {
+      "model": "ss13_framework:block/computer_frame_wired_upper_right",
+      "y": 270
+    },
+    "facing=north,half=lower,side=left,stage=screen": {
+      "model": "ss13_framework:block/computer_frame_screen_lower_left"
+    },
+    "facing=east,half=lower,side=left,stage=screen": {
+      "model": "ss13_framework:block/computer_frame_screen_lower_left",
+      "y": 90
+    },
+    "facing=south,half=lower,side=left,stage=screen": {
+      "model": "ss13_framework:block/computer_frame_screen_lower_left",
+      "y": 180
+    },
+    "facing=west,half=lower,side=left,stage=screen": {
+      "model": "ss13_framework:block/computer_frame_screen_lower_left",
+      "y": 270
+    },
+    "facing=north,half=lower,side=right,stage=screen": {
+      "model": "ss13_framework:block/computer_frame_screen_lower_right"
+    },
+    "facing=east,half=lower,side=right,stage=screen": {
+      "model": "ss13_framework:block/computer_frame_screen_lower_right",
+      "y": 90
+    },
+    "facing=south,half=lower,side=right,stage=screen": {
+      "model": "ss13_framework:block/computer_frame_screen_lower_right",
+      "y": 180
+    },
+    "facing=west,half=lower,side=right,stage=screen": {
+      "model": "ss13_framework:block/computer_frame_screen_lower_right",
+      "y": 270
+    },
+    "facing=north,half=upper,side=left,stage=screen": {
+      "model": "ss13_framework:block/computer_frame_screen_upper_left"
+    },
+    "facing=east,half=upper,side=left,stage=screen": {
+      "model": "ss13_framework:block/computer_frame_screen_upper_left",
+      "y": 90
+    },
+    "facing=south,half=upper,side=left,stage=screen": {
+      "model": "ss13_framework:block/computer_frame_screen_upper_left",
+      "y": 180
+    },
+    "facing=west,half=upper,side=left,stage=screen": {
+      "model": "ss13_framework:block/computer_frame_screen_upper_left",
+      "y": 270
+    },
+    "facing=north,half=upper,side=right,stage=screen": {
+      "model": "ss13_framework:block/computer_frame_screen_upper_right"
+    },
+    "facing=east,half=upper,side=right,stage=screen": {
+      "model": "ss13_framework:block/computer_frame_screen_upper_right",
+      "y": 90
+    },
+    "facing=south,half=upper,side=right,stage=screen": {
+      "model": "ss13_framework:block/computer_frame_screen_upper_right",
+      "y": 180
+    },
+    "facing=west,half=upper,side=right,stage=screen": {
+      "model": "ss13_framework:block/computer_frame_screen_upper_right",
       "y": 270
     }
   }

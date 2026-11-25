@@ -121,12 +121,13 @@ public final class ConstructionTests {
         h.succeed();
     }
 
-    /** The Phase B gate's shape: a computer, as Expedition's Shuttle Computer, from frame and board. */
+    /**
+     * The Phase B gate's shape: a computer, as Expedition's Shuttle Computer, from frame and board,
+     * all from the frame's lower left block. {@link ConsoleTests} uses the other three.
+     */
     @GameTest(template = "empty")
     public static void computer_frame_builds_a_computer_from_its_board(GameTestHelper h) {
-        h.setBlock(
-                AT,
-                FrameworkBlocks.COMPUTER_FRAME.get().defaultBlockState().setValue(FrameBlock.FACING, Direction.SOUTH));
+        ConsoleTests.placeWhole(h, FrameworkBlocks.COMPUTER_FRAME.get().defaultBlockState());
         FakePlayer player = builder(h);
 
         use(h, player, AT, FrameworkItems.WRENCH.toStack());
@@ -257,7 +258,7 @@ public final class ConstructionTests {
 
     // Helpers
 
-    private static FakePlayer builder(GameTestHelper h) {
+    static FakePlayer builder(GameTestHelper h) {
         FakePlayer player = FakePlayerFactory.get(h.getLevel(), new GameProfile(UUID.randomUUID(), "ss13_builder"));
         player.setGameMode(GameType.SURVIVAL);
         player.getInventory().clearContent();
@@ -265,7 +266,7 @@ public final class ConstructionTests {
     }
 
     /** Uses an item on a block through the server's own use path, as a player's click does. */
-    private static void use(GameTestHelper h, FakePlayer player, BlockPos pos, ItemStack stack) {
+    static void use(GameTestHelper h, FakePlayer player, BlockPos pos, ItemStack stack) {
         BlockPos at = h.absolutePos(pos);
         player.setItemInHand(InteractionHand.MAIN_HAND, stack);
         player.gameMode.useItemOn(
@@ -304,7 +305,7 @@ public final class ConstructionTests {
         h.assertTrue(state.hasProperty(stage) && state.getValue(stage) == expected, message + " (" + state + ")");
     }
 
-    private static List<ItemEntity> items(GameTestHelper h, BlockPos pos) {
+    static List<ItemEntity> items(GameTestHelper h, BlockPos pos) {
         return h.getLevel().getEntitiesOfClass(ItemEntity.class, new AABB(h.absolutePos(pos)).inflate(1.5));
     }
 

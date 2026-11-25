@@ -1,6 +1,5 @@
 package io.github.west3436.ss13.construction;
 
-import io.github.west3436.ss13.api.construction.FrameType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -19,15 +18,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 /**
- * A frame a machine or computer is built in, step by step, with tools and parts used on it; see
+ * A one-block frame a machine is built in, step by step, with tools and parts used on it; see
  * {@link Construction}. It is placed unanchored, facing the player, and keeps what has gone in in
- * its {@link FrameBlockEntity}. Breaking it drops the frame and everything in it.
+ * its {@link FrameBlockEntity}. Breaking it drops the frame and everything in it. The computer
+ * frame is a 2 x 2 console instead, {@link ComputerFrameBlock}, with the same {@link #ANCHORED} and
+ * {@link #FACING}.
  */
-public abstract class FrameBlock extends Block implements EntityBlock {
+public abstract class FrameBlock extends Block implements EntityBlock, Frame {
     /** Whether a wrench has anchored it; nothing goes in until it has. */
     public static final BooleanProperty ANCHORED = BooleanProperty.create("anchored");
 
@@ -38,28 +38,7 @@ public abstract class FrameBlock extends Block implements EntityBlock {
         super(properties);
     }
 
-    /**
-     * The frame's type.
-     *
-     * @return machine or computer
-     */
-    public abstract FrameType type();
-
-    /**
-     * Its {@code stage} property, whose values are the stages this type of frame goes through.
-     *
-     * @return the property
-     */
-    public abstract EnumProperty<FrameStage> stage();
-
-    /**
-     * This frame in a stage, anchored and facing a way: what a machine becomes when it is taken
-     * apart.
-     *
-     * @param stage the stage
-     * @param facing the way it faces
-     * @return the state
-     */
+    @Override
     public BlockState state(FrameStage stage, Direction facing) {
         return defaultBlockState()
                 .setValue(stage(), stage)
@@ -118,11 +97,7 @@ public abstract class FrameBlock extends Block implements EntityBlock {
 
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof FrameBlockEntity frame) {
-            for (ItemStack drop : frame.drops(state)) {
-                popResource(level, pos, drop);
-            }
-        }
+        FrameBlockEntity.dropOnRemove(state, level, pos, newState);
         super.onRemove(state, level, pos, newState, movedByPiston);
     }
 }

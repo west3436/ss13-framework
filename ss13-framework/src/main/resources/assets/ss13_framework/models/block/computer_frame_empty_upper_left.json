@@ -1,0 +1,62 @@
+{
+  "parent": "block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "front": "ss13_framework:block/computer_frame_empty",
+    "casing": "ss13_framework:block/computer_frame_casing",
+    "particle": "ss13_framework:block/computer_frame_casing"
+  },
+  "elements": [
+    {
+      "name": "monitor",
+      "from": [
+        0,
+        0,
+        6
+      ],
+      "to": [
+        14,
+        13,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1.0,
+            1.0,
+            8.0,
+            7.5
+          ],
+          "texture": "#front"
+        },
+        "south": {
+          "uv": [
+            1.0,
+            8.0,
+            8.0,
+            14.5
+          ],
+          "texture": "#casing"
+        },
+        "east": {
+          "uv": [
+            6,
+            3,
+            16,
+            16
+          ],
+          "texture": "#casing"
+        },
+        "up": {
+          "uv": [
+            0,
+            6,
+            14,
+            16
+          ],
+          "texture": "#casing"
+        }
+      }
+    }
+  ]
+}
