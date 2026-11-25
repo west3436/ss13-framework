@@ -3,8 +3,7 @@
     "frame": "ss13_framework:block/frame",
     "particle": "ss13_framework:block/frame",
     "cable": "ss13_framework:block/frame_cable",
-    "board": "ss13_framework:block/frame_board",
-    "screen": "ss13_framework:block/frame_screen"
+    "board": "ss13_framework:block/frame_board"
   },
   "elements": [
     {

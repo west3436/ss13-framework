@@ -5,6 +5,14 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
+          "condition": "minecraft:block_state_property",
+          "block": "ss13_framework:computer_frame",
+          "properties": {
+            "half": "lower",
+            "side": "left"
+          }
+        },
+        {
           "condition": "minecraft:survives_explosion"
         }
       ],

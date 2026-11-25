@@ -26,7 +26,7 @@ public final class FrameworkBlocks {
     public static final DeferredBlock<MachineFrameBlock> MACHINE_FRAME =
             BLOCKS.register("machine_frame", () -> new MachineFrameBlock(frameProperties()));
 
-    /** The computer frame. */
+    /** The computer frame, a console 2 blocks wide, 2 tall and 1 deep. */
     public static final DeferredBlock<ComputerFrameBlock> COMPUTER_FRAME =
             BLOCKS.register("computer_frame", () -> new ComputerFrameBlock(frameProperties()));
 

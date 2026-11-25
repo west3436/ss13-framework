@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "ss13_framework:block/test_console"
+    },
+    "facing=east": {
+      "model": "ss13_framework:block/test_console",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "ss13_framework:block/test_console",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "ss13_framework:block/test_console",
+      "y": 270
+    }
+  }
+}

@@ -11,7 +11,10 @@ package io.github.west3436.ss13.api.construction;
  * <ul>
  *   <li><b>Built.</b> When a frame is closed, the frame becomes the machine's block (facing the way
  *       the frame faced, if it has a facing property) and the framework calls {@link #installParts}
- *       with the frame's board and parts.
+ *       with the frame's board and parts. The computer frame is a 2 x 2 console: a computer that
+ *       is a {@link io.github.west3436.ss13.api.console.ConsoleBlock} takes all four of its
+ *       blocks, with its block entity in the lower left one, and any other computer takes the
+ *       lower left block alone.
  *   <li><b>Placed.</b> When a player places the machine from its item, which its plain crafting
  *       recipe makes, the framework installs the parts the item carries, if it was a mined machine,
  *       or else the board and a tier-1 part for each one the board needs.
@@ -21,8 +24,9 @@ package io.github.west3436.ss13.api.construction;
  *       #setPanelOpen}). With it open, a better part of a kind the board needs replaces the
  *       lowest-tier part of that kind, which goes to the player, and a crowbar takes the machine
  *       apart: the block becomes a wired machine frame and the board and parts drop.
- *   <li><b>Computer frames.</b> A screwdriver takes the screen off: the block becomes a computer
- *       frame with its board, wiring and screen, which a screwdriver closes again.
+ *   <li><b>Computer frames.</b> A screwdriver, on any block of a console, takes the screen off:
+ *       the computer becomes a computer frame with its board, wiring and screen, which a
+ *       screwdriver closes again.
  * </ul>
  *
  * <p>A machine that has nothing installed ({@link InstalledParts#EMPTY}) counts as holding tier-1

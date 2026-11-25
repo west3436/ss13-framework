@@ -9,6 +9,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -62,7 +64,7 @@ public final class FrameBlockEntity extends BlockEntity {
      */
     public List<ItemStack> drops(BlockState state) {
         List<ItemStack> drops = new ArrayList<>();
-        if (built || !(state.getBlock() instanceof FrameBlock frame)) {
+        if (built || !(state.getBlock() instanceof Frame frame)) {
             return drops;
         }
         if (Construction.isWired(frame, state.getValue(frame.stage()))) {
@@ -76,6 +78,23 @@ public final class FrameBlockEntity extends BlockEntity {
         }
         drops.addAll(contents.parts());
         return drops;
+    }
+
+    /**
+     * Drops what is in a frame as its block goes, unless it is only changing state or has become
+     * its machine. A frame block calls this from its {@code onRemove}.
+     *
+     * @param state the frame's state
+     * @param level the level
+     * @param pos the frame's position
+     * @param newState what replaces it
+     */
+    static void dropOnRemove(BlockState state, Level level, BlockPos pos, BlockState newState) {
+        if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof FrameBlockEntity frame) {
+            for (ItemStack drop : frame.drops(state)) {
+                Block.popResource(level, pos, drop);
+            }
+        }
     }
 
     @Override

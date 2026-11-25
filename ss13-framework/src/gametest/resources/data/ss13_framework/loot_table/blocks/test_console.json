@@ -8,6 +8,16 @@
           "type": "minecraft:item",
           "name": "ss13_framework:test_console"
         }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "ss13_framework:test_console",
+          "properties": {
+            "half": "lower",
+            "side": "left"
+          }
+        }
       ]
     }
   ]

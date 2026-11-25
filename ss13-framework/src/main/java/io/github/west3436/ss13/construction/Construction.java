@@ -1,6 +1,7 @@
 package io.github.west3436.ss13.construction;
 
 import com.mojang.logging.LogUtils;
+import io.github.west3436.ss13.api.console.ConsoleBlock;
 import io.github.west3436.ss13.api.construction.ConstructionTags;
 import io.github.west3436.ss13.api.construction.FrameType;
 import io.github.west3436.ss13.api.construction.InstalledParts;
@@ -38,6 +39,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -54,11 +56,14 @@ import org.slf4j.Logger;
  *
  * <p>A <b>computer frame</b> is anchored, takes a computer board, which a screwdriver secures, then
  * a cable coil and a console screen, and a screwdriver closes it. A crowbar pries out the screen
- * or a loose board, and wirecutters cut the wiring.
+ * or a loose board, and wirecutters cut the wiring. It is a 2 x 2 {@link ConsoleBlock console}:
+ * every step works on any of its four blocks. Closed, it becomes the whole console if its board's
+ * computer is a {@code ConsoleBlock}, or else the computer takes the lower left block and the
+ * other three go.
  *
  * <p>A built machine's screwdriver opens its panel; with the panel open, a better part replaces
- * its worst of that kind and a crowbar takes it apart to a wired frame. A computer's screwdriver
- * takes its screen off, back to a finished frame.
+ * its worst of that kind and a crowbar takes it apart to a wired frame. A computer's screwdriver,
+ * on any of a console's blocks, takes its screen off, back to a finished frame.
  */
 public final class Construction {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -72,26 +77,30 @@ public final class Construction {
      * Uses an item on a frame. Server only.
      *
      * @param level the level
-     * @param pos the frame's position
+     * @param pos the frame's position: the lower left block of the computer frame's console
      * @param state the frame's state
      * @param player who uses it
      * @param stack what they use
      */
     static void useOnFrame(Level level, BlockPos pos, BlockState state, Player player, ItemStack stack) {
-        if (!(state.getBlock() instanceof FrameBlock frame)
-                || !(level.getBlockEntity(pos) instanceof FrameBlockEntity be)) {
+        if (!(state.getBlock() instanceof Frame frame) || !(level.getBlockEntity(pos) instanceof FrameBlockEntity be)) {
             return;
+        }
+        // A one-block computer frame from before 0.3.1 grows into its console where there's room.
+        if (state.getBlock() instanceof ConsoleBlock && !ConsoleBlock.isWhole(level, pos)) {
+            ConsoleBlock.completeConsole(level, pos);
+            state = level.getBlockState(pos);
         }
         boolean anchored = state.getValue(FrameBlock.ANCHORED);
         FrameStage stage = state.getValue(frame.stage());
         if (stack.is(ToolTags.WRENCHES)) {
             if (!anchored) {
-                level.setBlockAndUpdate(pos, state.setValue(FrameBlock.ANCHORED, true));
+                setFrame(level, pos, state.setValue(FrameBlock.ANCHORED, true));
                 done(level, pos, player, SoundEvents.IRON_TRAPDOOR_CLOSE, Component.translatable(MESSAGE + "anchored"));
                 return;
             }
             if (stage == FrameStage.EMPTY) {
-                level.setBlockAndUpdate(pos, state.setValue(FrameBlock.ANCHORED, false));
+                setFrame(level, pos, state.setValue(FrameBlock.ANCHORED, false));
                 done(
                         level,
                         pos,
@@ -115,7 +124,7 @@ public final class Construction {
             Level level,
             BlockPos pos,
             BlockState state,
-            FrameBlock frame,
+            Frame frame,
             FrameBlockEntity be,
             FrameStage stage,
             Player player,
@@ -179,7 +188,7 @@ public final class Construction {
             Level level,
             BlockPos pos,
             BlockState state,
-            FrameBlock frame,
+            Frame frame,
             FrameBlockEntity be,
             FrameStage stage,
             Player player,
@@ -275,7 +284,7 @@ public final class Construction {
             Level level,
             BlockPos pos,
             BlockState state,
-            FrameBlock frame,
+            Frame frame,
             FrameBlockEntity be,
             Player player,
             ItemStack stack,
@@ -328,8 +337,22 @@ public final class Construction {
                             MESSAGE + "unknown_machine", contents.board().getHoverName()));
             return;
         }
+        BlockState built = facing(machine.get().defaultBlockState(), state.getValue(FrameBlock.FACING));
+        boolean console = built.getBlock() instanceof ConsoleBlock;
+        if (console && state.getBlock() instanceof ConsoleBlock && !ConsoleBlock.isWhole(level, pos)) {
+            tell(
+                    player,
+                    Component.translatable(MESSAGE + "no_room", machine.get().getName()));
+            return;
+        }
         be.markBuilt();
-        level.setBlockAndUpdate(pos, facing(machine.get().defaultBlockState(), state.getValue(FrameBlock.FACING)));
+        if (console && state.getBlock() instanceof ConsoleBlock) {
+            // A 2 x 2 computer takes the 2 x 2 frame's place.
+            ConsoleBlock.placeConsole(level, pos, built);
+        } else {
+            // A one-block computer stands where the frame's lower left block was.
+            replaceFrame(level, pos, state, built);
+        }
         if (level.getBlockEntity(pos) instanceof PartHolder holder) {
             holder.setPanelOpen(false);
             holder.installParts(contents);
@@ -363,13 +386,13 @@ public final class Construction {
      * What a frame needs next, as one line.
      *
      * @param level the level
-     * @param pos the frame's position
+     * @param pos the frame's position, or any block of the computer frame's console
      * @return the line
      */
     public static Component nextStep(Level level, BlockPos pos) {
+        pos = ConsoleBlock.originAt(level, pos);
         BlockState state = level.getBlockState(pos);
-        if (!(state.getBlock() instanceof FrameBlock frame)
-                || !(level.getBlockEntity(pos) instanceof FrameBlockEntity be)) {
+        if (!(state.getBlock() instanceof Frame frame) || !(level.getBlockEntity(pos) instanceof FrameBlockEntity be)) {
             return Component.empty();
         }
         if (!state.getValue(FrameBlock.ANCHORED)) {
@@ -406,7 +429,7 @@ public final class Construction {
      * @param stage its stage
      * @return true if it has
      */
-    static boolean isWired(FrameBlock frame, FrameStage stage) {
+    static boolean isWired(Frame frame, FrameStage stage) {
         return frame.type() == FrameType.MACHINE
                 ? stage == FrameStage.WIRED || stage == FrameStage.BOARD
                 : stage == FrameStage.WIRED || stage == FrameStage.SCREEN;
@@ -462,28 +485,32 @@ public final class Construction {
 
     // Machines
 
-    /** A built machine: its holder, its board's id and what the board builds. */
-    record Machine(PartHolder holder, ResourceLocation boardId, MachineBoard board, BlockState state) {}
+    /**
+     * A built machine: its position (a console's origin), its holder, its board's id and what the
+     * board builds.
+     */
+    record Machine(BlockPos pos, PartHolder holder, ResourceLocation boardId, MachineBoard board, BlockState state) {}
 
     /**
      * The machine at a position, if it is one some board builds and its block entity is a {@link
-     * PartHolder}.
+     * PartHolder}. Any block of a {@link ConsoleBlock console} finds the console.
      *
      * @param level the level
      * @param pos the position
      * @return the machine, or empty
      */
     static Optional<Machine> machineAt(Level level, BlockPos pos) {
-        BlockEntity be = level.getBlockEntity(pos);
+        BlockPos at = ConsoleBlock.originAt(level, pos);
+        BlockEntity be = level.getBlockEntity(at);
         if (!(be instanceof PartHolder holder)) {
             return Optional.empty();
         }
-        BlockState state = level.getBlockState(pos);
+        BlockState state = level.getBlockState(at);
         ItemStack installed = holder.installedParts().board();
         Optional<ResourceLocation> boardId = installed.isEmpty()
                 ? MachineBoards.boardFor(BuiltInRegistries.BLOCK.getKey(state.getBlock()))
                 : Optional.of(BuiltInRegistries.ITEM.getKey(installed.getItem()));
-        return boardId.flatMap(id -> MachineBoards.get(id).map(b -> new Machine(holder, id, b, state)));
+        return boardId.flatMap(id -> MachineBoards.get(id).map(b -> new Machine(at, holder, id, b, state)));
     }
 
     /**
@@ -505,24 +532,34 @@ public final class Construction {
      * Server only.
      *
      * @param level the level
-     * @param pos the machine's position
+     * @param used the position of the block used: the machine's, or any of a console's
      * @param player who uses it
      * @param stack what they use
      * @return true if construction took the use, so the machine's own use mustn't run
      */
-    static boolean useOnMachine(Level level, BlockPos pos, Player player, ItemStack stack) {
-        Optional<Machine> found = machineAt(level, pos);
+    static boolean useOnMachine(Level level, BlockPos used, Player player, ItemStack stack) {
+        Optional<Machine> found = machineAt(level, used);
         if (found.isEmpty()) {
             return false;
         }
         Machine machine = found.get();
+        BlockPos pos = machine.pos();
         boolean computer = machine.board().frame() == FrameType.COMPUTER;
         if (stack.is(ToolTags.SCREWDRIVERS)) {
             if (computer) {
                 InstalledParts parts = effective(machine);
                 machine.holder().installParts(InstalledParts.EMPTY);
-                level.setBlockAndUpdate(
-                        pos, FrameworkBlocks.COMPUTER_FRAME.get().state(FrameStage.SCREEN, facingOf(machine.state())));
+                BlockState frameState =
+                        FrameworkBlocks.COMPUTER_FRAME.get().state(FrameStage.SCREEN, facingOf(machine.state()));
+                if (ConsoleBlock.isWhole(level, pos)) {
+                    // A 2 x 2 computer becomes the 2 x 2 frame it was built in.
+                    ConsoleBlock.placeConsole(level, pos, frameState);
+                } else {
+                    // A one-block computer becomes the frame's lower left block, which grows into
+                    // the whole frame where there's room.
+                    level.setBlockAndUpdate(pos, frameState);
+                    ConsoleBlock.completeConsole(level, pos);
+                }
                 if (level.getBlockEntity(pos) instanceof FrameBlockEntity frame) {
                     frame.setContents(parts);
                 }
@@ -711,8 +748,59 @@ public final class Construction {
         return Direction.NORTH;
     }
 
-    private static void setStage(Level level, BlockPos pos, BlockState state, FrameBlock frame, FrameStage stage) {
-        level.setBlockAndUpdate(pos, state.setValue(frame.stage(), stage));
+    private static void setStage(Level level, BlockPos pos, BlockState state, Frame frame, FrameStage stage) {
+        setFrame(level, pos, state.setValue(frame.stage(), stage));
+    }
+
+    /**
+     * Sets a frame's state: on each block of the computer frame's console that is there, so all
+     * four show the same stage and anchoring.
+     */
+    private static void setFrame(Level level, BlockPos pos, BlockState state) {
+        if (!(state.getBlock() instanceof ConsoleBlock)) {
+            level.setBlockAndUpdate(pos, state);
+            return;
+        }
+        List<BlockPos> parts = ConsoleBlock.parts(pos, state.getValue(FrameBlock.FACING));
+        for (int i = 0; i < parts.size(); i++) {
+            if (i == 0 || isPart(level.getBlockState(parts.get(i)), state, i)) {
+                level.setBlockAndUpdate(parts.get(i), ConsoleBlock.part(state, i));
+            }
+        }
+    }
+
+    /**
+     * Puts a one-block machine in a computer frame's place: in its lower left block, with the
+     * frame's other three blocks removed without drops. Blocks in those spaces that aren't the
+     * frame's are left. Neighbours are told once the machine is in, so the frame doesn't break
+     * itself first.
+     */
+    private static void replaceFrame(Level level, BlockPos pos, BlockState frame, BlockState machine) {
+        List<BlockPos> cleared = new ArrayList<>();
+        if (frame.getBlock() instanceof ConsoleBlock) {
+            List<BlockPos> parts = ConsoleBlock.parts(pos, frame.getValue(FrameBlock.FACING));
+            for (int i = 1; i < parts.size(); i++) {
+                if (isPart(level.getBlockState(parts.get(i)), frame, i)) {
+                    level.setBlock(
+                            parts.get(i),
+                            Blocks.AIR.defaultBlockState(),
+                            Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+                    cleared.add(parts.get(i));
+                }
+            }
+        }
+        level.setBlockAndUpdate(pos, machine);
+        for (BlockPos p : cleared) {
+            level.blockUpdated(p, Blocks.AIR);
+            Blocks.AIR.defaultBlockState().updateNeighbourShapes(level, p, Block.UPDATE_ALL);
+        }
+    }
+
+    /** Whether a state is block {@code i} of the console whose origin's state is {@code origin}. */
+    private static boolean isPart(BlockState there, BlockState origin, int i) {
+        return there.is(origin.getBlock())
+                && there.getValue(FrameBlock.FACING) == origin.getValue(FrameBlock.FACING)
+                && ConsoleBlock.index(there) == i;
     }
 
     private static void dropContents(Level level, BlockPos pos, FrameBlockEntity be) {
